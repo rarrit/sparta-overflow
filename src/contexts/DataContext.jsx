@@ -6,9 +6,9 @@ export const DataProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
-  const [loginUser, setLoginUser] = useState([]);
+  // const [loginUser, setLoginUser] = useState([]);
 
-  console.log(loginUser);
+  // console.log(loginUser);
 
   return (
     <dataContext.Provider
@@ -19,8 +19,6 @@ export const DataProvider = ({ children }) => {
         setPosts,
         comments,
         setComments,
-        loginUser,
-        setLoginUser,
       }}
     >
       {children}
