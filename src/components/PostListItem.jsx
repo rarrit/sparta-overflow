@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { CircleCheck, CircleX } from "lucide-react";
 import { dataContext } from "../contexts/DataContext";
 import supabase from "../services/supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 const PostListItem = () => {
   const { posts, setPosts } = useContext(dataContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -20,13 +22,17 @@ const PostListItem = () => {
     fetchPosts();
   }, [setPosts]);
 
+  const DetailMove = (post) => {
+    navigate(`/detail/${post.id}`);
+  };
+
   return (
     <>
       {posts.map((post) => (
-        <Article key={post.id}>
+        <Article key={post.id} post={post} onClick={() => DetailMove(post)}>
           <div>
             <div>
-              {post.isChosen ? <StyledCircleCheck /> : <StyledCircleX />}
+              {post.solve ? <StyledCircleCheck /> : <StyledCircleX />}
               <h3>{post.title}</h3> {/* 제목 */}
             </div>
             <div>
