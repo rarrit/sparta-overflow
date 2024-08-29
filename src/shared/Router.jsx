@@ -6,6 +6,8 @@ import Join from '../pages/Join'
 import Mypage from '../pages/Mypage'
 import PostDetail from '../pages/PostDetail'
 import PostWrite from '../pages/PostWrite'
+import CodeBlockExample from '../pages/CodeBlockExample'
+import SupaBaseExample from '../pages/SupaBaseExample'
 
 const Router = () => {
   return (
@@ -18,6 +20,9 @@ const Router = () => {
           <Route path="/mypage" element={<Mypage/>}/>
           <Route path="/detail" element={<PostDetail/>}/>
           <Route path="/write" element={<PostWrite/>}/>
+
+          <Route path="/example1" element={<CodeBlockExample/>}/>
+          <Route path="/example2" element={<SupaBaseExample/>}/>
         </Routes>
       </Layout>
     </BrowserRouter>
