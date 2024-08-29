@@ -1,11 +1,18 @@
-import styled from "styled-components"
+import logo from "../assets/image/logo.jpeg";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 function Header(){
   return (
     <>
       <StHeader>
         <div className="inner">
-          헤더
+          <StLogo>
+            <Link to="/">
+              <img src={logo} />
+              sparta <span>overflow</span>
+            </Link>
+          </StLogo>
         </div>
       </StHeader>
     </> 
@@ -43,6 +50,18 @@ const Layout = ({ children }) => {
 
 
 const StHeader = styled.header`
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  border-bottom:1px solid #111;
+  .inner {
+    width:100%;
+    max-width:1600px;
+    margin:0 auto;
+  }
+`;
+const StLogo = styled.div`
 
 `;
 const StWrap = styled.div`
