@@ -6,7 +6,7 @@ import PostListItem from "../components/PostListItem";
 
 const Main = () => {
   // context Test
-  const { testList } = useContext(postContext);
+  //const { testList } = useContext(postContext);
   //console.log("testList =>", testList);
   console.log(PostListItem.post);
   const TabData = [
