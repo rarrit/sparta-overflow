@@ -7,16 +7,18 @@ export const DataProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
 
-  return(
-    <dataContext.Provider value={{
-      users,
-      setUsers,
-      posts,
-      setPosts,
-      comments,
-      setComments
-    }}>
+  return (
+    <dataContext.Provider
+      value={{
+        users,
+        setUsers,
+        posts,
+        setPosts,
+        comments,
+        setComments,
+      }}
+    >
       {children}
     </dataContext.Provider>
-  )
-}
+  );
+};
