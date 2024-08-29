@@ -24,7 +24,7 @@ const Login = () => {
 
   return (
     <UserInfoDiv>
-      <UserInfoBox>{true ? <CreateAccount /> : <LoginDiv />}</UserInfoBox>
+      <UserInfoBox>{false ? <CreateAccount /> : <LoginDiv />}</UserInfoBox>
     </UserInfoDiv>
   );
 };

@@ -15,11 +15,10 @@ const LoginDiv = () => {
     }
   }, [isLogin]);
 
-  const { users } = useContext(dataContext);
+  const { users, setLoginUser } = useContext(dataContext);
 
   const onLogin = () => {
     for (const user of users) {
-      // console.log(user["\bemail"]);
       if (loginId !== user["\bemail"]) {
         alert("아이디가 일치하지 않습니다");
         break;
@@ -27,8 +26,9 @@ const LoginDiv = () => {
         alert("비밀번호가 일치하지 않습니다");
         break;
       } else {
+        const thisUser = users.filter((u) => u.id === user.id);
+        setLoginUser(thisUser);
         ChangeLogin(true);
-
         break;
       }
     }
@@ -36,33 +36,33 @@ const LoginDiv = () => {
 
   return (
     <div>
-      <InfoName>ID</InfoName>
-      <Input
+      <UserInfoName>ID</UserInfoName>
+      <UserInfoInput
         value={loginId}
         onChange={(e) => setLoginId(e.target.value)}
         placeholder="아이디나 이메일을 입력해주세요"
       />
-      <InfoName>PW</InfoName>
-      <Input
+      <UserInfoName>PW</UserInfoName>
+      <UserInfoInput
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="비밀번호를 입력해주세요"
       />
-      <Button onClick={() => onLogin()}>로그인하기</Button>
+      <UserInfoButton onClick={() => onLogin()}>로그인하기</UserInfoButton>
     </div>
   );
 };
 
 export default LoginDiv;
 
-const InfoName = styled.p`
+export const UserInfoName = styled.p`
   font-size: 30px;
   font-weight: 700;
 
-  margin-top: 50px;
+  margin: 10px;
 `;
 
-const Input = styled.input`
+export const UserInfoInput = styled.input`
   width: 400px;
   margin: 10px;
   padding: 10px;
@@ -70,7 +70,7 @@ const Input = styled.input`
   border-radius: 30px;
 `;
 
-const Button = styled.button`
+export const UserInfoButton = styled.button`
   width: 100px;
   margin-top: 50px;
   padding: 10px;
