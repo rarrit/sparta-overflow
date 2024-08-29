@@ -1,26 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { CircleCheck, CircleX } from "lucide-react";
-import { dataContext } from "../contexts/DataContext";
-import supabase from "../services/supabaseClient";
 import { useNavigate } from "react-router-dom";
 
-const PostListItem = () => {
-  const { posts, setPosts } = useContext(dataContext);
+const PostListItem = ({ posts }) => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const { data, error } = await supabase.from("Post").select("*");
-      if (error) {
-        console.log("error =>", error);
-      } else {
-        console.log("post data =>", data);
-        setPosts(data);
-      }
-    };
-    fetchPosts();
-  }, [setPosts]);
 
   const DetailMove = (post) => {
     navigate(`/detail/${post.id}`);
@@ -33,7 +17,12 @@ const PostListItem = () => {
           <div>
             <div>
               {post.solve ? <StyledCircleCheck /> : <StyledCircleX />}
-              <h3>{post.title}</h3> {/* 제목 */}
+              <h3>
+                {post.title.length > 20
+                  ? `${post.title.substring(0, 80)}...`
+                  : post.title}
+              </h3>{" "}
+              {/* 제목 */}
             </div>
             <div>
               <span>{post.writerUserId}</span> {/* 작성자 */}
@@ -41,7 +30,12 @@ const PostListItem = () => {
             </div>
           </div>
           <div>
-            <p>{post.description}</p> {/* 내용 */}
+            <p>
+              {post.description.length > 300
+                ? `${post.title.substring(0, 300)}...`
+                : post.description.substring(0, 300)}
+            </p>{" "}
+            {/* 내용 */}
           </div>
         </Article>
       ))}
