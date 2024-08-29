@@ -18,7 +18,7 @@ const Router = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/join" element={<Join />} />
           <Route path="/mypage" element={<Mypage />} />
-          <Route path="/detail" element={<PostDetail />} />
+          <Route path="/detail/:id" element={<PostDetail />} />
           <Route path="/write" element={<PostWrite />} />
 
           <Route path="/example1" element={<CodeBlockExample />} />
