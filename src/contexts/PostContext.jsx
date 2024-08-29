@@ -12,7 +12,8 @@ export const PostProvider = ({ children }) => {
   return(
     <postContext.Provider value={{
       testList,
-      setTestList
+      setTestList,
+      addTestListHandler
     }}>
       {children}
     </postContext.Provider>
