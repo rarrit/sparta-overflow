@@ -3,13 +3,15 @@ import React, { useRef } from "react";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
-const TuiEditor = () => {
+const TuiEditor = ({ description }) => {
   const editorRef = useRef();
 
   const handleClick = () => {
     const editorInstance = editorRef.current.getInstance();
     console.log(editorInstance.getMarkdown());
   };
+
+  console.log("testestst =>", description);
 
   return (
     <div>
@@ -24,9 +26,9 @@ const TuiEditor = () => {
         hooks	           Object	          addImageBlobHook - 이미지 업로드에 사용되는 훅 설정
       */}
       <Editor
-        initialValue="Hello, Toast UI Editor!"
+        initialValue={description ?? ""}
         previewStyle="vertical"
-        height="600px"
+        height="400px"
         initialEditType="markdown"
         useCommandShortcut={true}
         ref={editorRef}
