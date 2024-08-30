@@ -11,7 +11,7 @@ const Login = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.from("Users").select("*");
+      const { data, error } = await supabase.from("userinfo").select("*");
       if (error) {
         console.log("error =>", error);
       } else {

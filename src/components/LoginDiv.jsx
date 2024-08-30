@@ -40,6 +40,7 @@ const LoginDiv = () => {
     if (!correctUser) {
       alert("입력정보가 일치하지 않습니다");
     } else {
+      console.log(loginId);
       signInWithEmail();
       ChangeLogin(true);
     }
