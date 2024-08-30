@@ -39,9 +39,9 @@ function Footer(){
           <div className="teamName">말하는 <b>숟가락들</b></div>
           <div className="teamInfo">
             {
-              TeamInfo.map(info => {
+              TeamInfo.map((info,index) => {
                 return (
-                  <div key={info} className="dlBox">
+                  <div key={index} className="dlBox">
                     <dl>
                       <dt>{info.name}</dt>
                       <dd>
