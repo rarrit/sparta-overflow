@@ -6,19 +6,6 @@ import styled from "styled-components";
 const MypageTab = () => {
   const { users, setUsers, posts } = useContext(dataContext);
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       const { data, error } = await supabase.from("Users").select("*");
-  //       if (error) {
-  //         console.log("error =>", error);
-  //       } else {
-  //         console.log("user data =>", data);
-
-  //         setUsers(data);
-  //       }
-  //     };
-  //     fetchData();
-  //   }, []);
   const [activeTab, setActiveTab] = useState("작성한글");
 
   const OnClickTabHandler = (tabTitle) => {
@@ -38,7 +25,7 @@ const MypageTab = () => {
           작성한글
         </StTabItem>
         <StTabItem
-          className={`StTabItem ${activeTab === "댓글단글" ? "" : "active"}`}
+          className={`StTabItem ${activeTab === "댓글단글" ? "active" : ""}`}
           onClick={() => {
             OnClickTabHandler("댓글단글");
           }}
@@ -47,8 +34,21 @@ const MypageTab = () => {
         </StTabItem>
       </StTabBox>
       <StPostingContentBox>
-        <StPostingContent>내용1</StPostingContent>
-        <StPostingContent>내용2</StPostingContent>
+        <StPostingContent
+          className={`StPostingContent ${
+            activeTab === "작성한글" ? "active" : ""
+          }`}
+        >
+          내용1
+        </StPostingContent>
+        <StPostingContent
+          className={`StPostingContent ${
+            activeTab === "댓글단글" ? "active" : ""
+          }`}
+          style={{ backgroundColor: "blue" }}
+        >
+          내용2
+        </StPostingContent>
       </StPostingContentBox>
     </StMypageTabContainer>
   );
@@ -79,4 +79,9 @@ const StPostingContent = styled.div`
   top: 0;
   left: 0;
   background-color: red;
+  display: none;
+
+  &.active {
+    display: block;
+  }
 `;

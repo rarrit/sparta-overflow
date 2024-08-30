@@ -14,19 +14,21 @@ const ProfileInfo = () => {
   //유저 정보
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.from("Users").select("*"); //Supabase 데이터의 "Users" 테이블에서 모든 데이터 선택
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getSession(); //로그인한 사용자의 정보
       if (error) {
         //에러일경우
         console.log("error =>", error);
       } else {
         //데이터 정상적으로 가져왔으면
-        console.log("user data =>", data);
-
-        setUsers(data);
+        console.log("user data =>", user);
+        setUsers([user]); // 사용자 데이터를 배열로 설정
       }
     };
     fetchData();
-  }, []);
+  }, [setUsers]);
 
   //유저 포스팅
   useEffect(() => {
@@ -52,33 +54,33 @@ const ProfileInfo = () => {
             borderRadius: "50%",
           }}
         >
-          {users.map((user) => {
+          {users.map((user, index) => {
             return (
               <img
-                key={user.id}
-                src={user.profileImage || defaultProfileImg} //null이면 기본이미지출력
-                alt={user.name}
+                key={index}
+                src={defaultProfileImg} //null이면 기본이미지출력
+                // alt={user.name}
               />
             );
           })}
         </div>
       </div>
       <StUserInfoContainer>
-        {users.map((user) => {
+        {/* {users.map((user) => {
           return (
             <div key={user.id}>
               <h2>name: {user.name}</h2>
               <p>email: {user.email}</p>
             </div>
           );
-        })}
+        })} */}
         {/* {posts.map((post) => {
           return ( */}
-        <div className="postingCount">
-          <div>post: {posts.length}</div>
+        <StPostingCountContainer>
+          <div>post</div>
           <div>comment</div>
           <div>like</div>
-        </div>
+        </StPostingCountContainer>
         {/* );
         })} */}
       </StUserInfoContainer>
@@ -94,4 +96,9 @@ const StProfileContainer = styled.div`
 const StUserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
+`;
+const StPostingCountContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
 `;
