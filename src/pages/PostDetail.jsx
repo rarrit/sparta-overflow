@@ -1,30 +1,28 @@
-import { useContext } from "react"
+import { useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
-import { postContext } from "../contexts/PostContext"
-import styled from "styled-components"
+import { postContext } from "../contexts/PostContext";
+import styled from "styled-components";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-
 const PostDetail = () => {
   const { id } = useParams();
-  console.log("id => ",id);
+  console.log("id => ", id);
   const { loginUser } = useContext(dataContext);
   // filter
 
-
-  console.log("user=>", loginUser);  
+  console.log("user=>", loginUser);
 
   return (
     <StContainer>
       {/* 채택 여부 */}
-      <StState/>
+      <StState />
 
       {/* 타이틀 */}
       <StTitle></StTitle>
 
       {/* 상세정보 */}
-      <StInfo> 
+      <StInfo>
         <StLeftArea>
           <StUser></StUser>
           <StDate></StDate>
@@ -39,63 +37,28 @@ const PostDetail = () => {
         <StTextArea></StTextArea>
         <StCodeArea></StCodeArea>
       </StDescArea>
-
     </StContainer>
-  )
-}
+  );
+};
 
-const StContainer = styled.div`
-  
-`
+const StContainer = styled.div``;
 
+const StState = styled.div``;
 
-const StState = styled.div`
-  
-`
+const StTitle = styled.h2``;
 
+const StInfo = styled.div``;
 
-const StTitle = styled.h2`
+const StLeftArea = styled.div``;
+const StUser = styled.div``;
+const StDate = styled.div``;
 
-`;
+const StRightArea = styled.div``;
+const StBtnArea = styled.div``;
+const StBtn = styled.button``;
 
+const StDescArea = styled.div``;
+const StTextArea = styled.textarea``;
+const StCodeArea = styled.textarea``;
 
-const StInfo = styled.div`
-  
-`
-
-
-const StLeftArea = styled.div`
-  
-`;
-const StUser = styled.div`
-  
-`
-const StDate = styled.div`
-  
-`
-
-
-const StRightArea = styled.div`
-  
-`;
-const StBtnArea = styled.div`
-  
-`
-const StBtn = styled.button`
-  
-`
-
-const StDescArea = styled.div`
-
-`;
-const StTextArea = styled.textarea`
-
-`;
-const StCodeArea = styled.textarea`
-  
-`;
-
-
-
-
-export default PostDetail
+export default PostDetail;

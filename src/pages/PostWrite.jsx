@@ -1,5 +1,9 @@
+import { useEffect } from "react";
 import { useState } from "react";
+import styled from "styled-components";
+import supabase from "../services/supabaseClient";
 
+// 사용자 데이터
 const PostWrite = () => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
