@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { CircleCheck, CircleX } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
 
 const PostListItem = ({ posts }) => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const PostListItem = ({ posts }) => {
             </StPostMainInfo>
             <div>
               <span>{post.writerUserId}</span> {/* 작성자 */}
-              <span>{post.created_at.split("T")[0]}</span> {/* 날짜 */}
+              <span>{filterDateOnlyYMD(post.created_at)}</span> {/* 날짜 */}
             </div>
           </StPostInfoBox>
           <div>
