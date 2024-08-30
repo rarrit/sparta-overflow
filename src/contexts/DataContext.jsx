@@ -68,6 +68,7 @@ export const DataProvider = ({ children }) => {
         isLogin,
         changeLogin,
         loginAuthData,
+        currentUser: loginUserInfo,
       }}
     >
       {children}

@@ -18,16 +18,18 @@ const PostWrite = () => {
     }
   };
 
+  console.log(comments);
   useEffect(() => {
     fetchComments(); // 컴포넌트가 돔  - 브랑우저 렌더링, 마운트될 때 댓글을 가져옴
   }, []);
 
   // 댓글을 추가
   const addCommentHandle = async () => {
+    console.log(currentUser);
     if (comment.trim() !== "" && isLogin) {
       const { data, error } = await supabase.from("Comment").insert({
         comment,
-        user_id: currentUser.id, // 현재 로그인한 사용자 ID를 사용
+        writerUserId: currentUser.id, // 현재 로그인한 사용자 ID를 사용
       });
       if (error) {
         console.log("추가 에러 =>", error);
@@ -46,7 +48,7 @@ const PostWrite = () => {
         <Strong>댓글 목록</Strong>
         <CommentList>
           {comments.map((newcomment, index) => (
-            <li key={index}>{newcomment.content}</li>
+            <li key={index}>{newcomment.comment}</li>
           ))}
         </CommentList>
       </ItemContainer>
