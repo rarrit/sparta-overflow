@@ -35,10 +35,10 @@ export const DataProvider = ({ children }) => {
         // handle initial session
       } else if (event === "SIGNED_IN") {
         // handle sign in event
-        const selectLoginUserInfo = users.filter(
-          (user) => user.id === session.user.id
-        );
-        setLoginUserInfo(selectLoginUserInfo);
+        // const selectLoginUserInfo = users.filter(
+        //   (user) => user.id === session.user.id
+        // );
+        setLoginUserInfo(session.user);
         // 로그인 상태 변경
         changeLogin(true);
       } else if (event === "SIGNED_OUT") {
@@ -74,6 +74,7 @@ export const DataProvider = ({ children }) => {
         changeLogin,
         loginAuthData,
         logout,
+        loginUserInfo,
       }}
     >
       {children}
