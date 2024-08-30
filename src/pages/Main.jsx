@@ -40,7 +40,7 @@ const Main = () => {
         {TabData.map((tab) => (
           <StTabButton
             key={tab.id}
-            data-active={activeTab === tab.id ? "true" : "false"}
+            data-active={activeTab === tab.id ? true : false}
             onClick={() => setActiveTab(tab.id)}
           >
             {tab.button}
