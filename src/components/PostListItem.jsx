@@ -1,49 +1,47 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { CircleCheck, CircleX } from "lucide-react";
-import { dataContext } from "../contexts/DataContext";
-import supabase from "../services/supabaseClient";
 import { useNavigate } from "react-router-dom";
 
-const PostListItem = () => {
-  const { posts, setPosts } = useContext(dataContext);
+const PostListItem = ({ posts }) => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const { data, error } = await supabase.from("Post").select("*");
-      if (error) {
-        console.log("error =>", error);
-      } else {
-        console.log("post data =>", data);
-        setPosts(data);
-      }
-    };
-    fetchPosts();
-  }, [setPosts]);
-
-  const DetailMove = (post) => {
+  const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
   };
 
   return (
     <>
       {posts.map((post) => (
-        <Article key={post.id} post={post} onClick={() => DetailMove(post)}>
-          <div>
-            <div>
-              {post.solve ? <StyledCircleCheck /> : <StyledCircleX />}
-              <h3>{post.title}</h3> {/* 제목 */}
-            </div>
+        <StListWrap
+          key={post.id}
+          post={post}
+          onClick={() => handleDetailMove(post)}
+        >
+          <StPostInfoBox>
+            <StPostMainInfo>
+              {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
+              <StPostTitle>
+                {post.title.length > 60
+                  ? `${post.title.substring(0, 60)}...`
+                  : post.title}
+              </StPostTitle>{" "}
+              {/* 제목 */}
+            </StPostMainInfo>
             <div>
               <span>{post.writerUserId}</span> {/* 작성자 */}
-              <span>{post.created_at}</span> {/* 날짜 */}
+              <span>{post.created_at.split("T")[0]}</span> {/* 날짜 */}
             </div>
-          </div>
+          </StPostInfoBox>
           <div>
-            <p>{post.description}</p> {/* 내용 */}
+            <p>
+              {post.description.length > 200
+                ? `${post.title.substring(0, 200)}...`
+                : post.description.substring(0, 200)}
+            </p>{" "}
+            {/* 내용 */}
           </div>
-        </Article>
+        </StListWrap>
       ))}
     </>
   );
@@ -51,17 +49,39 @@ const PostListItem = () => {
 
 export default PostListItem;
 
-const Article = styled.article`
+const StListWrap = styled.article`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   border: 1px solid #ccc;
   padding: 10px;
   margin: 10px 0;
   border-radius: 5px;
   background-color: #f9f9f9;
+  cursor: pointer;
 `;
-const StyledCircleCheck = styled(CircleCheck)`
+
+const StPostInfoBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const StPostMainInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.3rem;
+`;
+
+const StStyledCircleCheck = styled(CircleCheck)`
   color: green; /* 초록색 */
 `;
 
-const StyledCircleX = styled(CircleX)`
+const StStyledCircleX = styled(CircleX)`
   color: red; /* 빨간색 */
+`;
+
+const StPostTitle = styled.h3`
+  font-size: 1.1rem;
+  font-weight: bold;
 `;
