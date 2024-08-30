@@ -5,15 +5,22 @@ import supabase from "../services/supabaseClient";
 import CreateAccount from "../components/CreateAccount";
 import LoginDiv from "../components/LoginDiv";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 
 const Login = () => {
   const { setUsers } = useContext(dataContext);
+  const hash = useLocation().hash;
+
+  const signPage = () => {
+    if (hash === "#signup") return true;
+    if (hash === "#login") return false;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase.from("userinfo").select("*");
       if (error) {
-        console.log("error =>", error);
+        console.log("user data error =>", error);
       } else {
         console.log("user data =>", data);
         setUsers(data);
@@ -23,15 +30,17 @@ const Login = () => {
   }, []);
 
   return (
-    <UserInfoDiv>
-      <UserInfoBox>{false ? <CreateAccount /> : <LoginDiv />}</UserInfoBox>
-    </UserInfoDiv>
+    <StUserInfoDiv>
+      <StUserInfoBox>
+        {signPage() ? <CreateAccount /> : <LoginDiv />}
+      </StUserInfoBox>
+    </StUserInfoDiv>
   );
 };
 
 export default Login;
 
-const UserInfoDiv = styled.div`
+const StUserInfoDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,7 +50,7 @@ const UserInfoDiv = styled.div`
   background-color: #f0fadc;
 `;
 
-const UserInfoBox = styled.div`
+const StUserInfoBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
