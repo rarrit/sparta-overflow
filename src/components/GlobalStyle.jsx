@@ -1,5 +1,13 @@
 import { createGlobalStyle } from 'styled-components'
 
+/* Layout */
+const maxWidth = '1600px';
+
+/* Color */ 
+const mainColor = '#000';
+const activeColor = 'red';
+const subColor = '#e1e1e1';
+
 const GlobalStyle = createGlobalStyle`
   /* @font-face {
     font-family: 'HSGooltokki';

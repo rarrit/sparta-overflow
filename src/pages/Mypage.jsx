@@ -4,6 +4,7 @@ import ProfileInfo from "../components/ProfileInfo";
 import MypageTab from "../components/MypageTab";
 
 const Mypage = () => {
+<<<<<<< HEAD
   return (
     <StMypageContainer>
       <section>
@@ -28,3 +29,9 @@ const StMypageContainer = styled.div`
   border: 1px solid;
   margin: 0 auto;
 `;
+=======
+  return <>마이페이지</>;
+};
+
+export default Mypage;
+>>>>>>> 3a94be13011a5cd3a4940c2f1c0d461e384d5dde
