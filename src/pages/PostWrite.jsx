@@ -1,26 +1,46 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
 import supabase from "../services/supabaseClient";
+import { dataContext } from "../contexts/DataContext";
 
 // 사용자 데이터
 const PostWrite = () => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  // const { currentUser } = useContext(dataContext);
+  const { currentUser, isLogin } = useContext(dataContext);
 
-  // 댓글을 입력하면 호출되는 함수
-  const changeInputHandle = (e) => {
-    setComment(e.target.value);
-  };
-
-  const addCommentHandle = () => {
-    if (comment.trim() !== "") {
-      // 빈배열이 아니면 추가함
-      setComments([...comments, comment]);
-      setComment(""); // 입력 후에 필드가 초기화 됨
+  const fetchComments = async () => {
+    const { data, error } = await supabase.from("Comment").select("*");
+    if (error) {
+      console.log("불러오기 오륲 => ", error);
+    } else {
+      setComments(data);
     }
-    console.log(comment);
   };
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
+  const addCommentHandle = async () => {
+    console.log(currentUser);
+    if (comment.trim() !== "" && isLogin) {
+      const { data, error } = await supabase
+        .from("Comment")
+        .insert({ id, created_at, postId, comment, isChosen, writerUserId });
+      if (error) {
+        console.log("추가에러=>", error);
+      } else {
+        setComment("");
+        fetchComments();
+      }
+    } else {
+      alert("댓글을 작성하려면 로그인이 필요합니다.");
+    }
+  };
+
   return (
     <StContainer>
       <ItemContainer>
@@ -31,15 +51,21 @@ const PostWrite = () => {
           ))}
         </CommentList>
       </ItemContainer>
-      <Header>답변하기</Header>
-      <TextArea
-        value={comment}
-        onChange={changeInputHandle}
-        placeholder="답변을 입력하세요"
-        rows="10"
-        cols="50"
-      />
-      <Button onClick={addCommentHandle}>답변쓰기</Button>
+      {isLogin ? (
+        <>
+          <Header>답변하기</Header>
+          <TextArea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="답변을 입력하세요"
+            rows="10"
+            cols="50"
+          />
+          <Button onClick={addCommentHandle}>답변쓰기</Button>
+        </>
+      ) : (
+        <p>댓글을 작성하려면 로그인이 필요합니다.</p>
+      )}
     </StContainer>
   );
 };
