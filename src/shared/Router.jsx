@@ -8,6 +8,7 @@ import PostDetail from "../pages/PostDetail";
 import PostWrite from "../pages/PostWrite";
 import CodeBlockExample from "../pages/CodeBlockExample";
 import SupaBaseExample from "../pages/SupaBaseExample";
+import PostModify from "../pages/PostModify";
 
 const Router = () => {
   return (
@@ -20,7 +21,7 @@ const Router = () => {
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/detail/:id" element={<PostDetail />} />
           <Route path="/write" element={<PostWrite />} />
-
+          <Route path="/modify/:id" element={<PostModify />} />
           <Route path="/example1" element={<CodeBlockExample />} />
           <Route path="/example2" element={<SupaBaseExample />} />
         </Routes>
