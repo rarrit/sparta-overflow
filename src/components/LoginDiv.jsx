@@ -17,6 +17,7 @@ const LoginDiv = () => {
       navigate("/");
     }
   }, [isLogin]);
+
   // 로그인 함수
   const signInWithEmail = async () => {
     const { data, error } = await supabase.auth.signInWithPassword({
