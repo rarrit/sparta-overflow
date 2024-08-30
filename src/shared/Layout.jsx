@@ -89,6 +89,7 @@ const StHeader = styled.header`
   border-bottom: 1px solid #111;
   padding: 10px 0;
   background: #fff;
+  z-index:999;
   .inner {
     display: flex;
     align-items: center;
@@ -173,7 +174,7 @@ const StContents = styled.div`
 `;
 const StFooter = styled.footer`
   border-top: 1px solid #000;
-  padding: 30px 0;
+  padding: 30px 0 0;
   .inner {
     display: flex;
     flex-direction: column;

@@ -1,33 +1,19 @@
 import { useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
-import { useEffect } from "react";
-import supabase from "../services/supabaseClient";
 import CreateAccount from "../components/CreateAccount";
 import LoginDiv from "../components/LoginDiv";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 
 const Login = () => {
-  const { setUsers } = useContext(dataContext);
+  const { users } = useContext(dataContext);
   const hash = useLocation().hash;
 
+  // 로그인 / 회원가입 페이지 경로
   const signPage = () => {
     if (hash === "#signup") return true;
     if (hash === "#login") return false;
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase.from("userinfo").select("*");
-      if (error) {
-        console.log("user data error =>", error);
-      } else {
-        console.log("user data =>", data);
-        setUsers(data);
-      }
-    };
-    fetchData();
-  }, []);
 
   return (
     <StUserInfoDiv>
