@@ -5,12 +5,12 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import supabase from "../services/supabaseClient";
-import { Navigate } from "react-router-dom";
+import { CircleCheck, CircleX } from "lucide-react";
 
 const PostDetail = () => {
   const navigate = useNavigate();
-  const handleEditPostMove = () => {
-    navigate(`/write/${id}`, {
+  const handleEditPostMove = (id) => {
+    navigate(`/modify/${id}`, {
       state: {
         title: posts.title,
         description: posts.description,
@@ -55,16 +55,22 @@ const PostDetail = () => {
         <StLeftArea>
           <StTitle>{posts.title}</StTitle>
           <StSubWriteInfo>
-            <StUser></StUser>
-            <StDate></StDate>
+            <StUser>
+              <img />
+              <span>{posts.userId}</span>
+            </StUser>
+            <StDate>
+              {posts.created_at ? posts.created_at.split("T")[0] : ""}
+            </StDate>
           </StSubWriteInfo>
         </StLeftArea>
-        {/* {loginUser && loginUser.id === post.writerUserId && (*/}
+        {posts.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
+        {/* {loginUser && loginUser.id === posts.writerUserId && ( */}
         <StRightArea>
-          <StBtn onClick={handleEditPostMove()}>수정</StBtn>
+          <StBtn onClick={() => handleEditPostMove(posts.id)}>수정</StBtn>
           <StBtn>삭제</StBtn>
         </StRightArea>
-        {/*})} */}
+        {/* )} */}
       </StInfo>
 
       {/* 글 영역 */}
@@ -92,6 +98,14 @@ const StUser = styled.div``;
 const StDate = styled.div``;
 
 const StRightArea = styled.div``;
+
+const StStyledCircleCheck = styled(CircleCheck)`
+  color: green; /* 초록색 */
+`;
+
+const StStyledCircleX = styled(CircleX)`
+  color: red; /* 빨간색 */
+`;
 const StBtnArea = styled.div``;
 const StBtn = styled.button``;
 
