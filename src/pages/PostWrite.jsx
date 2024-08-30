@@ -1,40 +1,39 @@
-import { useContext, useEffect } from "react";
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import supabase from "../services/supabaseClient";
 import { dataContext } from "../contexts/DataContext";
 
-// 사용자 데이터
 const PostWrite = () => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  // const { currentUser } = useContext(dataContext);
-  const { currentUser, isLogin } = useContext(dataContext);
+  const { currentUser, isLogin } = useContext(dataContext); // 로그인 상태와 사용자 정보
 
+  // 댓글 목록을 가져오는
   const fetchComments = async () => {
     const { data, error } = await supabase.from("Comment").select("*");
     if (error) {
-      console.log("불러오기 오륲 => ", error);
+      console.log("가져오기 에러 =>", error);
     } else {
       setComments(data);
     }
   };
 
   useEffect(() => {
-    fetchComments();
+    fetchComments(); // 컴포넌트가 돔  - 브랑우저 렌더링, 마운트될 때 댓글을 가져옴
   }, []);
 
+  // 댓글을 추가
   const addCommentHandle = async () => {
-    console.log(currentUser);
     if (comment.trim() !== "" && isLogin) {
-      const { data, error } = await supabase
-        .from("Comment")
-        .insert({ id, created_at, postId, comment, isChosen, writerUserId });
+      const { data, error } = await supabase.from("Comment").insert({
+        comment,
+        user_id: currentUser.id, // 현재 로그인한 사용자 ID를 사용
+      });
       if (error) {
-        console.log("추가에러=>", error);
+        console.log("추가 에러 =>", error);
       } else {
-        setComment("");
-        fetchComments();
+        setComment(""); // 초기화
+        fetchComments(); // 목록 갱신
       }
     } else {
       alert("댓글을 작성하려면 로그인이 필요합니다.");
@@ -47,11 +46,11 @@ const PostWrite = () => {
         <Strong>댓글 목록</Strong>
         <CommentList>
           {comments.map((newcomment, index) => (
-            <li key={index}>{newcomment}</li>
+            <li key={index}>{newcomment.content}</li>
           ))}
         </CommentList>
       </ItemContainer>
-      {isLogin ? (
+      {isLogin ? ( // 로그인된 사용자인 경우에만 댓글 입력
         <>
           <Header>답변하기</Header>
           <TextArea
@@ -77,17 +76,10 @@ const StContainer = styled.div`
   min-height: 100vh;
 `;
 
-const ItemContainer = styled.div`
-  /* border-top: 2px solid #000;
-  border-right: 2px solid #000;
-  border-left: 2px solid #000;
-  border-bottom: 1px solid #000;
-  background-color: #000;
-  color: #fff; */
-`;
+const ItemContainer = styled.div``;
+
 const Strong = styled.strong`
   font-size: 15px;
-  /* font-weight: bold; */
   border-bottom: 2px solid #fff;
   padding-bottom: 100px;
   color: #333;
@@ -95,7 +87,6 @@ const Strong = styled.strong`
 
 const Header = styled.p`
   font-size: 15px;
-  /* font-weight: bold; */
   border-bottom: 2px solid #fff;
   color: #333;
   padding: 50px 0 20px 0;
@@ -106,13 +97,6 @@ const CommentList = styled.ul`
   padding: 0;
   margin: 20px 0;
 `;
-
-// const CommentItem = styled.li`
-//   background-color: #1a1a1a;
-//   padding: 10px;
-//   margin-bottom: 10px;
-//   border-radius: 5px;
-// `;
 
 const TextArea = styled.textarea`
   font-size: 13px;
@@ -132,14 +116,9 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  /* font-weight: bold; */
   margin-top: 10px;
   float: right;
   font-size: 13px;
-
-  /* &:hover {
-    background-color: #ccc;
-  } */
 `;
 
 export default PostWrite;
