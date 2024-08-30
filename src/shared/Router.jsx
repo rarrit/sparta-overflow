@@ -14,14 +14,17 @@ const Router = () => {
     <BrowserRouter>
       <Layout>
         <Routes>
+          {/* 로그인 + 비로그인 상태에서 접속 가능 */}
           <Route path="/" element={<Main />} />
-          <Route path="/sign" element={<Login />} />
-          <Route path="/mypage" element={<Mypage />} />
           <Route path="/detail/:id" element={<PostDetail />} />
-          <Route path="/write" element={<PostWrite />} />
-          <Route path="/modify/:id" element={<PostModify />} />
           <Route path="/example1" element={<CodeBlockExample />} />
           <Route path="/example2" element={<SupaBaseExample />} />
+          {/* 로그인 상태에서 접속 가능 */}
+          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/write" element={<PostWrite />} />
+          <Route path="/modify/:id" element={<PostModify />} />
+          {/* 비로그인 상태애서 접속 가능 */}
+          <Route path="/sign" element={<Login />} />
         </Routes>
       </Layout>
     </BrowserRouter>

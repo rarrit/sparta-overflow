@@ -31,10 +31,6 @@ const LoginDiv = () => {
     }
   };
 
-  const onLogin = () => {
-    signInWithEmail();
-  };
-
   return (
     <div>
       <StUserInfoName>ID</StUserInfoName>
@@ -49,7 +45,12 @@ const LoginDiv = () => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="비밀번호를 입력해주세요"
       />
-      <StUserInfoButton onClick={() => onLogin()}>로그인하기</StUserInfoButton>
+      <StUserInfoButton onClick={() => signInWithEmail()}>
+        로그인하기
+      </StUserInfoButton>
+      <StUserInfoButton onClick={() => navigate("/sign#signup")}>
+        회원가입하러 가기
+      </StUserInfoButton>
     </div>
   );
 };

@@ -2,8 +2,12 @@ import { TeamInfo } from "../assets/js/teamInfo";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/image/logo.jpeg";
+import { useContext } from "react";
+import { dataContext } from "../contexts/DataContext";
 
 function Header() {
+  const { isLogin, logout } = useContext(dataContext);
+
   return (
     <>
       <StHeader>
@@ -21,12 +25,25 @@ function Header() {
             </div>
           </StSearchForm>
           <StBtnArea>
-            <Link to="/sign#login" className="btnLineBlack">
-              Log in
-            </Link>
-            <Link to="/sign#signup" className="btnBlack">
-              Sign up
-            </Link>
+            {isLogin ? (
+              <>
+                <button onClick={() => logout()} className="btnLineBlack">
+                  로그아웃
+                </button>
+                <Link to="/mypage" className="btnLineBlack">
+                  MyPage
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/sign#login" className="btnLineBlack">
+                  Log in
+                </Link>
+                <Link to="/sign#signup" className="btnBlack">
+                  Sign up
+                </Link>
+              </>
+            )}
           </StBtnArea>
         </div>
       </StHeader>
