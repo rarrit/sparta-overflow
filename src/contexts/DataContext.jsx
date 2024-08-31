@@ -35,15 +35,10 @@ export const DataProvider = ({ children }) => {
         // handle initial session
       } else if (event === "SIGNED_IN") {
         // handle sign in event
-        // const selectLoginUserInfo = users.filter(
-        //   (user) => user.id === session.user.id
-        // );
-        setLoginUserInfo(session.user);
         // 로그인 상태 변경
         changeLogin(true);
       } else if (event === "SIGNED_OUT") {
         // handle sign out event
-        setLoginUserInfo([]);
         // 로그인 상태 변경
         changeLogin(false);
       } else if (event === "PASSWORD_RECOVERY") {
@@ -58,7 +53,11 @@ export const DataProvider = ({ children }) => {
   // 로그아웃
   const logout = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) alert("로그아웃이 실패했습니다");
+    if (error) {
+      alert("로그아웃이 실패했습니다");
+    } else {
+      setLoginUserInfo([]);
+    }
   };
 
   return (
@@ -75,6 +74,7 @@ export const DataProvider = ({ children }) => {
         loginAuthData,
         logout,
         loginUserInfo,
+        setLoginUserInfo,
       }}
     >
       {children}
