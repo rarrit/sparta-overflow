@@ -9,15 +9,6 @@ const LoginDiv = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { isLogin } = useContext(dataContext);
-
-  // 로그인 상태가 변경되면 홈으로 이동
-  useEffect(() => {
-    if (isLogin) {
-      navigate("/");
-    }
-  }, [isLogin]);
-
   // 로그인 함수
   const signInWithEmail = async () => {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -29,10 +20,6 @@ const LoginDiv = () => {
     } else {
       console.log("로그인 =>", data);
     }
-  };
-
-  const onLogin = () => {
-    signInWithEmail();
   };
 
   return (
@@ -49,7 +36,17 @@ const LoginDiv = () => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="비밀번호를 입력해주세요"
       />
-      <StUserInfoButton onClick={() => onLogin()}>로그인하기</StUserInfoButton>
+      <StUserInfoButton
+        onClick={() => {
+          signInWithEmail();
+          navigate("/");
+        }}
+      >
+        로그인하기
+      </StUserInfoButton>
+      <StUserInfoButton onClick={() => navigate("/sign#signup")}>
+        회원가입하러 가기
+      </StUserInfoButton>
     </div>
   );
 };

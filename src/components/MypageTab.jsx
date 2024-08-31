@@ -1,12 +1,12 @@
-import { useState, useContext, useEffect } from "react";
-import { dataContext } from "../contexts/DataContext";
-import supabase from "../services/supabaseClient";
+import { useState, useContext } from "react";
 import styled from "styled-components";
+import { mypageDataContext } from "../pages/Mypage";
+import { CircleCheck, CircleX } from "lucide-react";
 
 const MypageTab = () => {
-  const { users, setUsers, posts } = useContext(dataContext);
-
   const [activeTab, setActiveTab] = useState("작성한글");
+  const { profile, posts } = useContext(mypageDataContext);
+  console.log("posts", posts);
 
   const OnClickTabHandler = (tabTitle) => {
     // e.preventDefault();
@@ -39,7 +39,22 @@ const MypageTab = () => {
             activeTab === "작성한글" ? "active" : ""
           }`}
         >
-          내용1
+          {posts.map((mypost) => {
+            return (
+              <div key={mypost.id}>
+                <div>
+                  {mypost.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
+                </div>
+                <div>{mypost.title}</div>
+                <div>{mypost.description}</div>
+                <div>
+                  {new Date(mypost.created_at)
+                    .toLocaleDateString()
+                    .replace(/\.$/, "")}
+                </div>
+              </div>
+            );
+          })}
         </StPostingContent>
         <StPostingContent
           className={`StPostingContent ${
@@ -78,10 +93,17 @@ const StPostingContent = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: red;
+  background-color: #c9c9c9;
   display: none;
 
   &.active {
     display: block;
   }
+`;
+const StStyledCircleCheck = styled(CircleCheck)`
+  color: green; /* 초록색 */
+`;
+
+const StStyledCircleX = styled(CircleX)`
+  color: red; /* 빨간색 */
 `;

@@ -1,61 +1,41 @@
-import { useState, useContext, useEffect } from "react";
-import { dataContext } from "../contexts/DataContext";
-import supabase from "../services/supabaseClient";
+import { useState, useContext } from "react";
 import styled from "styled-components";
 
-const ProfileInfo = () => {
-  const { loginUserInfo } = useContext(dataContext); //user정보 :
-  const [profile, setProfile] = useState([]);
+import { mypageDataContext } from "../pages/Mypage";
 
-  console.log("loginuser???", loginUserInfo);
+const ProfileInfo = () => {
+  const { profile, posts } = useContext(mypageDataContext);
+
   //기본이미지
   const defaultProfileImg =
     "https://i.namu.wiki/i/N7V1HbWE3OQETbgT61_lZaUlUywQLkh4ulOYLtJI4EKG1oQucfqexvNzzEbrcJ_8L-rVHQBDhzBcy5IFIvJ0iQ4sXfVnAiuK_GoRwTYG1Qgx_XNMJUWPHYrVbuWxXRoizxnY4fbhcIuNwBtLYomsyg.webp";
 
-  //NOTE - 수퍼베이스 데이터 가져오기
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const response = await supabase
-        .from("userinfo")
-        .select()
-        .eq("name", loginUserInfo);
-      setProfile(response);
-      console.log("respons", response);
-    };
-    fetchProfile();
-  }, [loginUserInfo]);
-  //supabase.from("userinfo") : supabase에서 가져올 테이블명 지정
-  //.select("*") : 가져온테이블의 전체내용
-  //.eq('name', 'test') : 열이 동일한 경우 결과를 필터링
-
   return (
     <StProfileContainer>
       <div>
-        <div
-          style={{
-            width: "200px",
-            height: "200px",
-            borderRadius: "50%",
-          }}
-        >
-          <img
-            src={defaultProfileImg} //null이면 기본이미지출력
-            // alt={user.name}
-          />
-        </div>
+        <StProfileImgBox>
+          {profile.map((user) => {
+            return (
+              <img
+                key={user.id}
+                src={user.profileImage || defaultProfileImg} //null이면 기본이미지출력
+              />
+            );
+          })}
+        </StProfileImgBox>
       </div>
       <StUserInfoContainer>
-        {/* {profile.map((user) => {
+        {profile.map((user) => {
           return (
             <div key={user.id}>
-              <h2>name: {user.name}</h2>
-              <p>email: {user.email}</p>
+              <h2>{user.username}</h2>
+              <p>{user.email}</p>
             </div>
           );
-        })} */}
+        })}
 
         <StPostingCountContainer>
-          <div>post</div>
+          <div>post : {posts.length}</div>
           <div>comment</div>
           <div>like</div>
         </StPostingCountContainer>
@@ -77,4 +57,15 @@ const StUserInfoContainer = styled.div`
 const StPostingCountContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
+`;
+const StProfileImgBox = styled.div`
+  max-width: 200px;
+  max-height: 200px;
+  width: 80%;
+  height: 100%;
+  border-radius: 50%;
+
+  & img {
+    width: 100%;
+  }
 `;
