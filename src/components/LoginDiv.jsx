@@ -1,22 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { dataContext } from "../contexts/DataContext";
 import { useNavigate } from "react-router-dom";
 import supabase from "../services/supabaseClient";
+import { dataContext } from "../contexts/DataContext";
 
 const LoginDiv = () => {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { isLogin } = useContext(dataContext);
-
-  // 로그인 상태가 변경되면 홈으로 이동
-  useEffect(() => {
-    if (isLogin) {
-      navigate("/");
-    }
-  }, [isLogin]);
+  const { users, setLoginUserInfo } = useContext(dataContext);
 
   // 로그인 함수
   const signInWithEmail = async () => {
@@ -27,12 +20,13 @@ const LoginDiv = () => {
     if (error) {
       alert("입력정보가 올바르지 않습니다");
     } else {
-      console.log("로그인 =>", data);
+      console.log("로그인 =>", data.user);
+      const selectLoginUserInfo = users.filter(
+        (user) => user.id === data.user.id
+      );
+      console.log("사용자정보=>", selectLoginUserInfo);
+      setLoginUserInfo(selectLoginUserInfo);
     }
-  };
-
-  const onLogin = () => {
-    signInWithEmail();
   };
 
   return (
@@ -49,7 +43,17 @@ const LoginDiv = () => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="비밀번호를 입력해주세요"
       />
-      <StUserInfoButton onClick={() => onLogin()}>로그인하기</StUserInfoButton>
+      <StUserInfoButton
+        onClick={() => {
+          signInWithEmail();
+          navigate("/");
+        }}
+      >
+        로그인하기
+      </StUserInfoButton>
+      <StUserInfoButton onClick={() => navigate("/sign#signup")}>
+        회원가입하러 가기
+      </StUserInfoButton>
     </div>
   );
 };

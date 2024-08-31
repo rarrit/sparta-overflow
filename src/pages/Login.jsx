@@ -1,12 +1,9 @@
-import { useContext } from "react";
-import { dataContext } from "../contexts/DataContext";
 import CreateAccount from "../components/CreateAccount";
 import LoginDiv from "../components/LoginDiv";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 
 const Login = () => {
-  const { users } = useContext(dataContext);
   const hash = useLocation().hash;
 
   // 로그인 / 회원가입 페이지 경로
