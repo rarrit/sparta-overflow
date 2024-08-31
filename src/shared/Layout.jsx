@@ -2,15 +2,19 @@ import { TeamInfo } from "../assets/js/teamInfo";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/image/logo.jpeg";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
   const { isLogin, logout } = useContext(dataContext);
+  const [searchData, setSearchData] = useState("");
 
   const FocusSearchPopup = (e) => {
     e.preventDefault();
-    console.log("서치바 클릭");
+    navigate("/Search", { state: { searchData: e.target.value } });
+    setSearchData(e.target.value);
   };
 
   return (
@@ -27,8 +31,9 @@ function Header() {
             <div className="search">
               <input
                 type="text"
+                value={searchData}
                 placeholder="검색어를 입력해주세요."
-                onFocus={ClickSearchPopup}
+                onChange={FocusSearchPopup}
               />
               <button type="button">검색</button>
             </div>
