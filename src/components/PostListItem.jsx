@@ -4,21 +4,17 @@ import { CircleCheck, CircleX } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
 
-const PostListItem = ({ posts }) => {
+const PostListItem = ({ posts, userInfo }) => {
   const navigate = useNavigate();
 
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
   };
-
+  console.log(userInfo);
   return (
     <>
       {posts.map((post) => (
-        <StListWrap
-          key={post.id}
-          post={post}
-          onClick={() => handleDetailMove(post)}
-        >
+        <StListWrap key={post.id} onClick={() => handleDetailMove(post)}>
           <StPostInfoBox>
             <StPostMainInfo>
               {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
@@ -30,7 +26,7 @@ const PostListItem = ({ posts }) => {
               {/* 제목 */}
             </StPostMainInfo>
             <div>
-              <span>{post.writerUserId}</span> {/* 작성자 */}
+              <span>{post.userinfo?.username}</span> {/* 작성자 */}
               <span>{filterDateOnlyYMD(post.created_at)}</span> {/* 날짜 */}
             </div>
           </StPostInfoBox>

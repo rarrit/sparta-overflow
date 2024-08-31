@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import supabase from "../services/supabaseClient";
 import { CircleCheck, CircleX } from "lucide-react";
 import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
+import hljs from "highlight.js";
 
 const PostDetail = () => {
   const navigate = useNavigate();
@@ -27,6 +28,22 @@ const PostDetail = () => {
   };
 
   //삭제버튼
+  // 게시글 삭제 버튼 핸들러
+  const handleDeletePost = async (postId) => {
+    let reallyDelete = confirm("정말 삭제하시겠습니까?");
+    if (reallyDelete === true) {
+      const { error } = await supabase.from("Post").delete().eq("id", postId);
+
+      if (error) {
+        console.error("게시글 삭제 오류:", error);
+      } else {
+        alert("게시글이 삭제되었습니다.");
+        navigate("/");
+      }
+    } else {
+      return;
+    }
+  };
 
   const { id } = useParams();
   console.log("id => ", id);
@@ -43,11 +60,17 @@ const PostDetail = () => {
         .select("*")
         .eq("id", id)
         .single();
+      console.log(post);
       if (error) {
         console.log("error =>", error);
       } else {
         console.log("post data =>", data);
         setPosts(data);
+
+        // 작성자 정보 로드
+        if (data.userId) {
+          fetchAuthor(data.userId);
+        }
       }
     };
 
@@ -69,6 +92,10 @@ const PostDetail = () => {
     fetchAuthor();
     fetchPosts();
   }, [id]);
+
+  console.log(userInfo.username);
+  //코드 하이라이트
+  // const highlightedCode = hljs.highlight().value;
 
   console.log("user=>", loginUser);
   console.log(userInfo);
@@ -98,7 +125,7 @@ const PostDetail = () => {
         {/* {loginUser && loginUser.id === post.writerUserId && ( */}
         <StRightArea>
           <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
-          <StBtn>삭제</StBtn>
+          <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
         </StRightArea>
         {/* )} */}
       </StInfo>
@@ -106,6 +133,7 @@ const PostDetail = () => {
       {/* 글 영역 */}
       <StDescArea>
         <StDescription>{post.description}</StDescription>
+        <pre>{post.code}</pre>
         {/* <StTextArea></StTextArea>
         <StCodeArea></StCodeArea> */}
       </StDescArea>
