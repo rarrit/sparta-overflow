@@ -9,6 +9,8 @@ const PostWrite = () => {
   const [comments, setComments] = useState([]);
   const { loginUserInfo: currentUser, isLogin } = useContext(dataContext);
   const { id: postId } = useParams();
+  const [editingId, setEditingId] = useState(null);
+  const [editComment, setEditComment] = useState("");
 
   // 댓글 목록을 가져오는 함수
   const fetchComments = async () => {
@@ -17,7 +19,7 @@ const PostWrite = () => {
       .select("*")
       .eq("postId", postId); // postId를 기준으로 필터링
     if (error) {
-      console.error("가져오기 에러 =>", error);
+      console.log("가져오기 에러 =>", error);
     } else {
       setComments(data);
     }
@@ -36,7 +38,7 @@ const PostWrite = () => {
         postId,
       });
       if (error) {
-        console.error("추가 에러 =>", error);
+        console.log("추가 에러 =>", error);
       } else {
         const newComment = {
           comment,
@@ -50,6 +52,37 @@ const PostWrite = () => {
     }
   };
 
+  // 댓글 수정 부분
+  const editCommentHandle = async () => {
+    if (editComment.trim() !== "" && editingId) {
+      const { data, error } = await supabase
+        .from("Comment")
+        .update({ comment: editComment })
+        .eq("id", editingId);
+      if (error) {
+        console.log("수정에러 =>", error);
+      } else {
+        setEditComment("");
+        setEditingId(null);
+        fetchComments();
+      }
+    }
+  };
+
+  const deleteCommentHandle = async (id) => {
+    const { error } = await supabase.from("Comment").delete().eq("id", id);
+    if (error) {
+      console.log("삭제 에러=>", error);
+    } else {
+      fetchComments();
+    }
+  };
+
+  const startEditing = (commentId, currentComment) => {
+    setEditingId(commentId);
+    setEditComment(currentComment);
+  };
+
   return (
     <StContainer>
       <ItemContainer>
@@ -58,7 +91,37 @@ const PostWrite = () => {
           {comments.map((newComment) => (
             <li key={newComment.id}>
               <div>작성자 ID: {newComment.writerUserId}</div>
-              <p>{newComment.comment}</p>
+              {editingId === newComment.id ? (
+                <>
+                  <textarea
+                    value={editComment}
+                    onChange={(e) => setEditComment(e.target.value)}
+                  />
+                  <button onClick={editCommentHandle}>수정완료</button>
+                  <br />
+                  <button onClick={() => setEditingId(null)}>취소</button>
+                </>
+              ) : (
+                <>
+                  <p>{newComment.comment}</p>
+                  {isLogin && currentUser.id === newComment.writerUserId && (
+                    <>
+                      <button
+                        onClick={() =>
+                          startEditing(newComment.id, newComment.comment)
+                        }
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={() => deleteCommentHandle(newComment.id)}
+                      >
+                        삭제
+                      </button>
+                    </>
+                  )}
+                </>
+              )}
             </li>
           ))}
         </CommentList>
