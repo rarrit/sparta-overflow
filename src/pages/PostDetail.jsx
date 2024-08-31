@@ -5,27 +5,38 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import supabase from "../services/supabaseClient";
-import { Navigate } from "react-router-dom";
 import { CircleCheck, CircleX } from "lucide-react";
+import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
 
 const PostDetail = () => {
   const navigate = useNavigate();
-  const handleEditPostMove = () => {
-    navigate(`/write/${id}`, {
+
+  //수정버튼
+  const handleEditPostMove = (id) => {
+    navigate(`/modify/${id}`, {
       state: {
-        title: posts.title,
-        description: posts.description,
+        title: post.title,
+        description: post.description,
+        created_at: post.created_at,
+        userName: userInfo.username,
+        userId: userInfo.id,
+        userEmail: userInfo.email,
+        userProfileImg: userInfo.profileImage,
       },
     });
   };
+
+  //삭제버튼
 
   const { id } = useParams();
   console.log("id => ", id);
   const { loginUser } = useContext(dataContext);
   // filter
 
-  const [posts, setPosts] = useState([]);
+  const [userInfo, setUserInfo] = useState([]);
+  const [post, setPosts] = useState([]);
   useEffect(() => {
+    //게시글 정보
     const fetchPosts = async () => {
       const { data, error } = await supabase
         .from("Post")
@@ -39,10 +50,28 @@ const PostDetail = () => {
         setPosts(data);
       }
     };
+
+    //작성자 정보
+    const fetchAuthor = async (userId) => {
+      const { data, error } = await supabase
+        .from("userinfo")
+        .select("id, created_at, email, username, profileImage")
+        .eq("id", userId)
+        .single();
+      if (error) {
+        console.log("error =>", error);
+      } else {
+        console.log("post data =>", data);
+        setUserInfo(data);
+      }
+    };
+
+    fetchAuthor();
     fetchPosts();
   }, [id]);
 
   console.log("user=>", loginUser);
+  console.log(userInfo);
 
   return (
     <StContainer>
@@ -54,29 +83,29 @@ const PostDetail = () => {
       {/* 상세정보 */}
       <StInfo>
         <StLeftArea>
-          <StTitle>{posts.title}</StTitle>
+          <StTitle>{post.title}</StTitle>
           <StSubWriteInfo>
             <StUser>
-              <img />
-              <span>{posts.userId}</span>
+              <img src={userInfo.profileImage} alt="프로필이미지" />
+              <span>{userInfo.username}</span>
             </StUser>
             <StDate>
-              {posts.created_at ? posts.created_at.split("T")[0] : ""}
+              {post.created_at ? filterDateOnlyYMD(post.created_at) : ""}
             </StDate>
           </StSubWriteInfo>
         </StLeftArea>
-        {posts.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
-        {loginUser && loginUser.id === posts.writerUserId && (
-          <StRightArea>
-            <StBtn onClick={handleEditPostMove()}>수정</StBtn>
-            <StBtn>삭제</StBtn>
-          </StRightArea>
-        )}
+        {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
+        {/* {loginUser && loginUser.id === post.writerUserId && ( */}
+        <StRightArea>
+          <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
+          <StBtn>삭제</StBtn>
+        </StRightArea>
+        {/* )} */}
       </StInfo>
 
       {/* 글 영역 */}
       <StDescArea>
-        <StDescription>{posts.description}</StDescription>
+        <StDescription>{post.description}</StDescription>
         {/* <StTextArea></StTextArea>
         <StCodeArea></StCodeArea> */}
       </StDescArea>
