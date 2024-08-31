@@ -6,7 +6,7 @@ import { dataContext } from "../contexts/DataContext";
 const PostWrite = () => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  const { currentUser, isLogin } = useContext(dataContext); // 로그인 상태와 사용자 정보
+  const { loginUserInfo: currentUser, isLogin } = useContext(dataContext); // 로그인 상태와 사용자 정보
 
   // 댓글 목록을 가져오는
   const fetchComments = async () => {
