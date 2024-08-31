@@ -2,40 +2,48 @@ import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import supabase from "../services/supabaseClient";
 import { dataContext } from "../contexts/DataContext";
+import { useParams } from "react-router-dom";
 
 const PostWrite = () => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  const { loginUserInfo: currentUser, isLogin } = useContext(dataContext); // 로그인 상태와 사용자 정보
+  const { loginUserInfo: currentUser, isLogin } = useContext(dataContext);
+  const { id: postId } = useParams();
 
-  // 댓글 목록을 가져오는
+  // 댓글 목록을 가져오는 함수
   const fetchComments = async () => {
-    const { data, error } = await supabase.from("Comment").select("*");
+    const { data, error } = await supabase
+      .from("Comment")
+      .select("*")
+      .eq("postId", postId); // postId를 기준으로 필터링
     if (error) {
-      console.log("가져오기 에러 =>", error);
+      console.error("가져오기 에러 =>", error);
     } else {
       setComments(data);
     }
   };
 
-  console.log(comments);
   useEffect(() => {
-    fetchComments(); // 컴포넌트가 돔  - 브랑우저 렌더링, 마운트될 때 댓글을 가져옴
-  }, []);
+    fetchComments(); // 컴포넌트가 마운트될 때 댓글을 가져옴
+  }, [postId]);
 
-  // 댓글을 추가
+  // 댓글을 추가하는 함수
   const addCommentHandle = async () => {
-    console.log(currentUser);
     if (comment.trim() !== "" && isLogin) {
       const { data, error } = await supabase.from("Comment").insert({
         comment,
-        writerUserId: currentUser.id, // 현재 로그인한 사용자 ID를 사용
+        writerUserId: currentUser.id,
+        postId,
       });
       if (error) {
-        console.log("추가 에러 =>", error);
+        console.error("추가 에러 =>", error);
       } else {
-        setComment(""); // 초기화
-        fetchComments(); // 목록 갱신
+        const newComment = {
+          comment,
+          writerUserId: currentUser.id,
+        };
+        setComments((prevComments) => [...prevComments, newComment]); // 상태 업데이트
+        setComment(""); // 입력 필드 초기화
       }
     } else {
       alert("댓글을 작성하려면 로그인이 필요합니다.");
@@ -47,12 +55,15 @@ const PostWrite = () => {
       <ItemContainer>
         <Strong>댓글 목록</Strong>
         <CommentList>
-          {comments.map((newcomment, index) => (
-            <li key={index}>{newcomment.comment}</li>
+          {comments.map((newComment) => (
+            <li key={newComment.id}>
+              <div>작성자 ID: {newComment.writerUserId}</div>
+              <p>{newComment.comment}</p>
+            </li>
           ))}
         </CommentList>
       </ItemContainer>
-      {isLogin ? ( // 로그인된 사용자인 경우에만 댓글 입력
+      {isLogin ? (
         <>
           <Header>답변하기</Header>
           <TextArea
