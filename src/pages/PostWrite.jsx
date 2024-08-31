@@ -7,10 +7,24 @@ import { useParams } from "react-router-dom";
 const PostWrite = () => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  const { loginUserInfo: currentUser, isLogin } = useContext(dataContext);
+  const [userId, setUserId] = useState();
+  const { isLogin } = useContext(dataContext);
   const { id: postId } = useParams();
   const [editingId, setEditingId] = useState(null);
   const [editComment, setEditComment] = useState("");
+
+  useEffect(() => {
+    const getUserId = async () => {
+      const auth = await supabase.auth.getUser();
+      const writerUserId = auth.data.user.id;
+      setUserId(writerUserId);
+    };
+    getUserId();
+  }, []);
+
+  // 제가 userid를 writerUserId 이걸 가져다가 썼는데 이게 뭐라해야하지.. userid를 제대로 못 가져온다고 해야하나 네넹
+  // 그래서 supavase에서 getuser로 따로 가져왔어요... auth해서... 아놔 ㅋㅋㅋㅋ
+  // 손톱 잘랐더니 오타가 아주그냥
 
   // 댓글 목록을 가져오는 함수
   const fetchComments = async () => {
@@ -34,7 +48,7 @@ const PostWrite = () => {
     if (comment.trim() !== "" && isLogin) {
       const { data, error } = await supabase.from("Comment").insert({
         comment,
-        writerUserId: currentUser.id,
+        writerUserId: userId,
         postId,
       });
       if (error) {
@@ -42,10 +56,13 @@ const PostWrite = () => {
       } else {
         const newComment = {
           comment,
-          writerUserId: currentUser.id,
+          writerUserId: userId,
+          id: crypto.randomUUID(), // 내장메서드
+          // 이것도 id 못 받아오길래 랜덤으로 가져다주는 자바스크림트 내장 메서드라고... 커어어어....
         };
         setComments((prevComments) => [...prevComments, newComment]); // 상태 업데이트
         setComment(""); // 입력 필드 초기화
+        fetchComments();
       }
     } else {
       alert("댓글을 작성하려면 로그인이 필요합니다.");
@@ -55,7 +72,7 @@ const PostWrite = () => {
   // 댓글 수정 부분
   const editCommentHandle = async () => {
     if (editComment.trim() !== "" && editingId) {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("Comment")
         .update({ comment: editComment })
         .eq("id", editingId);
@@ -70,6 +87,7 @@ const PostWrite = () => {
   };
 
   const deleteCommentHandle = async (id) => {
+    console.log(id);
     const { error } = await supabase.from("Comment").delete().eq("id", id);
     if (error) {
       console.log("삭제 에러=>", error);
@@ -82,7 +100,7 @@ const PostWrite = () => {
     setEditingId(commentId);
     setEditComment(currentComment);
   };
-
+  console.log(comments);
   return (
     <StContainer>
       <ItemContainer>
@@ -98,13 +116,12 @@ const PostWrite = () => {
                     onChange={(e) => setEditComment(e.target.value)}
                   />
                   <button onClick={editCommentHandle}>수정완료</button>
-                  <br />
                   <button onClick={() => setEditingId(null)}>취소</button>
                 </>
               ) : (
                 <>
                   <p>{newComment.comment}</p>
-                  {isLogin && currentUser.id === newComment.writerUserId && (
+                  {isLogin && userId === newComment.writerUserId && (
                     <>
                       <button
                         onClick={() =>
