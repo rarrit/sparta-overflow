@@ -6,8 +6,25 @@ import styled from "styled-components";
 const PostModify = () => {
   // useLocation 을 사용해서 detail 페이지에서 useNavigate를 통해 전달한 값을 받아옴
   const location = useLocation();
-  const { title, description } = location.state || {};
-  console.log("title =>", title, "description =>", description);
+  const { 
+    title, 
+    description,
+    created_at,
+    userName,
+    userId,
+    userEmail,
+    userProfileImg
+  } = location.state || {};
+  console.log(
+    "???",
+    title, 
+    description,
+    created_at,
+    userName,
+    userId,
+    userEmail,
+    userProfileImg
+  );
   return (
     <>      
       <StContainer>
@@ -23,8 +40,8 @@ const PostModify = () => {
           <StLeftArea>            
             <StSubWriteInfo>
               <StUser>
-                <img />
-                <span>김민규</span>
+                <img src={userProfileImg}/>
+                <span>{userName}</span>
               </StUser>
               <StDate>2024-08-28</StDate>
             </StSubWriteInfo>
