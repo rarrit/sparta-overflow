@@ -10,10 +10,15 @@ const CreateAccount = () => {
   const [password, setPassword] = useState("");
 
   const signUpHandler = async () => {
-    await supabase.auth.signUp({
-      signUpId,
+    const { data, error } = await supabase.auth.signUp({
+      email: signUpId,
       password,
     });
+    if (error) {
+      console.log("error", error);
+    } else {
+      console.log("success", data);
+    }
   };
 
   return (
@@ -22,11 +27,23 @@ const CreateAccount = () => {
         <StUserInfoName>ID</StUserInfoName>
         <StUserInfoInput
           value={signUpId}
+          onChange={(e) => setSignUpId(e.target.value)}
           style={{ width: "300px" }}
           placeholder="아이디나 이메일을 입력해주세요"
         />
       </StLowDiv>
-      <StUserInfoButton>가입하기</StUserInfoButton>
+      <StLowDiv>
+        <StUserInfoName>PW</StUserInfoName>
+        <StUserInfoInput
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{ width: "300px" }}
+          placeholder="패스워드를 입력해주세요"
+        />
+      </StLowDiv>
+      <StUserInfoButton onClick={() => signUpHandler()}>
+        가입하기
+      </StUserInfoButton>
       <StUserInfoButton onClick={() => navigate("/sign#login")}>
         로그인하러 가기
       </StUserInfoButton>
