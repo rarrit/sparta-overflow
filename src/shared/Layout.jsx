@@ -8,6 +8,11 @@ import { dataContext } from "../contexts/DataContext";
 function Header() {
   const { isLogin, logout } = useContext(dataContext);
 
+  const FocusSearchPopup = (e) => {
+    e.preventDefault();
+    console.log("서치바 클릭");
+  };
+
   return (
     <>
       <StHeader>
@@ -20,7 +25,11 @@ function Header() {
           </StLogo>
           <StSearchForm>
             <div className="search">
-              <input type="text" placeholder="검색어를 입력해주세요." />
+              <input
+                type="text"
+                placeholder="검색어를 입력해주세요."
+                onFocus={ClickSearchPopup}
+              />
               <button type="button">검색</button>
             </div>
           </StSearchForm>
@@ -106,7 +115,7 @@ const StHeader = styled.header`
   border-bottom: 1px solid #111;
   padding: 10px 0;
   background: #fff;
-  z-index:999;
+  z-index: 999;
   .inner {
     display: flex;
     align-items: center;
