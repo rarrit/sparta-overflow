@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
-import { postContext } from "../contexts/PostContext";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,6 +13,9 @@ import { railscasts } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 const PostDetail = () => {
   const navigate = useNavigate();
+  const [copy, setCopy] = useState(false);
+  const [userInfo, setUserInfo] = useState([]);
+  const [post, setPosts] = useState([]);
 
   //수정버튼
   const handleEditPostMove = (id) => {
@@ -31,7 +33,6 @@ const PostDetail = () => {
   };
 
   //삭제버튼
-  // 게시글 삭제 버튼 핸들러
   const handleDeletePost = async (postId) => {
     let reallyDelete = confirm("정말 삭제하시겠습니까?");
     if (reallyDelete === true) {
@@ -49,12 +50,8 @@ const PostDetail = () => {
   };
 
   const { id } = useParams();
-  console.log("id => ", id);
   const { loginUser } = useContext(dataContext);
-  // filter
 
-  const [userInfo, setUserInfo] = useState([]);
-  const [post, setPosts] = useState([]);
   useEffect(() => {
     //게시글 정보
     const fetchPosts = async () => {
@@ -95,15 +92,6 @@ const PostDetail = () => {
     fetchAuthor();
     fetchPosts();
   }, [id]);
-
-  console.log(userInfo.username);
-  //코드 하이라이트
-  // const highlightedCode = hljs.highlight().value;
-
-  const [copy, setCopy] = useState(false);
-
-  console.log("user=>", loginUser);
-  console.log(userInfo);
 
   return (
     <StContainer>
@@ -172,8 +160,6 @@ const PostDetail = () => {
             {post.code}
           </SyntaxHighlighter>
         </StCodeBox>
-        {/* <StTextArea></StTextArea>
-        <StCodeArea></StCodeArea> */}
       </StDescArea>
     </StContainer>
   );
