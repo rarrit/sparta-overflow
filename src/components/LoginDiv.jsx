@@ -24,8 +24,8 @@ const LoginDiv = () => {
       const selectLoginUserInfo = users.filter(
         (user) => user.id === data.user.id
       );
-      console.log("사용자정보=>", selectLoginUserInfo);
-      setLoginUserInfo(selectLoginUserInfo);
+      console.log("사용자정보=>", ...selectLoginUserInfo);
+      setLoginUserInfo(...selectLoginUserInfo);
     }
   };
 
