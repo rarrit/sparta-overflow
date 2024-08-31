@@ -5,9 +5,12 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import supabase from "../services/supabaseClient";
-import { CircleCheck, CircleX } from "lucide-react";
+import { CircleCheck, CircleX, Copy, CheckCheck } from "lucide-react";
 import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
 import hljs from "highlight.js";
+
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { railscasts } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 const PostDetail = () => {
   const navigate = useNavigate();
@@ -97,6 +100,8 @@ const PostDetail = () => {
   //코드 하이라이트
   // const highlightedCode = hljs.highlight().value;
 
+  const [copy, setCopy] = useState(false);
+
   console.log("user=>", loginUser);
   console.log(userInfo);
 
@@ -133,7 +138,40 @@ const PostDetail = () => {
       {/* 글 영역 */}
       <StDescArea>
         <StDescription>{post.description}</StDescription>
-        <pre>{post.code}</pre>
+        <StCodeBox>
+          <StCodeBoxTopAreaWithCopyBtn>
+            <p>code</p>
+            {copy ? (
+              <StCopyCodeBtn>
+                <CheckCheck size={16} />
+                <span>copied !</span>
+              </StCopyCodeBtn>
+            ) : (
+              <StCopyCodeBtn
+                onClick={() => {
+                  navigator.clipboard.writeText(post.code);
+                  setCopy(true);
+                  setTimeout(() => {
+                    setCopy(false);
+                  }, 2000);
+                }}
+              >
+                <Copy size={16} />
+                <span>copy code</span>
+              </StCopyCodeBtn>
+            )}
+          </StCodeBoxTopAreaWithCopyBtn>
+          <SyntaxHighlighter
+            language="javascript"
+            style={railscasts}
+            customStyle={{
+              padding: "25px",
+            }}
+            wrapLongLines={true}
+          >
+            {post.code}
+          </SyntaxHighlighter>
+        </StCodeBox>
         {/* <StTextArea></StTextArea>
         <StCodeArea></StCodeArea> */}
       </StDescArea>
@@ -169,6 +207,31 @@ const StBtn = styled.button``;
 
 const StDescArea = styled.div``;
 const StDescription = styled.p``;
+
+const StCodeBox = styled.div`
+  background-color: #232323;
+  border-radius: 15px;
+  overflow: hidden;
+  margin: 15px 0;
+`;
+
+const StCodeBoxTopAreaWithCopyBtn = styled.div`
+  padding: 7px 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #3a404d;
+  color: white;
+`;
+
+const StCopyCodeBtn = styled.button`
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+`;
+
 const StTextArea = styled.textarea``;
 const StCodeArea = styled.textarea``;
 
