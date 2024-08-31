@@ -10,7 +10,7 @@ export const DataProvider = ({ children }) => {
   // 로그인 관련 Hook
   const [loginUserInfo, setLoginUserInfo] = useState("");
   const [isLogin, changeLogin] = useState(false);
-  // 로그인 페이지에서 로그인을 하면 loginUserId에 로그인한 유저의 uid가 저장됨
+  // 로그인 페이지에서 로그인을 하면 loginUserInfo에 로그인한 유저의 정보가 저장됨
   console.log("loginUserInfo=>", loginUserInfo);
   console.log("isLogin=>", isLogin);
 
@@ -35,15 +35,10 @@ export const DataProvider = ({ children }) => {
         // handle initial session
       } else if (event === "SIGNED_IN") {
         // handle sign in event
-        const selectLoginUserInfo = users.filter(
-          (user) => user.id === session.user.id
-        );
-        setLoginUserInfo(selectLoginUserInfo);
         // 로그인 상태 변경
         changeLogin(true);
       } else if (event === "SIGNED_OUT") {
         // handle sign out event
-        setLoginUserInfo([]);
         // 로그인 상태 변경
         changeLogin(false);
       } else if (event === "PASSWORD_RECOVERY") {
@@ -55,6 +50,15 @@ export const DataProvider = ({ children }) => {
       }
     }
   );
+  // 로그아웃
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      alert("로그아웃이 실패했습니다");
+    } else {
+      setLoginUserInfo([]);
+    }
+  };
 
   return (
     <dataContext.Provider
@@ -68,6 +72,9 @@ export const DataProvider = ({ children }) => {
         isLogin,
         changeLogin,
         loginAuthData,
+        logout,
+        loginUserInfo,
+        setLoginUserInfo,
       }}
     >
       {children}
