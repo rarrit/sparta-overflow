@@ -44,9 +44,9 @@ function Header() {
             {isLogin ? (
               <>
                 <button onClick={() => logout()} className="btnLineBlack">
-                  로그아웃
+                  Logout
                 </button>
-                <Link to="/mypage" className="btnLineBlack">
+                <Link to="/mypage" className="btnBlack">
                   MyPage
                 </Link>
               </>
@@ -101,12 +101,26 @@ function Footer() {
 }
 
 const Layout = ({ children }) => {
+  const { isLogin, logout } = useContext(dataContext);
+  const navigate = useNavigate();
   return (
     <>
       <Header />
       <StWrap id="wrap">
         <StContainer id="container">
-          <StContents id="contents">{children}</StContents>
+          <StContents id="contents">
+            {children}
+            { isLogin 
+              ? (
+                <StFixedBtnArea>
+                  <button type="button" onClick={() => navigate(`register`)}>글쓰기</button>
+                </StFixedBtnArea>
+              ) 
+              : (
+                ""
+              )
+            }            
+          </StContents>        
         </StContainer>
       </StWrap>
       <Footer />
@@ -171,7 +185,7 @@ const StBtnArea = styled.div`
   align-items: center;
   width: 150px;
   gap: 10px;
-  a {
+  a, button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -281,6 +295,27 @@ const StFooter = styled.footer`
     }
   }
 `;
+
+const StFixedBtnArea = styled.div`
+  position:fixed;
+  right:30px;
+  bottom:30px;
+  button {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:80px;
+    height:50px;
+    border:1px solid #111;
+    border-radius:5px;
+    cursor:pointer;
+    transition:all .15s ease;
+    &:hover {
+      color:#fff;
+      background:#111;      
+    }
+  }
+`
 
 export default Layout;
 

@@ -29,19 +29,19 @@ const PostListItem = ({ posts }) => {
               </StPostTitle>{" "}
               {/* 제목 */}
             </StPostMainInfo>
-            <div>
-              <span>{post.userinfo.username}</span> {/* 작성자 */}
+            <StPostAuthorInfo>
+              <span>{post.userinfo.username}</span>│ {/* 작성자 */}
               <span>{filterDateOnlyYMD(post.created_at)}</span> {/* 날짜 */}
-            </div>
+            </StPostAuthorInfo>
           </StPostInfoBox>
-          <div>
+          <StPostPreview>
             <p>
               {post.description.length > 200
                 ? `${post.title.substring(0, 200)}...`
                 : post.description.substring(0, 200)}
             </p>{" "}
             {/* 내용 */}
-          </div>
+          </StPostPreview>
         </StListWrap>
       ))}
     </>
@@ -53,9 +53,7 @@ export default PostListItem;
 const StListWrap = styled.article`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   border: 1px solid #ccc;
-  padding: 10px;
   margin: 10px 0;
   border-radius: 5px;
   background-color: #f9f9f9;
@@ -66,6 +64,9 @@ const StPostInfoBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 5px 10px;
+  gap: 0.5rem;
+  border-bottom: 1px solid #ccc;
 `;
 
 const StPostMainInfo = styled.div`
@@ -76,13 +77,27 @@ const StPostMainInfo = styled.div`
 
 const StStyledCircleCheck = styled(CircleCheck)`
   color: green; /* 초록색 */
+  flex-shrink: 0;
 `;
 
 const StStyledCircleX = styled(CircleX)`
   color: red; /* 빨간색 */
+  flex-shrink: 0;
 `;
 
 const StPostTitle = styled.h3`
   font-size: 1.1rem;
   font-weight: bold;
+`;
+
+const StPostAuthorInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  color: #333;
+`;
+
+const StPostPreview = styled.div`
+  padding: 10px;
 `;
