@@ -11,6 +11,7 @@ const PostRegister = () => {
   const { loginUserInfo } = useContext(dataContext); // 로그인한 user정보
   const [postTitle, setPostTitle] = useState("");
   const [postDesc, setPostDesc] = useState("");
+  const [postCode, setPostCode] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -22,6 +23,7 @@ const PostRegister = () => {
         description: postDesc,
         userId: loginUserInfo.id,
         solve: false,
+        code: postCode,
       }
     ])
 
@@ -43,7 +45,7 @@ const PostRegister = () => {
         <StInfo>
           {/* 타이틀 */}
           <StTitle>
-            <input type="text" value={postTitle} onChange={(e) => setPostTitle(e.target.value)} />
+            <input type="text" value={postTitle} placeholder="타이틀을 입력해주세요." onChange={(e) => setPostTitle(e.target.value)} />
           </StTitle>
           <StLeftArea>
             <StSubWriteInfo>
@@ -65,8 +67,13 @@ const PostRegister = () => {
 
         {/* 글 영역 */}
         <StDescArea>
+          <StH3>내용 작성</StH3>          
           <TuiEditor description={postDesc} onChange={handleEditorChange} />
+          <StH3>참고 코드 작성</StH3>
+          <StCodeArea value={postCode} onChange={(e)=> setPostCode(e.target.value)} />
         </StDescArea>
+        
+        
       </StContainer>
     </>
   );
@@ -114,10 +121,9 @@ const StUser = styled.div`
   align-items: center;
   gap: 10px;
   img {
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
     border-radius: 100%;
-    background: #e1e1e1;
   }
   span {
     font-size: 18px;
@@ -165,8 +171,20 @@ const StBtn = styled.button`
 const StDescArea = styled.div`
   padding: 0 20px;
 `;
-const StDescription = styled.p``;
-const StTextArea = styled.textarea``;
-const StCodeArea = styled.textarea``;
+const StCodeArea = styled.textarea`
+  width:100%;
+  min-height:200px;
+  border-radius:5px;
+  border:1px solid #dadde6;
+  padding:15px;
+`;
+const StH3 = styled.h3`  
+  font-size:18px;
+  font-weight:bold;
+  color:#656565;
+  border-bottom:1px solid #e1e1e1;
+  margin:40px 0 15px;
+  padding:0 0 6px;
+`
 
 export default PostRegister;

@@ -16,7 +16,8 @@ const PostModify = () => {
 
   const [postTitle, setPostTitle] = useState('');
   const [postDesc, setPostDesc] = useState('');
-  const { title, description, userName, userProfileImg } = location.state || {};
+  const [postCode, setPostCode] = useState('');
+  const { userName, userProfileImg } = location.state || {};
 
 
   useEffect(() => {
@@ -31,15 +32,11 @@ const PostModify = () => {
       } else {
         setPostTitle(data.title);
         setPostDesc(data.description);
+        setPostCode(data.code);
       }
     };
     fetchPosts();
   }, [id])
-
-  // useEffect(() => {
-  //   setPostTitle(title);
-  //   setPostDesc(description);
-  // }, [title, description]);
 
   const handleModifyPost = async (e) => {
     e.preventDefault();
@@ -95,7 +92,10 @@ const PostModify = () => {
 
         {/* 글 영역 */}
         <StDescArea>
+          <StH3>내용 작성</StH3>          
           <TuiEditor description={postDesc} onChange={handleEditorChange} />
+          <StH3>참고 코드 작성</StH3>
+          <StCodeArea value={postCode} onChange={(e)=> setPostCode(e.target.value)} />          
         </StDescArea>
       </StContainer>
     </>
@@ -147,7 +147,6 @@ const StUser = styled.div`
     width: 40px;
     height: 40px;
     border-radius: 100%;
-    background: #e1e1e1;
   }
   span {
     font-size: 18px;
@@ -195,8 +194,20 @@ const StBtn = styled.button`
 const StDescArea = styled.div`
   padding: 0 20px;
 `;
-const StDescription = styled.p``;
-const StTextArea = styled.textarea``;
-const StCodeArea = styled.textarea``;
+const StCodeArea = styled.textarea`
+  width:100%;
+  min-height:200px;
+  border-radius:5px;
+  border:1px solid #dadde6;
+  padding:15px;
+`;
+const StH3 = styled.h3`  
+  font-size:18px;
+  font-weight:bold;
+  color:#656565;
+  border-bottom:1px solid #e1e1e1;
+  margin:40px 0 15px;
+  padding:0 0 6px;
+`
 
 export default PostModify;
