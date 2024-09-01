@@ -7,14 +7,44 @@ import { dataContext } from "../contexts/DataContext";
 
 export const mypageDataContext = createContext();
 
+const CommendMockData = [
+  {
+    created_at: "2024-08-30T06:38:33.417543+00:00",
+    email: "test@test.com",
+    id: "beea1b96-b9dc-402f-a8a1-7b6ee95f1f1a",
+    password: null,
+    profileImage:
+      "https://cdn.pixabay.com/photo/2021/07/25/08/03/account-6491185_1280.png",
+    username: "홍길",
+  },
+];
+
 const Mypage = () => {
-  const { loginUserInfo } = useContext(dataContext); //로그인한 user정보
+  const { loginUserInfo, comments } = useContext(dataContext); //로그인한 user정보
   const [profile, setProfile] = useState([]); //로그인한 유저정보 저장
   const [posts, setPosts] = useState([]); //포스트 정보 저장
+  const [comment, setComment] = useState([]); //답변 정보 저장
 
   console.log("로그인유저데이터_확인", loginUserInfo);
+  console.log("커멘드데이터_확인", CommendMockData);
 
   //NOTE - 수퍼베이스 데이터 가져오기
+  useEffect(() => {
+    const fetchComment = async () => {
+      const { data, error } = await supabase
+        .from("Comment")
+        .select("*")
+        .eq("writerUserId", CommendMockData.id);
+      if (error) {
+        console.error("ErrorError :", error);
+      } else {
+        console.log("커멘트 데이터:", data);
+        setComment(data);
+      }
+    };
+    fetchComment();
+  }, []);
+
   //유저정보테이블 : 로그인한계정의 이메일과 같은 열 찾기
   useEffect(() => {
     const fetchProfile = async () => {
@@ -26,7 +56,7 @@ const Mypage = () => {
       if (error) {
         console.error("ErrorError :", error);
       } else {
-        console.log("로그인 유저 데이터:", data);
+        // console.log("로그인 유저 데이터:", data);
         setProfile(data);
       }
     };
@@ -50,7 +80,7 @@ const Mypage = () => {
       if (error) {
         console.error("ErrorError :", error);
       } else {
-        console.log("로그인한 유저의 포스팅데이터:", data);
+        // console.log("로그인한 유저의 포스팅데이터:", data);
         setPosts(data);
       }
     };
@@ -65,6 +95,8 @@ const Mypage = () => {
         setProfile,
         posts,
         setPosts,
+        comment,
+        setComment,
       }}
     >
       <StMypageContainer>

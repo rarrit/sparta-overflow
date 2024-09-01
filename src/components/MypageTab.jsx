@@ -5,7 +5,7 @@ import { CircleCheck, CircleX } from "lucide-react";
 
 const MypageTab = () => {
   const [activeTab, setActiveTab] = useState("작성한글");
-  const { profile, posts } = useContext(mypageDataContext);
+  const { profile, posts, comment } = useContext(mypageDataContext);
   console.log("posts", posts);
 
   const OnClickTabHandler = (tabTitle) => {
@@ -62,7 +62,24 @@ const MypageTab = () => {
           }`}
           style={{ backgroundColor: "blue" }}
         >
-          내용2
+          {/*
+          {comment.map((mycomment) => {
+            return (
+              <div key={mycomment.id}>
+                <div>
+                  {mycomment.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
+                </div>
+                <div>{mycomment.title}</div>
+                <div>{mycomment.description}</div> 
+                <div>
+                  {new Date(mycomment.created_at)
+                    .toLocaleDateString()
+                    .replace(/\.$/, "")}
+                </div>
+              </div>
+            );
+          })}
+          */}
         </StPostingContent>
       </StPostingContentBox>
     </StMypageTabContainer>
