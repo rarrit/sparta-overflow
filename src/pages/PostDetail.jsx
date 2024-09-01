@@ -51,7 +51,7 @@ const PostDetail = () => {
   };
 
   const { id } = useParams();
-  const { loginUser } = useContext(dataContext);
+  const { loginUserInfo } = useContext(dataContext);
 
   useEffect(() => {
     //게시글 정보
@@ -99,9 +99,8 @@ const PostDetail = () => {
     navigate(`/write/${id}`);
   };
 
-  console.log("user=>", loginUser);
-  console.log(userInfo);
-
+  console.log("Logged in user:", loginUserInfo);
+  console.log("Post data:", post);
   return (
     <StContainer>
       {/* 채택 여부 */}
@@ -122,15 +121,14 @@ const PostDetail = () => {
             </StDate>
           </StSubWriteInfo>
         </StLeftArea>
-
         <StRightArea>
           {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
-          {loginUser && loginUser.id === post.writerUserId && (
+          {loginUserInfo.id === post.userId ? (
             <StBtnArea>
               <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
               <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
             </StBtnArea>
-          )}
+          ) : null}
         </StRightArea>
       </StInfo>
 
@@ -173,9 +171,9 @@ const PostDetail = () => {
           </SyntaxHighlighter>
         </StCodeBox>
       </StDescArea>
-      
+
       {/* 댓글 컴포넌트 */}
-      <PostWrite/>
+      <PostWrite />
     </StContainer>
   );
 };
