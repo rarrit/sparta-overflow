@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import { useState, useContext, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import supabase from "../services/supabaseClient";
 import { dataContext } from "../contexts/DataContext";
 
 const Search = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const searchData = location.state?.searchData || "";
   const [searchPost, setSearchPost] = useState([]);
-  console.log("posts정보??", searchPost);
+  // console.log("posts정보??", searchPost);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,12 +27,16 @@ const Search = () => {
     return post.title.includes(searchData);
   });
 
+  const handleDetailMove = (post) => {
+    navigate(`/detail/${post.id}`);
+  };
+
   return (
     <>
       {searchData ? (
         filteredPosts.length > 0 ? (
           filteredPosts.map((data) => (
-            <div key={data.id}>
+            <div key={data.id} onClick={() => handleDetailMove(data)}>
               <div>{data.title}</div>
               <div>{data.description}</div>
               <div>
