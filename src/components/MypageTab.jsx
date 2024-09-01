@@ -26,6 +26,7 @@ const MypageTab = () => {
   useEffect(() => {
     const fetchMyComment = async () => {
       const postIds = myComment.map((comment) => comment.postId);
+      console.log("postIds", postIds);
       const { data, error } = await supabase
         .from("Post")
         .select("*")
@@ -38,7 +39,7 @@ const MypageTab = () => {
       }
     };
     fetchMyComment();
-  }, []);
+  }, [myComment]);
 
   return (
     <StMypageTabContainer>
@@ -91,7 +92,7 @@ const MypageTab = () => {
         >
           {myCommentGetPost.map((post) => {
             return (
-              <div key={post.id}>
+              <div key={post.id} onClick={() => handleDetailMove(post)}>
                 <div>
                   {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
                 </div>
