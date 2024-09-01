@@ -4,15 +4,27 @@ import PostListItem from "../components/PostListItem";
 import supabase from "../services/supabaseClient";
 
 const Main = () => {
+  const [userInfo, setUserInfo] = useState([]);
   const [posts, setPosts] = useState([]);
+
   useEffect(() => {
+    //게시글 리스트 정보
     const fetchPosts = async () => {
-      const { data, error } = await supabase.from("Post").select("*");
+      const { data, error } = await supabase.from("Post")
+        .select(`*, userinfo:userId (
+            username,
+            profileImage
+          )`);
       if (error) {
         console.log("error =>", error);
       } else {
         console.log("post data =>", data);
         setPosts(data);
+
+        //작성자 정보 로드
+        if (data.userId) {
+          fetchAuthor(data.userId);
+        }
       }
     };
     fetchPosts();
@@ -22,12 +34,22 @@ const Main = () => {
     {
       id: 1,
       button: "답변 전",
-      content: <PostListItem posts={posts.filter((post) => !post.solve)} />,
+      content: (
+        <PostListItem
+          posts={posts.filter((post) => !post.solve)}
+          userInfo={userInfo}
+        />
+      ),
     },
     {
       id: 2,
       button: "답변 후",
-      content: <PostListItem posts={posts.filter((post) => post.solve)} />,
+      content: (
+        <PostListItem
+          posts={posts.filter((post) => post.solve)}
+          userInfo={userInfo}
+        />
+      ),
     },
   ];
 
