@@ -2,16 +2,27 @@
 import React, { useRef } from "react";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import { useEffect } from "react";
 
-const TuiEditor = ({ description }) => {
+const TuiEditor = ({ description, onChange }) => {
   const editorRef = useRef();
 
-  const handleClick = () => {
-    const editorInstance = editorRef.current.getInstance();
-    console.log(editorInstance.getMarkdown());
+  // const handleClick = () => {
+  //   const editorInstance = editorRef.current.getInstance();
+  //   console.log(editorInstance.getMarkdown());
+  // };
+
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.getInstance().setMarkdown(description || '');
+    }
+  }, [description]);
+
+  const handleChange = () => {
+    const data = editorRef.current.getInstance().getMarkdown(); // 여기서 에디터 내용 가져옴
+    onChange(data); // 부모 컴포넌트로 에디터 내용을 전달
   };
 
-  console.log("testestst =>", description);
 
   return (
     <div>
@@ -32,8 +43,9 @@ const TuiEditor = ({ description }) => {
         initialEditType="markdown"
         useCommandShortcut={true}
         ref={editorRef}
+        onChange={handleChange} // 에디터 변경 시 handleChange 호출
       />
-      <button onClick={handleClick}>Get Markdown</button>
+      {/* <button onClick={handleClick}>Get Markdown</button> */}
     </div>
   );
 };

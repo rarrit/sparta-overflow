@@ -33,21 +33,6 @@ const PostDetail = () => {
   };
 
   //삭제버튼
-  const handleDeletePost = async (postId) => {
-    let reallyDelete = confirm("정말 삭제하시겠습니까?");
-    if (reallyDelete === true) {
-      const { error } = await supabase.from("Post").delete().eq("id", postId);
-
-      if (error) {
-        console.error("게시글 삭제 오류:", error);
-      } else {
-        alert("게시글이 삭제되었습니다.");
-        navigate("/");
-      }
-    } else {
-      return;
-    }
-  };
 
   const { id } = useParams();
   const { loginUser } = useContext(dataContext);
@@ -60,17 +45,11 @@ const PostDetail = () => {
         .select("*")
         .eq("id", id)
         .single();
-      console.log(post);
       if (error) {
         console.log("error =>", error);
       } else {
         console.log("post data =>", data);
         setPosts(data);
-
-        // 작성자 정보 로드
-        if (data.userId) {
-          fetchAuthor(data.userId);
-        }
       }
     };
 
@@ -123,54 +102,18 @@ const PostDetail = () => {
         </StLeftArea>
 
         <StRightArea>
-          {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
-          {loginUser && loginUser.id === post.writerUserId && (
-            <StBtnArea>
-              <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
-              <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
-            </StBtnArea>
-          )}
+          <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
+          <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
         </StRightArea>
       </StInfo>
 
       {/* 글 영역 */}
       <StDescArea>
         <StDescription>{post.description}</StDescription>
-
-        <StCodeBox>
-          <StCodeBoxTopAreaWithCopyBtn>
-            <p>code</p>
-            {copy ? (
-              <StCopyCodeBtn>
-                <CheckCheck size={16} />
-                <span>copied !</span>
-              </StCopyCodeBtn>
-            ) : (
-              <StCopyCodeBtn
-                onClick={() => {
-                  navigator.clipboard.writeText(post.code);
-                  setCopy(true);
-                  setTimeout(() => {
-                    setCopy(false);
-                  }, 2000);
-                }}
-              >
-                <Copy size={16} />
-                <span>copy code</span>
-              </StCopyCodeBtn>
-            )}
-          </StCodeBoxTopAreaWithCopyBtn>
-          <SyntaxHighlighter
-            language="javascript"
-            style={railscasts}
-            customStyle={{
-              padding: "25px",
-            }}
-            wrapLongLines={true}
-          >
-            {post.code}
-          </SyntaxHighlighter>
-        </StCodeBox>
+        <pre>{post.code}</pre>
+        {/* <StTextArea></StTextArea>
+        <StCodeArea></StCodeArea> */}
+        <button onClick={writeCommentHandel}>댓글</button>
       </StDescArea>
       <button onClick={writeCommentHandel}>댓글</button>
     </StContainer>
