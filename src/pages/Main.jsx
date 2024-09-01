@@ -10,16 +10,28 @@ const Main = () => {
   useEffect(() => {
     //게시글 리스트 정보
     const fetchPosts = async () => {
-      const { data, error } = await supabase.from("Post")
-        .select(`*, userinfo:userId (
+      const { data, error } = await supabase
+        .from("Post")
+        .select(
+          `*, userinfo:userId (
             username,
             profileImage
-          )`);
+          ),
+          Comment:Comment!postId (id)`
+        )
+        .order("created_at", { ascending: false });
       if (error) {
         console.log("error =>", error);
       } else {
         console.log("post data =>", data);
         setPosts(data);
+
+        //댓글 갯수를 post객체안에 commentCount속성으로 넣어줌
+        const commentCount = data.map((post) => ({
+          ...post,
+          commentCount: post.Comment.length,
+        }));
+        setPosts(commentCount);
 
         //작성자 정보 로드
         if (data.userId) {
