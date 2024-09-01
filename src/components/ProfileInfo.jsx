@@ -1,11 +1,15 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
+import supabase from "../services/supabaseClient";
 
 import { mypageDataContext } from "../pages/Mypage";
+import { dataContext } from "../contexts/DataContext";
 
 const ProfileInfo = () => {
+  // const { loginUserInfo } = useContext(dataContext);
   const { profile, posts, myComment } = useContext(mypageDataContext);
-  console.log("내코멘트?????", myComment);
+  // console.log("내코멘트?????", myComment);
+
   //기본이미지
   const defaultProfileImg =
     "https://i.namu.wiki/i/N7V1HbWE3OQETbgT61_lZaUlUywQLkh4ulOYLtJI4EKG1oQucfqexvNzzEbrcJ_8L-rVHQBDhzBcy5IFIvJ0iQ4sXfVnAiuK_GoRwTYG1Qgx_XNMJUWPHYrVbuWxXRoizxnY4fbhcIuNwBtLYomsyg.webp";
