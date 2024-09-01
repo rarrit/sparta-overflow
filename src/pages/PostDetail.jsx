@@ -70,6 +70,11 @@ const PostDetail = () => {
     fetchPosts();
   }, [id]);
 
+  // 임시 버튼
+  const writeCommentHandel = () => {
+    navigate(`/write/${id}`);
+  };
+
   console.log("user=>", loginUser);
   console.log(userInfo);
 
@@ -108,6 +113,7 @@ const PostDetail = () => {
         <StDescription>{post.description}</StDescription>
         {/* <StTextArea></StTextArea>
         <StCodeArea></StCodeArea> */}
+        <button onClick={writeCommentHandel}>댓글</button>
       </StDescArea>
     </StContainer>
   );
