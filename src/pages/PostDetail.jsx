@@ -123,22 +123,19 @@ const PostDetail = () => {
           </StSubWriteInfo>
         </StLeftArea>
         {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
-        {/* {loginUser && loginUser.id === post.writerUserId && ( */}
-        <StRightArea>
-          <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
-          <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
-          <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
-        </StRightArea>
-        {/* )} */}
+        {loginUser && loginUser.id === post.writerUserId && (
+          <StRightArea>
+            <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
+            <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
+            <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
+          </StRightArea>
+        )}
       </StInfo>
 
       {/* 글 영역 */}
       <StDescArea>
         <StDescription>{post.description}</StDescription>
-        <pre>{post.code}</pre>
-        {/* <StTextArea></StTextArea>
-        <StCodeArea></StCodeArea> */}
-        <button onClick={writeCommentHandel}>댓글</button>
+
         <StCodeBox>
           <StCodeBoxTopAreaWithCopyBtn>
             <p>code</p>
@@ -174,6 +171,7 @@ const PostDetail = () => {
           </SyntaxHighlighter>
         </StCodeBox>
       </StDescArea>
+      <button onClick={writeCommentHandel}>댓글</button>
     </StContainer>
   );
 };
