@@ -3,6 +3,7 @@ import styled from "styled-components";
 import supabase from "../services/supabaseClient";
 import { dataContext } from "../contexts/DataContext";
 import { useParams } from "react-router-dom";
+import handleTimeCalculate from "../components/ChangeTime";
 
 const PostWrite = () => {
   const [comment, setComment] = useState("");
@@ -108,7 +109,8 @@ const PostWrite = () => {
         <CommentList>
           {comments.map((newComment) => (
             <li key={newComment.id}>
-              <div>작성자 ID: {newComment.writerUserId}</div>
+              <div>{handleTimeCalculate(newComment.created_at)}</div>
+              <div>작성자: {newComment.writerUserId}</div>
               {editingId === newComment.id ? (
                 <>
                   <textarea
