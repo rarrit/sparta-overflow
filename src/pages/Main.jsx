@@ -10,14 +10,18 @@ const Main = () => {
   useEffect(() => {
     //게시글 리스트 정보
     const fetchPosts = async () => {
-      const { data, error } = await supabase.from("Post").select("*");
+      const { data, error } = await supabase.from("Post")
+        .select(`*, userinfo:userId (
+            username,
+            profileImage
+          )`);
       if (error) {
         console.log("error =>", error);
       } else {
         console.log("post data =>", data);
         setPosts(data);
 
-        // 작성자 정보 로드
+        //작성자 정보 로드
         if (data.userId) {
           fetchAuthor(data.userId);
         }

@@ -26,7 +26,7 @@ const PostListItem = ({ posts, userInfo }) => {
               {/* 제목 */}
             </StPostMainInfo>
             <div>
-              <span>{post.userinfo?.username}</span> {/* 작성자 */}
+              <span>{post.userinfo.username}</span> {/* 작성자 */}
               <span>{filterDateOnlyYMD(post.created_at)}</span> {/* 날짜 */}
             </div>
           </StPostInfoBox>

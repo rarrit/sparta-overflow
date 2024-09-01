@@ -93,6 +93,14 @@ const PostDetail = () => {
     fetchPosts();
   }, [id]);
 
+  // 임시 버튼
+  const writeCommentHandel = () => {
+    navigate(`/write/${id}`);
+  };
+
+  console.log("user=>", loginUser);
+  console.log(userInfo);
+
   return (
     <StContainer>
       {/* 채택 여부 */}
@@ -119,6 +127,7 @@ const PostDetail = () => {
         <StRightArea>
           <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
           <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
+          <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
         </StRightArea>
         {/* )} */}
       </StInfo>
@@ -126,6 +135,10 @@ const PostDetail = () => {
       {/* 글 영역 */}
       <StDescArea>
         <StDescription>{post.description}</StDescription>
+        <pre>{post.code}</pre>
+        {/* <StTextArea></StTextArea>
+        <StCodeArea></StCodeArea> */}
+        <button onClick={writeCommentHandel}>댓글</button>
         <StCodeBox>
           <StCodeBoxTopAreaWithCopyBtn>
             <p>code</p>
