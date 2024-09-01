@@ -1,67 +1,37 @@
 import React from "react";
 import supabase from "../services/supabaseClient";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import TuiEditor from "../components/TuiEditor";
-import styled from "styled-components";
 import { useState } from "react";
-import { useEffect } from "react";
-import hljs from "highlight.js";
+import { useContext } from "react";
+import { dataContext } from "../contexts/DataContext";
+import styled from "styled-components";
+import TuiEditor from "../components/TuiEditor";
+import { useNavigate } from "react-router-dom";
 
-const PostModify = () => {
-  // useLocation 을 사용해서 detail 페이지에서 useNavigate를 통해 전달한 값을 받아옴
-  const location = useLocation();
+const PostRegister = () => {
+  const { loginUserInfo } = useContext(dataContext); // 로그인한 user정보
+  const [postTitle, setPostTitle] = useState("");
+  const [postDesc, setPostDesc] = useState("");
   const navigate = useNavigate();
-  const { id } = useParams();
-  console.log("id => ", id);
 
-  const [postTitle, setPostTitle] = useState('');
-  const [postDesc, setPostDesc] = useState('');
-  const { title, description, userName, userProfileImg } = location.state || {};
-
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const { data, error } = await supabase
-        .from("Post")
-        .select("*")
-        .eq("id", id)
-        .single();
-      if (error) {
-        console.error("데이터 전달 오류:", error);
-      } else {
-        setPostTitle(data.title);
-        setPostDesc(data.description);
-      }
-    };
-    fetchPosts();
-  }, [id])
-
-  // useEffect(() => {
-  //   setPostTitle(title);
-  //   setPostDesc(description);
-  // }, [title, description]);
-
-  const handleModifyPost = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { data, error } = await supabase
-      .from("Post")
-      .update({
+    await supabase.from("Post").insert([
+      {
         title: postTitle,
         description: postDesc,
-      })
-      .eq("id", id);
+        userId: loginUserInfo.id,
+        solve: false,
+      }
+    ])
 
-    if (error) {
-      console.error("포스트 업데이트 오류", error);
-    } else {
-      console.log("포스트 업데이트 성공:", data);
-      navigate(-1); // 수정 후 상세 페이지로 이동
-    }
-  };
+    alert("글이 등록되었습니다!");
+    navigate("/");
+  }
+  
   const handleEditorChange = (newDescription) => {
     setPostDesc(newDescription);
-  };
+  };  
 
   return (
     <>
@@ -78,16 +48,16 @@ const PostModify = () => {
           <StLeftArea>
             <StSubWriteInfo>
               <StUser>
-                <img src={userProfileImg}/>
-                <span>{userName}</span>
+                <img src={loginUserInfo.profileImage}/>
+                <span>{loginUserInfo.username}</span>
               </StUser>
-              <StDate>2024-08-28</StDate>
+              {/* <StDate>2024-08-28</StDate> */}
             </StSubWriteInfo>
           </StLeftArea>
           {/* {loginUser && loginUser.id === posts.writerUserId && ( */}
           <StRightArea>
             <StBtnArea>
-              <StBtn onClick={handleModifyPost}>수정</StBtn>
+              <StBtn onClick={handleSubmit}>등록</StBtn>
             </StBtnArea>
           </StRightArea>
           {/* )} */}
@@ -199,4 +169,4 @@ const StDescription = styled.p``;
 const StTextArea = styled.textarea``;
 const StCodeArea = styled.textarea``;
 
-export default PostModify;
+export default PostRegister;

@@ -11,10 +11,6 @@ const CreateAccount = () => {
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [profileImage, setProfileImage] = useState("");
-
-  const [signUpAuthId, setSignUpAuthId] = useState("");
-  console.log(signUpAuthId);
-
   const { users } = useContext(dataContext);
 
   // 회원가입 함수
@@ -27,13 +23,13 @@ const CreateAccount = () => {
       console.log("error", error);
     } else {
       console.log("success", data.user);
-      setSignUpAuthId(data.user.id);
       // 회원가입 시 자동으로 로그인 됨
       console.log("로그인 =>", data.user.id);
+      signUpPlusHandler(data.user.id);
     }
   };
   // 사용자 정보 업데이트 함수
-  const signUpPlusHandler = async () => {
+  const signUpPlusHandler = async (id) => {
     const { error } = await supabase
       .from("userinfo")
       .update({
@@ -41,7 +37,7 @@ const CreateAccount = () => {
         username: userName,
         profileImage: profileImage,
       })
-      .eq(("id", signUpAuthId));
+      .eq("id", id);
     if (error) {
       console.log("사용자정보업데이트에러", error);
     }
