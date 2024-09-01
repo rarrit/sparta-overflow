@@ -1,30 +1,68 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import supabase from "../services/supabaseClient";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import TuiEditor from "../components/TuiEditor";
 import styled from "styled-components";
+import { useState } from "react";
+import { useEffect } from "react";
+import hljs from "highlight.js";
 
 const PostModify = () => {
   // useLocation 을 사용해서 detail 페이지에서 useNavigate를 통해 전달한 값을 받아옴
   const location = useLocation();
-  const { 
-    title, 
-    description,
-    created_at,
-    userName,
-    userId,
-    userEmail,
-    userProfileImg
-  } = location.state || {};
-  console.log(
-    "???",
-    title, 
-    description,
-    created_at,
-    userName,
-    userId,
-    userEmail,
-    userProfileImg
-  );
+  const navigate = useNavigate();
+  const { id } = useParams();
+  console.log("id => ", id);
+
+  const [postTitle, setPostTitle] = useState('');
+  const [postDesc, setPostDesc] = useState('');
+  const { title, description, userName, userProfileImg } = location.state || {};
+
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const { data, error } = await supabase
+        .from("Post")
+        .select("*")
+        .eq("id", id)
+        .single();
+      if (error) {
+        console.error("데이터 전달 오류:", error);
+      } else {
+        setPostTitle(data.title);
+        setPostDesc(data.description);
+      }
+    };
+    fetchPosts();
+  }, [id])
+
+  // useEffect(() => {
+  //   setPostTitle(title);
+  //   setPostDesc(description);
+  // }, [title, description]);
+
+  const handleModifyPost = async (e) => {
+    e.preventDefault();
+
+    const { data, error } = await supabase
+      .from("Post")
+      .update({
+        title: postTitle,
+        description: postDesc,
+      })
+      .eq("id", id);
+
+    if (error) {
+      console.error("포스트 업데이트 오류", error);
+    } else {
+      console.log("포스트 업데이트 성공:", data);
+      navigate(-1); // 수정 후 상세 페이지로 이동
+    }
+  };
+  const handleEditorChange = (newDescription) => {
+    setPostDesc(newDescription);
+  };
+
   return (
     <>
       <StContainer>
@@ -35,7 +73,7 @@ const PostModify = () => {
         <StInfo>
           {/* 타이틀 */}
           <StTitle>
-            <input type="text" value={title} />
+            <input type="text" value={postTitle} onChange={(e) => setPostTitle(e.target.value)} />
           </StTitle>
           <StLeftArea>
             <StSubWriteInfo>
@@ -49,8 +87,7 @@ const PostModify = () => {
           {/* {loginUser && loginUser.id === posts.writerUserId && ( */}
           <StRightArea>
             <StBtnArea>
-              <StBtn>수정</StBtn>
-              <StBtn>삭제</StBtn>
+              <StBtn onClick={handleModifyPost}>수정</StBtn>
             </StBtnArea>
           </StRightArea>
           {/* )} */}
@@ -58,7 +95,7 @@ const PostModify = () => {
 
         {/* 글 영역 */}
         <StDescArea>
-          <TuiEditor description={description} />
+          <TuiEditor description={postDesc} onChange={handleEditorChange} />
         </StDescArea>
       </StContainer>
     </>
