@@ -104,7 +104,6 @@ const PostDetail = () => {
   return (
     <StContainer>
       {/* 채택 여부 */}
-      <StState />
 
       {/* 타이틀 */}
 
@@ -122,14 +121,14 @@ const PostDetail = () => {
             </StDate>
           </StSubWriteInfo>
         </StLeftArea>
-        {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
-        {loginUser && loginUser.id === post.writerUserId && (
-          <StRightArea>
+
+        <StRightArea>
+          {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
+          <StBtnArea>
             <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
             <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
-            <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
-          </StRightArea>
-        )}
+          </StBtnArea>
+        </StRightArea>
       </StInfo>
 
       {/* 글 영역 */}
@@ -180,29 +179,93 @@ const StContainer = styled.div``;
 
 const StState = styled.div``;
 
-const StTitle = styled.h2``;
+const StInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: 1px solid #333;
+`;
 
-const StSubWriteInfo = styled.div``;
+const StTitle = styled.h2`
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
 
-const StInfo = styled.div``;
+const StLeftArea = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
-const StLeftArea = styled.div``;
-const StUser = styled.div``;
-const StDate = styled.div``;
+const StSubWriteInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.8rem;
+`;
 
-const StRightArea = styled.div``;
+const StUser = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.4rem;
+
+  img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+`;
+const StDate = styled.div`
+  font-size: 0.8rem;
+  line-height: 25px;
+  color: #333;
+`;
+
+const StRightArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+`;
 
 const StStyledCircleCheck = styled(CircleCheck)`
   color: green; /* 초록색 */
+  width: 45px;
+  height: 45px;
 `;
 
 const StStyledCircleX = styled(CircleX)`
   color: red; /* 빨간색 */
+  width: 45px;
+  height: 45px;
 `;
-const StBtnArea = styled.div``;
-const StBtn = styled.button``;
+const StBtnArea = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.3rem;
+`;
 
-const StDescArea = styled.div``;
+const StBtn = styled.button`
+  font-size: 0.8rem;
+  line-height: 25px;
+  color: #333;
+  padding: 0px 8px;
+  border: 1px solid black;
+  border-radius: 5px;
+  transition: 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #000;
+    color: #fff;
+  }
+`;
+
+const StDescArea = styled.div`
+  padding: 15px;
+`;
 const StDescription = styled.p``;
 
 const StCodeBox = styled.div`

@@ -28,27 +28,16 @@ const Main = () => {
       }
     };
     fetchPosts();
-
-    //작성자 정보
-    const fetchAuthor = async (userId) => {
-      const { data, error } = await supabase
-        .from("userinfo")
-        .select("id, created_at, email, username, profileImage")
-        .eq("id", userId)
-        .single();
-      if (error) {
-        console.log("error =>", error);
-      } else {
-        console.log("post data =>", data);
-        setUserInfo(data);
-      }
-      console.log(userInfo);
-    };
   }, []);
 
   const TabData = [
     {
       id: 1,
+      button: "모든 질문",
+      content: <PostListItem posts={posts} userInfo={userInfo} />,
+    },
+    {
+      id: 2,
       button: "답변 전",
       content: (
         <PostListItem
@@ -58,7 +47,7 @@ const Main = () => {
       ),
     },
     {
-      id: 2,
+      id: 3,
       button: "답변 후",
       content: (
         <PostListItem
@@ -78,8 +67,9 @@ const Main = () => {
         {TabData.map((tab) => (
           <StTabButton
             key={tab.id}
-            data-active={activeTab === tab.id ? true : false}
             onClick={() => setActiveTab(tab.id)}
+            active={activeTab === tab.id ? "true" : "false"}
+            // 불린값을 문자열로 주지 않으면 스타일드컴포넌트에서 에러가 납니다!
           >
             {tab.button}
           </StTabButton>
@@ -94,16 +84,29 @@ const Main = () => {
 export default Main;
 
 const StHomePostListTitle = styled.h1`
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
+  margin: 30px 0;
 `;
 const StTabButtonWrap = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
   gap: 1rem;
 `;
 
 const StTabButton = styled.button`
-  background-color: pink;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: ${(props) => (props.active === "true" ? "#444" : "#888")};
+  color: ${(props) => (props.active ? "white" : "#333")};
+  padding: 5px 10px;
+  border-radius: 10px;
+  transition: 0.3s;
   cursor: pointer;
+
+  &:hover {
+    background-color: #444;
+    color: white;
+  }
 `;
