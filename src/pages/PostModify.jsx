@@ -16,8 +16,10 @@ const PostModify = () => {
 
   const [postTitle, setPostTitle] = useState('');
   const [postDesc, setPostDesc] = useState('');
-  const { title, description, userName, userProfileImg } = location.state || {};
+  const [postCode, setPostCode] = useState('');
+  const { userName, userProfileImg } = location.state || {};
 
+  console.log("postCode= >>", postCode)
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -31,15 +33,14 @@ const PostModify = () => {
       } else {
         setPostTitle(data.title);
         setPostDesc(data.description);
+        setPostCode(data.code);
       }
+      console.log("aasdfasfsaa =>>>", data.code);
     };
     fetchPosts();
   }, [id])
 
-  // useEffect(() => {
-  //   setPostTitle(title);
-  //   setPostDesc(description);
-  // }, [title, description]);
+  
 
   const handleModifyPost = async (e) => {
     e.preventDefault();
@@ -49,6 +50,7 @@ const PostModify = () => {
       .update({
         title: postTitle,
         description: postDesc,
+        code: postCode
       })
       .eq("id", id);
 
@@ -66,9 +68,6 @@ const PostModify = () => {
   return (
     <>
       <StContainer>
-        {/* 채택 여부 */}
-        <StState />
-
         {/* 상세정보 */}
         <StInfo>
           {/* 타이틀 */}
@@ -81,32 +80,29 @@ const PostModify = () => {
                 <img src={userProfileImg}/>
                 <span>{userName}</span>
               </StUser>
-              <StDate>2024-08-28</StDate>
             </StSubWriteInfo>
           </StLeftArea>
-          {/* {loginUser && loginUser.id === posts.writerUserId && ( */}
-          <StRightArea>
-            <StBtnArea>
-              <StBtn onClick={handleModifyPost}>수정</StBtn>
-            </StBtnArea>
-          </StRightArea>
-          {/* )} */}
         </StInfo>
 
         {/* 글 영역 */}
         <StDescArea>
+          <StH3>내용 작성</StH3>          
           <TuiEditor description={postDesc} onChange={handleEditorChange} />
+          <StH3>참고 코드 작성</StH3>
+          <StCodeArea value={postCode} onChange={(e)=> setPostCode(e.target.value)} />          
         </StDescArea>
       </StContainer>
+      <StFixedBtnArea>
+        <StModifyBtn onClick={handleModifyPost}>수정</StModifyBtn>
+      </StFixedBtnArea>
     </>
   );
 };
 
 const StContainer = styled.div`
-  padding: 60px 0 30px;
+  padding: 60px 0 80px;
 `;
 
-const StState = styled.div``;
 
 const StTitle = styled.h2`
   width: 100%;
@@ -147,7 +143,6 @@ const StUser = styled.div`
     width: 40px;
     height: 40px;
     border-radius: 100%;
-    background: #e1e1e1;
   }
   span {
     font-size: 18px;
@@ -173,18 +168,41 @@ const StDate = styled.div`
   }
 `;
 
-const StRightArea = styled.div``;
 
-const StBtnArea = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-`;
-const StBtn = styled.button`
+const StFixedBtnArea = styled.div`
+  position:fixed; 
+  width:100%;
+  left:0;
+  bottom:0;
+  padding:15px;
+  display:flex;
+  gap:10px;
+  box-shadow:.5px .5px 10px rgba(0,0,0,.15);
+  z-index:999;
+  background:#fff;
+  button {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    height:35px;
+    border:1px solid #111;
+    border-radius:5px;
+    cursor:pointer;
+    transition:all .15s ease;
+    &:hover {
+      color:#fff;
+      background:#111;      
+    }
+  }
+`
+
+const StModifyBtn = styled.button`
   width: 100px;
   height: 35px;
   font-weight: 500;
   text-align: center;
+  background:#fff;
   border: 1px solid #666;
   border-radius: 5px;
   + button {
@@ -195,8 +213,20 @@ const StBtn = styled.button`
 const StDescArea = styled.div`
   padding: 0 20px;
 `;
-const StDescription = styled.p``;
-const StTextArea = styled.textarea``;
-const StCodeArea = styled.textarea``;
+const StCodeArea = styled.textarea`
+  width:100%;
+  min-height:200px;
+  border-radius:5px;
+  border:1px solid #dadde6;
+  padding:15px;
+`;
+const StH3 = styled.h3`  
+  font-size:18px;
+  font-weight:bold;
+  color:#656565;
+  border-bottom:1px solid #e1e1e1;
+  margin:40px 0 15px;
+  padding:0 0 6px;
+`
 
 export default PostModify;
