@@ -102,6 +102,21 @@ const PostWrite = () => {
     setEditComment(currentComment);
   };
   console.log(comments);
+
+  // 댓글 채택
+  const selectHandle = async (id) => {
+    const { data, error } = await supabase
+      .from("Comment")
+      .upsert({ id: id, isChosen: true })
+      .select();
+    // 채택 후 댓글 목록 갱신
+    if (error) {
+      console.log("업데이트 에러 =>", error);
+    } else {
+      fetchComments();
+    }
+  };
+
   return (
     <StContainer>
       <ItemContainer>
@@ -139,6 +154,12 @@ const PostWrite = () => {
                       </button>
                     </>
                   )}
+                  <button
+                    onClick={() => selectHandle(newComment.id)}
+                    disabled={newComment.isChosen}
+                  >
+                    {newComment.isChosen ? "채택된 답변" : "채택하기"}
+                  </button>
                 </>
               )}
             </li>
