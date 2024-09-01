@@ -7,15 +7,17 @@ export const PostProvider = ({ children }) => {
 
   const addTestListHandler = () => {
     console.log("함수 테스트");
-  }
+  };
 
-  return(
-    <postContext.Provider value={{
-      testList,
-      setTestList,
-      addTestListHandler
-    }}>
+  return (
+    <postContext.Provider
+      value={{
+        testList,
+        setTestList,
+        addTestListHandler,
+      }}
+    >
       {children}
     </postContext.Provider>
-  )
-}
+  );
+};

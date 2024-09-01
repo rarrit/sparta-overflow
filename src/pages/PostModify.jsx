@@ -9,10 +9,10 @@ const PostModify = () => {
   const { title, description } = location.state || {};
   console.log("title =>", title, "description =>", description);
   return (
-    <>      
+    <>
       <StContainer>
         {/* 채택 여부 */}
-        <StState />        
+        <StState />
 
         {/* 상세정보 */}
         <StInfo>
@@ -20,7 +20,7 @@ const PostModify = () => {
           <StTitle>
             <input type="text" value={title} />
           </StTitle>
-          <StLeftArea>            
+          <StLeftArea>
             <StSubWriteInfo>
               <StUser>
                 <img />
@@ -34,91 +34,87 @@ const PostModify = () => {
             <StBtnArea>
               <StBtn>수정</StBtn>
               <StBtn>삭제</StBtn>
-            </StBtnArea>            
+            </StBtnArea>
           </StRightArea>
           {/* )} */}
         </StInfo>
 
         {/* 글 영역 */}
         <StDescArea>
-          <TuiEditor 
-            description={description}
-          />
+          <TuiEditor description={description} />
         </StDescArea>
       </StContainer>
     </>
-  )
+  );
 };
 
 const StContainer = styled.div`
-  padding:60px 0 30px;
+  padding: 60px 0 30px;
 `;
 
 const StState = styled.div``;
 
 const StTitle = styled.h2`
-  width:100%;
-  font-size:20px;
-  font-weight:600p;
-  color:#000;
-  margin:0 0 30px;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 600p;
+  color: #000;
+  margin: 0 0 30px;
   input {
-    width:100%;
-    height:50px;
-    padding:0 20px;
-    border:1px solid #dadde6;
-    border-radius:10px;
+    width: 100%;
+    height: 50px;
+    padding: 0 20px;
+    border: 1px solid #dadde6;
+    border-radius: 10px;
   }
 `;
 
 const StSubWriteInfo = styled.div`
-  display:flex;
-  align-items:center;
-  gap:20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 `;
 
 const StInfo = styled.div`
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:space-between;
-  border-bottom:1px solid #000;
-  margin-bottom:30px;
-  padding:0 0 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border-bottom: 1px solid #000;
+  margin-bottom: 30px;
+  padding: 0 0 10px;
 `;
 
-const StLeftArea = styled.div`
-
-`;
+const StLeftArea = styled.div``;
 const StUser = styled.div`
-  display:flex;
-  align-items:center;
-  gap:10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   img {
-    width:40px;
-    height:40px;
-    border-radius:100%;
-    background:#e1e1e1;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background: #e1e1e1;
   }
   span {
-    font-size:18px;
-    font-weight:400;
-    color:#333;
+    font-size: 18px;
+    font-weight: 400;
+    color: #333;
   }
 `;
 const StDate = styled.div`
-  position:relative;
-  font-size:18px;
-  font-weight:400;
-  color:#959595;
+  position: relative;
+  font-size: 18px;
+  font-weight: 400;
+  color: #959595;
   &:before {
-    content:'';
-    position:absolute;    
-    top:50%;
-    left:-10px;
-    width:3px;
-    height:3px;
-    background:#666;
-    border-radius:100%;
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    width: 3px;
+    height: 3px;
+    background: #666;
+    border-radius: 100%;
     transform: translateY(-50%);
   }
 `;
@@ -126,24 +122,24 @@ const StDate = styled.div`
 const StRightArea = styled.div``;
 
 const StBtnArea = styled.div`
-  display:flex;
-  align-items:center;
-  gap:5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 const StBtn = styled.button`
-  width:100px;
-  height:35px;
-  font-weight:500;
-  text-align:center;
-  border:1px solid #666;
-  border-radius:5px;
+  width: 100px;
+  height: 35px;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid #666;
+  border-radius: 5px;
   + button {
-    background:#333;
-    color:#fff;
+    background: #333;
+    color: #fff;
   }
 `;
 const StDescArea = styled.div`
-  padding:0 20px;
+  padding: 0 20px;
 `;
 const StDescription = styled.p``;
 const StTextArea = styled.textarea``;

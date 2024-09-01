@@ -28,7 +28,6 @@ const PostDetail = () => {
   };
 
   //삭제버튼
-  // 게시글 삭제 버튼 핸들러
   const handleDeletePost = async (postId) => {
     let reallyDelete = confirm("정말 삭제하시겠습니까?");
     if (reallyDelete === true) {
@@ -93,9 +92,12 @@ const PostDetail = () => {
     fetchPosts();
   }, [id]);
 
-  console.log(userInfo.username);
-  //코드 하이라이트
-  // const highlightedCode = hljs.highlight().value;
+
+  // 임시 버튼
+  const writeCommentHandel = () => {
+    navigate(`/write/${id}`);
+  };
+
 
   console.log("user=>", loginUser);
   console.log(userInfo);
@@ -136,6 +138,7 @@ const PostDetail = () => {
         <pre>{post.code}</pre>
         {/* <StTextArea></StTextArea>
         <StCodeArea></StCodeArea> */}
+        <button onClick={writeCommentHandel}>댓글</button>
       </StDescArea>
     </StContainer>
   );
