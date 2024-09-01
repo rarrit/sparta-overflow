@@ -56,13 +56,6 @@ const PostRegister = () => {
               {/* <StDate>2024-08-28</StDate> */}
             </StSubWriteInfo>
           </StLeftArea>
-          {/* {loginUser && loginUser.id === posts.writerUserId && ( */}
-          <StRightArea>
-            <StBtnArea>
-              <StBtn onClick={handleSubmit}>등록</StBtn>
-            </StBtnArea>
-          </StRightArea>
-          {/* )} */}
         </StInfo>
 
         {/* 글 영역 */}
@@ -71,10 +64,12 @@ const PostRegister = () => {
           <TuiEditor description={postDesc} onChange={handleEditorChange} />
           <StH3>참고 코드 작성</StH3>
           <StCodeArea value={postCode} onChange={(e)=> setPostCode(e.target.value)} />
-        </StDescArea>
-        
-        
+        </StDescArea>              
       </StContainer>
+
+      <StFixedBtnArea>
+        <StRegiBtn onClick={handleSubmit}>수정</StRegiBtn>
+      </StFixedBtnArea>
     </>
   );
 };
@@ -186,5 +181,44 @@ const StH3 = styled.h3`
   margin:40px 0 15px;
   padding:0 0 6px;
 `
+const StFixedBtnArea = styled.div`
+  position:fixed; 
+  left:0;
+  bottom:0;  
+  display:flex;
+  width:100%;
+  gap:10px;
+  box-shadow:.5px .5px 10px rgba(0,0,0,.15);
+  padding:15px;
+  button {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    height:35px;
+    border:1px solid #111;
+    border-radius:5px;
+    cursor:pointer;
+    transition:all .15s ease;
+    &:hover {
+      color:#fff;
+      background:#111;      
+    }
+  }
+`
+
+const StRegiBtn = styled.button`
+  width: 50%;
+  height: 35px;
+  font-weight: 500;
+  text-align: center;
+  background:#fff;
+  border: 1px solid #666;
+  border-radius: 5px;
+  + button {
+    background: #333;
+    color: #fff;
+  }
+`;
 
 export default PostRegister;
