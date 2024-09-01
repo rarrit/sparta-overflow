@@ -124,10 +124,12 @@ const PostDetail = () => {
 
         <StRightArea>
           {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
-          <StBtnArea>
-            <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
-            <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
-          </StBtnArea>
+          {loginUser && loginUser.id === post.writerUserId && (
+            <StBtnArea>
+              <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
+              <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
+            </StBtnArea>
+          )}
         </StRightArea>
       </StInfo>
 
