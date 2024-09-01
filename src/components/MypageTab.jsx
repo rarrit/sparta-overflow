@@ -5,7 +5,7 @@ import { CircleCheck, CircleX } from "lucide-react";
 
 const MypageTab = () => {
   const [activeTab, setActiveTab] = useState("작성한글");
-  const { profile, posts, comment } = useContext(mypageDataContext);
+  const { profile, posts, comment, myComment } = useContext(mypageDataContext);
   console.log("posts", posts);
 
   const OnClickTabHandler = (tabTitle) => {

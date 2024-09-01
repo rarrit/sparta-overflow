@@ -7,39 +7,48 @@ import { dataContext } from "../contexts/DataContext";
 
 export const mypageDataContext = createContext();
 
-const CommendMockData = [
-  {
-    created_at: "2024-08-30T06:38:33.417543+00:00",
-    email: "test@test.com",
-    id: "beea1b96-b9dc-402f-a8a1-7b6ee95f1f1a",
-    password: null,
-    profileImage:
-      "https://cdn.pixabay.com/photo/2021/07/25/08/03/account-6491185_1280.png",
-    username: "홍길",
-  },
-];
+// const CommendMockData = [
+//   {
+//     created_at: "2024-08-30T06:38:33.417543+00:00",
+//     email: "test@test.com",
+//     id: "beea1b96-b9dc-402f-a8a1-7b6ee95f1f1a",
+//     password: null,
+//     profileImage:
+//       "https://cdn.pixabay.com/photo/2021/07/25/08/03/account-6491185_1280.png",
+//     username: "홍길",
+//   },
+// ];
 
 const Mypage = () => {
-  const { loginUserInfo, comments } = useContext(dataContext); //로그인한 user정보
+  const { loginUserInfo } = useContext(dataContext); //로그인한 user정보
   const [profile, setProfile] = useState([]); //로그인한 유저정보 저장
   const [posts, setPosts] = useState([]); //포스트 정보 저장
+  const [allComment, setAllComment] = useState([]); //답변 전체데이터 저장
   const [comment, setComment] = useState([]); //답변 정보 저장
 
+  const loginUserInfoId = loginUserInfo.id;
   console.log("로그인유저데이터_확인", loginUserInfo);
-  console.log("커멘드데이터_확인", CommendMockData);
+  console.log("로그인유저 아이디", loginUserInfoId);
+  // console.log("커멘드데이터_확인", CommendMockData);
+  console.log("답변 All data", allComment);
+  // console.log("답변 All data-id", allcomment.id);
+  // console.log("내가 답변한 post", comment);
+  const findMyComment = (allComment, loginUserInfoId) => {
+    return allComment.filter((data) => data.writerUserId === loginUserInfoId);
+  };
+  const myComment = findMyComment(allComment, loginUserInfoId);
+  // console.log("내코멘트?????", myComment);
 
   //NOTE - 수퍼베이스 데이터 가져오기
+  //답변테이블 : 답변데이터 전체 가져오기
   useEffect(() => {
     const fetchComment = async () => {
-      const { data, error } = await supabase
-        .from("Comment")
-        .select("*")
-        .eq("writerUserId", CommendMockData.id);
+      const { data, error } = await supabase.from("Comment").select("*");
       if (error) {
         console.error("ErrorError :", error);
       } else {
-        console.log("커멘트 데이터:", data);
-        setComment(data);
+        console.log("답변 All data:", data);
+        setAllComment(data);
       }
     };
     fetchComment();
@@ -97,6 +106,7 @@ const Mypage = () => {
         setPosts,
         comment,
         setComment,
+        myComment,
       }}
     >
       <StMypageContainer>

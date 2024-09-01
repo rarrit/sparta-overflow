@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { mypageDataContext } from "../pages/Mypage";
 
 const ProfileInfo = () => {
-  const { profile, posts } = useContext(mypageDataContext);
-
+  const { profile, posts, myComment } = useContext(mypageDataContext);
+  console.log("내코멘트?????", myComment);
   //기본이미지
   const defaultProfileImg =
     "https://i.namu.wiki/i/N7V1HbWE3OQETbgT61_lZaUlUywQLkh4ulOYLtJI4EKG1oQucfqexvNzzEbrcJ_8L-rVHQBDhzBcy5IFIvJ0iQ4sXfVnAiuK_GoRwTYG1Qgx_XNMJUWPHYrVbuWxXRoizxnY4fbhcIuNwBtLYomsyg.webp";
@@ -35,8 +35,8 @@ const ProfileInfo = () => {
         })}
 
         <StPostingCountContainer>
-          <div>post : {posts.length}</div>
-          <div>comment</div>
+          <div>post : {Array.isArray(posts) ? posts.length : 0}</div>
+          <div>comment : {Array.isArray(myComment) ? myComment.length : 0}</div>
           <div>like</div>
         </StPostingCountContainer>
       </StUserInfoContainer>
