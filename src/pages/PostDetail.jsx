@@ -147,6 +147,7 @@ const StSubWriteInfo = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.8rem;
+  margin: 0;
 `;
 
 const StUser = styled.div`
