@@ -9,11 +9,13 @@ const PostWrite = () => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [userId, setUserId] = useState();
-  const { isLogin } = useContext(dataContext);
+  const [usernames, setUsernames] = useState({});
+  const { isLogin, loginUserInfo } = useContext(dataContext);
   const { id: postId } = useParams();
   const [editingId, setEditingId] = useState(null);
   const [editComment, setEditComment] = useState("");
-
+  const [authorId, setAuthorId] = useState(null);
+  // console.log(loginUserInfo);
   useEffect(() => {
     const getUserId = async () => {
       const auth = await supabase.auth.getUser();
@@ -27,6 +29,21 @@ const PostWrite = () => {
   // 그래서 supavase에서 getuser로 따로 가져왔어요... auth해서... 아놔 ㅋㅋㅋㅋ
   // 손톱 잘랐더니 오타가 아주그냥
 
+  const getPostInfo = async () => {
+    const { data, error } = await supabase
+      .from("Post")
+      .select("userId")
+      .eq("id", postId);
+    if (error) {
+      console.log("가져오기 에러 =>", error);
+      return;
+    }
+    setAuthorId(data[0].userId);
+    // getPostInfo();
+  };
+
+  console.log("authorId =>", authorId);
+  console.log("userId =>", userId);
   // 댓글 목록을 가져오는 함수
   const fetchComments = async () => {
     const { data, error } = await supabase
@@ -41,7 +58,8 @@ const PostWrite = () => {
   };
 
   useEffect(() => {
-    fetchComments(); // 컴포넌트가 마운트될 때 댓글을 가져옴
+    fetchComments();
+    getPostInfo(); // 컴포넌트가 마운트될 때 댓글을 가져옴
   }, [postId]);
 
   // 댓글을 추가하는 함수
@@ -50,6 +68,7 @@ const PostWrite = () => {
       const { data, error } = await supabase.from("Comment").insert({
         comment,
         writerUserId: userId,
+        username: loginUserInfo.username,
         postId,
       });
       if (error) {
@@ -125,7 +144,7 @@ const PostWrite = () => {
           {comments.map((newComment) => (
             <li key={newComment.id}>
               <div>{handleTimeCalculate(newComment.created_at)}</div>
-              <div>작성자: {newComment.writerUserId}</div>
+              <div>작성자: {newComment.username}</div>
               {editingId === newComment.id ? (
                 <>
                   <textarea
@@ -154,12 +173,22 @@ const PostWrite = () => {
                       </button>
                     </>
                   )}
-                  <button
-                    onClick={() => selectHandle(newComment.id)}
-                    disabled={newComment.isChosen}
-                  >
-                    {newComment.isChosen ? "채택된 답변" : "채택하기"}
-                  </button>
+
+                  {/* {authorId === userId && (
+                    <button
+                      onClick={() => selectHandle(newComment.id)}
+                      disabled={newComment.isChosen}
+                    >
+                      {newComment.isChosen ? "채택된 답변" : "채택하기"}
+                    </button>
+                  )} */}
+
+                  {authorId === userId && !newComment.isChosen && (
+                    <button onClick={() => selectHandle(newComment.id)}>
+                      채택하기
+                    </button>
+                  )}
+                  {newComment.isChosen && <p>채택된 답변</p>}
                 </>
               )}
             </li>

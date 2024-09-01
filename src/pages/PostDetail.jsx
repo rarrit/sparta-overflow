@@ -11,7 +11,6 @@ import hljs from "highlight.js";
 
 const PostDetail = () => {
   const navigate = useNavigate();
-
   //수정버튼
   const handleEditPostMove = (id) => {
     navigate(`/modify/${id}`, {
@@ -92,12 +91,10 @@ const PostDetail = () => {
     fetchPosts();
   }, [id]);
 
-
   // 임시 버튼
   const writeCommentHandel = () => {
     navigate(`/write/${id}`);
   };
-
 
   console.log("user=>", loginUser);
   console.log(userInfo);
