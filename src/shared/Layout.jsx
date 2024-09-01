@@ -13,7 +13,9 @@ function Header() {
 
   const FocusSearchPopup = (e) => {
     e.preventDefault();
-    navigate("/Search", { state: { searchData: e.target.value } });
+    navigate("/Search", {
+      state: { searchData: e.target.value },
+    });
     setSearchData(e.target.value);
   };
 

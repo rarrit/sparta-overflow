@@ -9,7 +9,6 @@ const Search = () => {
   const location = useLocation();
   const searchData = location.state?.searchData || "";
   const [searchPost, setSearchPost] = useState([]);
-  // console.log("posts정보??", searchPost);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +28,7 @@ const Search = () => {
 
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
+    // setSearchData(""); // 검색어 초기화(보수중)
   };
 
   return (
