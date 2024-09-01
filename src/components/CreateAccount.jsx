@@ -11,9 +11,6 @@ const CreateAccount = () => {
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [profileImage, setProfileImage] = useState("");
-
-  // const [signUpAuthId, setSignUpAuthId] = useState("");
-
   const { users } = useContext(dataContext);
 
   // 회원가입 함수
