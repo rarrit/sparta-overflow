@@ -34,7 +34,7 @@ const Router = () => {
           <Route element={<PrivateRoute />}>
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/register" element={<PostRegister/>} />
-            <Route path="/write/:id" element={<PostWrite />} />
+            {/* <Route path="/write/:id" element={<PostWrite />} /> */}
             <Route path="/modify/:id" element={<PostModify />} />
           </Route>
           {/* 비로그인 상태애서 접속 가능 */}

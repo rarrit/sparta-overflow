@@ -10,6 +10,7 @@ import hljs from "highlight.js";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { railscasts } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import PostWrite from "./PostWrite";
 
 const PostDetail = () => {
   const navigate = useNavigate();
@@ -172,7 +173,9 @@ const PostDetail = () => {
           </SyntaxHighlighter>
         </StCodeBox>
       </StDescArea>
-      <button onClick={writeCommentHandel}>댓글</button>
+      
+      {/* 댓글 컴포넌트 */}
+      <PostWrite/>
     </StContainer>
   );
 };
