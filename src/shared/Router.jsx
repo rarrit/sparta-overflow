@@ -17,6 +17,7 @@ import PostModify from "../pages/PostModify";
 import { useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
 import Search from "../pages/Search";
+import PostRegister from "../pages/PostRegister";
 
 const Router = () => {
   return (
@@ -32,6 +33,7 @@ const Router = () => {
           {/* 로그인 상태에서 접속 가능 */}
           <Route element={<PrivateRoute />}>
             <Route path="/mypage" element={<Mypage />} />
+            <Route path="/register" element={<PostRegister/>} />
             <Route path="/write/:id" element={<PostWrite />} />
             <Route path="/modify/:id" element={<PostModify />} />
           </Route>
