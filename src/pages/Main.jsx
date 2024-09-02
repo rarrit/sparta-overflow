@@ -6,29 +6,62 @@ import supabase from "../services/supabaseClient";
 const Main = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [latestPostDate, setLatestPostDate] = useState(null); // 가장 최신 게시글의 날짜
+  const [morePosts, setMorePosts] = useState(true); // 더 많은 게시글이 있는지 확인
+  const [activeTab, setActiveTab] = useState(1);
+
+  const fetchPosts = async () => {
+    // 게시글 리스트 정보
+    const query = supabase
+      .from("Post")
+      .select(
+        `*, userinfo:userId (
+          username,
+          profileImage
+        ),
+        Comment:Comment!postId (id)`
+      )
+      .order("created_at", { ascending: false })
+      .limit(10);
+
+    // 날짜가 설정되어 있으면, 해당 날짜 이전의 게시글을 가져옴
+    if (latestPostDate) {
+      query.lt("created_at", latestPostDate);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.log("무슨에러? =>", error);
+    } else {
+      console.log("post data =>", data);
+
+      // 최신 게시글의 날짜 업데이트
+      if (data.length > 0) {
+        setLatestPostDate(data[data.length - 1].created_at);
+      }
+
+      // 게시글이 더 있는지 확인하고 상태저장 (boolean값)
+      setMorePosts(data.length === 10);
+
+      // 댓글 갯수를 post객체 안에 commentCount 속성으로 넣어줌
+      const commentCount = data.map((post) => ({
+        ...post,
+        commentCount: post.Comment.length,
+      }));
+
+      // 추가로 가져온 게시글을 기존에 표시되던 것과 합쳐서 저장
+      setPosts((prevPosts) => [...prevPosts, ...commentCount]);
+    }
+  };
 
   useEffect(() => {
-    //게시글 리스트 정보
-    const fetchPosts = async () => {
-      const { data, error } = await supabase.from("Post")
-        .select(`*, userinfo:userId (
-            username,
-            profileImage
-          )`);
-      if (error) {
-        console.log("error =>", error);
-      } else {
-        console.log("post data =>", data);
-        setPosts(data);
-
-        //작성자 정보 로드
-        if (data.userId) {
-          fetchAuthor(data.userId);
-        }
-      }
-    };
     fetchPosts();
   }, []);
+
+  const loadMorePost = () => {
+    fetchPosts();
+  };
 
   const TabData = [
     {
@@ -58,7 +91,6 @@ const Main = () => {
     },
   ];
 
-  const [activeTab, setActiveTab] = useState(TabData[0].id);
   return (
     <>
       <StHomePostListTitle>Latest post</StHomePostListTitle>
@@ -69,7 +101,6 @@ const Main = () => {
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             active={activeTab === tab.id ? "true" : "false"}
-            // 불린값을 문자열로 주지 않으면 스타일드컴포넌트에서 에러가 납니다!
           >
             {tab.button}
           </StTabButton>
@@ -77,6 +108,9 @@ const Main = () => {
       </StTabButtonWrap>
 
       <div>{TabData.find((a) => a.id === activeTab)?.content}</div>
+      {morePosts && (
+        <StLoadMoreButton onClick={loadMorePost}>더 보기</StLoadMoreButton>
+      )}
     </>
   );
 };
@@ -99,7 +133,7 @@ const StTabButton = styled.button`
   font-size: 18px;
   font-weight: bold;
   background-color: ${(props) => (props.active === "true" ? "#444" : "#888")};
-  color: ${(props) => (props.active ? "white" : "#333")};
+  color: ${(props) => (props.active === "true" ? "white" : "#333")};
   padding: 5px 10px;
   border-radius: 10px;
   transition: 0.3s;
@@ -109,4 +143,11 @@ const StTabButton = styled.button`
     background-color: #444;
     color: white;
   }
+`;
+
+const StLoadMoreButton = styled.button`
+  width: 100%;
+  background-color: black;
+  cursor: pointer;
+  color: white;
 `;
