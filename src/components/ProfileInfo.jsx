@@ -1,16 +1,12 @@
 import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import supabase from "../services/supabaseClient";
-import { mypageDataContext } from "../pages/Mypage";
+import { MypageDataContext } from "../pages/Mypage";
 import { dataContext } from "../contexts/DataContext";
 import "../style/mypage.css";
 
 const ProfileInfo = () => {
-  const { profile, posts, myComment } = useContext(mypageDataContext);
-
-  //기본이미지
-  const defaultProfileImg =
-    "https://i.namu.wiki/i/N7V1HbWE3OQETbgT61_lZaUlUywQLkh4ulOYLtJI4EKG1oQucfqexvNzzEbrcJ_8L-rVHQBDhzBcy5IFIvJ0iQ4sXfVnAiuK_GoRwTYG1Qgx_XNMJUWPHYrVbuWxXRoizxnY4fbhcIuNwBtLYomsyg.webp";
+  const { profile, posts, myComment } = useContext(MypageDataContext);
 
   const commentCount = myComment.filter((comment) => comment.isChosen).length;
 
@@ -21,7 +17,6 @@ const ProfileInfo = () => {
           return (
             <div key={user.id}>
               <h2>{`${user.username}'s Page`}</h2>
-              {/* <p>{user.email}</p> */}
             </div>
           );
         })}
@@ -30,12 +25,7 @@ const ProfileInfo = () => {
         <StProfileImgContainer>
           <StProfileImgBox>
             {profile.map((user) => {
-              return (
-                <img
-                  key={user.id}
-                  src={user.profileImage || defaultProfileImg} //null이면 기본이미지출력
-                />
-              );
+              return <img key={user.id} src={user.profileImage} />;
             })}
           </StProfileImgBox>
         </StProfileImgContainer>
@@ -43,10 +33,12 @@ const ProfileInfo = () => {
           <div>
             <h3>POST</h3>
             <p>{Array.isArray(posts) ? posts.length : 0}</p>
+            {/* posts.length ?? 0 */}
           </div>
           <div>
             <h3>COMMENT</h3>
             <p>{Array.isArray(myComment) ? myComment.length : 0}</p>
+            {/* myComment.length ?? 0 */}
           </div>
           <div>
             <h3>ADORT</h3>
@@ -83,6 +75,7 @@ const StPostingCountContainer = styled.div`
   justify-content: space-around;
   width: 50%;
   gap: 20px;
+  align-items: center;
 
   & div {
     display: flex;
@@ -91,13 +84,14 @@ const StPostingCountContainer = styled.div`
 
     h3 {
       font-weight: 900;
-      font-size: 24px;
+      font-size: 34px;
       color: #000;
     }
     p {
       font-weight: 300;
-      font-size: 24px;
+      font-size: 34px;
       color: #000;
+      margin-top: 10px;
     }
   }
 `;

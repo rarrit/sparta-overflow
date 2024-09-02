@@ -11,6 +11,8 @@ export const DataProvider = ({ children }) => {
   const [loginId, setLoginId] = useState("");
   // 로그인 페이지에서 로그인을 하면 loginUserInfo에 로그인한 유저의 정보가 저장됨
   const [loginUserInfo, setLoginUserInfo] = useState("");
+  //검색어 정보
+  const [searchData, setSearchData] = useState("");
 
   // 로그인한 유저 정보 가져오기
   useEffect(() => {
@@ -78,6 +80,8 @@ export const DataProvider = ({ children }) => {
         logout,
         loginUserInfo,
         setLoginUserInfo,
+        searchData,
+        setSearchData,
       }}
     >
       {children}

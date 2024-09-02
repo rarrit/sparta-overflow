@@ -5,14 +5,13 @@ import logo from "../assets/image/logo.jpeg";
 import { useState, useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
 import { useNavigate } from "react-router-dom";
-import Search from "../pages/Search";
 
 function Header() {
   const navigate = useNavigate();
-  const { isLogin, logout } = useContext(dataContext);
-  const [searchData, setSearchData] = useState("");
+  const { isLogin, logout, searchData, setSearchData } =
+    useContext(dataContext);
 
-  const hidePaths = ['/', '/search'];
+  const hidePaths = ["/", "/search"];
   // 경로 패턴이 일치하는지 확인
   const shouldHideTag = hidePaths.some((path) =>
     matchPath(path, location.pathname)
@@ -20,9 +19,7 @@ function Header() {
 
   const FocusSearchPopup = (e) => {
     e.preventDefault();
-    navigate("/Search", {
-      state: { searchData: e.target.value },
-    });
+    navigate("/Search");
     setSearchData(e.target.value);
   };
 
@@ -30,13 +27,17 @@ function Header() {
     <>
       <StHeader>
         <div className="inner">
-          <StLogo>
+          <StLogo
+            onClick={() => {
+              setSearchData("");
+            }}
+          >
             <Link to="/">
               <img src={logo} />
               spoon <span>overflow</span>
             </Link>
           </StLogo>
-          { shouldHideTag && (
+          {shouldHideTag && (
             <StSearchForm>
               <div className="search">
                 <input
@@ -48,8 +49,8 @@ function Header() {
                 <button type="button">검색</button>
               </div>
             </StSearchForm>
-          )}   
-          
+          )}
+
           <StBtnArea>
             {isLogin ? (
               <>
@@ -322,7 +323,7 @@ const StFixedBtnArea = styled.div`
     justify-content: center;
     width: 80px;
     height: 50px;
-    color:#fff;
+    color: #fff;
     border: 1px solid #111;
     border-radius: 5px;
     cursor: pointer;
