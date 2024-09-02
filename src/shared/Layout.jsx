@@ -5,6 +5,7 @@ import logo from "../assets/image/logo.jpeg";
 import { useState, useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
 import { useNavigate } from "react-router-dom";
+import Search from "../pages/Search";
 
 function Header() {
   const navigate = useNavigate();
