@@ -4,33 +4,26 @@ import supabase from "../services/supabaseClient";
 
 export const dataContext = createContext();
 export const DataProvider = ({ children }) => {
-  const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
   // 로그인 관련 Hook
   const [isLogin, changeLogin] = useState(false);
   const [loginId, setLoginId] = useState("");
-  const [loginUserInfo, setLoginUserInfo] = useState("");
   // 로그인 페이지에서 로그인을 하면 loginUserInfo에 로그인한 유저의 정보가 저장됨
-  console.log("loginUserInfo=>", loginUserInfo);
-  console.log("isLogin=>", isLogin);
+  const [loginUserInfo, setLoginUserInfo] = useState("");
 
-  // 이미 가입한 유저 정보 가져오기
+  // 로그인한 유저 정보 가져오기
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.from("userinfo").select("*");
+      const { data, error } = await supabase
+        .from("userinfo")
+        .select()
+        .eq("id", loginId);
       if (error) {
-        console.log("user data error =>", error);
       } else {
-        console.log("user data유저데이터불러오기 =>", data);
-        setUsers(data);
         // 로그인 시 사용자 정보 저장
         if (isLogin) {
-          const selectLoginUserInfo = data.filter(
-            (user) => user.id === loginId
-          );
-          console.log("사용자정보=>", ...selectLoginUserInfo);
-          setLoginUserInfo(...selectLoginUserInfo);
+          setLoginUserInfo(...data);
         }
       }
     };
@@ -75,8 +68,6 @@ export const DataProvider = ({ children }) => {
   return (
     <dataContext.Provider
       value={{
-        users,
-        setUsers,
         posts,
         setPosts,
         comments,

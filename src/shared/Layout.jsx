@@ -19,6 +19,8 @@ function Header() {
     setSearchData(e.target.value);
   };
 
+  const searchDisplay = useLocation().pathname;
+
   return (
     <>
       <StHeader>
@@ -29,27 +31,25 @@ function Header() {
               spoon <span>overflow</span>
             </Link>
           </StLogo>
-          <StSearchForm>
-            <div className="search">
-              <input
-                type="text"
-                value={searchData}
-                placeholder="검색어를 입력해주세요."
-                onChange={FocusSearchPopup}
-              />
-              <button type="button">검색</button>
-            </div>
-          </StSearchForm>
+          {searchDisplay === "/" ? (
+            <StSearchForm>
+              <div className="search">
+                <input
+                  type="text"
+                  value={searchData}
+                  placeholder="검색어를 입력해주세요."
+                  onChange={FocusSearchPopup}
+                />
+                <button type="button">검색</button>
+              </div>
+            </StSearchForm>
+          ) : (
+            <></>
+          )}
           <StBtnArea>
             {isLogin ? (
               <>
-                <button
-                  onClick={() => {
-                    logout();
-                    navigate("/sign#login");
-                  }}
-                  className="btnLineBlack"
-                >
+                <button onClick={() => logout()} className="btnLineBlack">
                   Logout
                 </button>
                 <Link to="/mypage" className="btnBlack">

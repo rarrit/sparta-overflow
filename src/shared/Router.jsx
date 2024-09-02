@@ -10,17 +10,21 @@ import Main from "../pages/Main";
 import Login from "../pages/Login";
 import Mypage from "../pages/Mypage";
 import PostDetail from "../pages/PostDetail";
-import PostWrite from "../pages/PostWrite";
 import CodeBlockExample from "../pages/CodeBlockExample";
 import SupaBaseExample from "../pages/SupaBaseExample";
 import PostModify from "../pages/PostModify";
 import { useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
 import Search from "../pages/Search";
+import PostRegister from "../pages/PostRegister";
+
+const getLogin = () => {
+  const { isLogin } = useContext(dataContext);
+  return isLogin;
+};
 
 const AuthRoute = () => {
-  const { isLogin } = useContext(dataContext);
-  if (isLogin) {
+  if (getLogin()) {
     alert("이미 로그인된 상태입니다");
     return <Navigate to="/" />;
   }
@@ -28,8 +32,7 @@ const AuthRoute = () => {
 };
 
 const PrivateRoute = () => {
-  const { isLogin } = useContext(dataContext);
-  if (!isLogin) {
+  if (!getLogin()) {
     alert("로그인을 해주세요");
     return <Navigate to="/sign#login" />;
   }
