@@ -15,7 +15,7 @@ const PostWrite = () => {
   const [editingId, setEditingId] = useState(null);
   const [editComment, setEditComment] = useState("");
   const [authorId, setAuthorId] = useState(null);
-  // console.log(loginUserInfo);
+
   useEffect(() => {
     const getUserId = async () => {
       const auth = await supabase.auth.getUser();
@@ -24,10 +24,6 @@ const PostWrite = () => {
     };
     getUserId();
   }, []);
-
-  // 제가 userid를 writerUserId 이걸 가져다가 썼는데 이게 뭐라해야하지.. userid를 제대로 못 가져온다고 해야하나 네넹
-  // 그래서 supavase에서 getuser로 따로 가져왔어요... auth해서... 아놔 ㅋㅋㅋㅋ
-  // 손톱 잘랐더니 오타가 아주그냥
 
   const getPostInfo = async () => {
     const { data, error } = await supabase
@@ -39,11 +35,8 @@ const PostWrite = () => {
       return;
     }
     setAuthorId(data[0].userId);
-    // getPostInfo();
   };
 
-  console.log("authorId =>", authorId);
-  console.log("userId =>", userId);
   // 댓글 목록을 가져오는 함수
   const fetchComments = async () => {
     const { data, error } = await supabase
@@ -173,16 +166,6 @@ const PostWrite = () => {
                       </button>
                     </>
                   )}
-
-                  {/* {authorId === userId && (
-                    <button
-                      onClick={() => selectHandle(newComment.id)}
-                      disabled={newComment.isChosen}
-                    >
-                      {newComment.isChosen ? "채택된 답변" : "채택하기"}
-                    </button>
-                  )} */}
-
                   {authorId === userId && !newComment.isChosen && (
                     <button onClick={() => selectHandle(newComment.id)}>
                       채택하기
