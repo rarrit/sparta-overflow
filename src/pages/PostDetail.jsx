@@ -20,6 +20,36 @@ const PostDetail = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [post, setPosts] = useState([]);
 
+  useEffect(() => {
+    //게시글 정보 & 작성자 정보 & 댓글 갯수
+    const fetchPostAndAuthorAndComment = async () => {
+      const { data, error } = await supabase
+        .from("Post")
+        .select(
+          `*,
+          userInfo:userId(
+            id, created_at, email, username, profileImage
+          ),
+          Comment:postId (id)`
+        )
+        .eq("id", id)
+        .single();
+      console.log(post);
+      if (error) {
+        console.log("error =>", error);
+      } else {
+        console.log("post data =>", data);
+        setPosts(data);
+        setUserInfo(data.userinfo);
+        setComment(data.Comment);
+      }
+    };
+    fetchPostAndAuthorAndComment();
+  }, [id]);
+
+  console.log("Logged in user:", loginUserInfo);
+  console.log("Post data:", post);
+
   //수정버튼
   const handleEditPostMove = (id) => {
     navigate(`/modify/${id}`, {
@@ -55,35 +85,6 @@ const PostDetail = () => {
   const { id } = useParams();
   const { loginUserInfo } = useContext(dataContext);
 
-  useEffect(() => {
-    //게시글 정보 & 작성자 정보 & 댓글 갯수
-    const fetchPostAndAuthorAndComment = async () => {
-      const { data, error } = await supabase
-        .from("Post")
-        .select(
-          `*,
-          userInfo:userId(
-            id, created_at, email, username, profileImage
-          ),
-          Comment:postId (id)`
-        )
-        .eq("id", id)
-        .single();
-      console.log(post);
-      if (error) {
-        console.log("error =>", error);
-      } else {
-        console.log("post data =>", data);
-        setPosts(data);
-        setUserInfo(data.userinfo);
-        setComment(data.Comment);
-      }
-    };
-    fetchPostAndAuthorAndComment();
-  }, [id]);
-
-  console.log("Logged in user:", loginUserInfo);
-  console.log("Post data:", post);
   return (
     <>
       <StContainer>
