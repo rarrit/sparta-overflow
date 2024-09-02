@@ -2,34 +2,35 @@ import { StUserInfoButton, StUserInfoInput, StUserInfoName } from "./LoginDiv";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import supabase from "../services/supabaseClient";
-import { useContext, useState } from "react";
-import { dataContext } from "../contexts/DataContext";
+import { useEffect, useState } from "react";
 
 const CreateAccount = () => {
   const navigate = useNavigate();
   const [signUpId, setSignUpId] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
+  const [usingEmail, setUsingEmail] = useState([]);
   const [profileImage, setProfileImage] = useState("");
-  const { users } = useContext(dataContext);
+
+  // 이미 사용되고 있는 이메일
+  const fetchData = async () => {
+    const { data, error } = await supabase.from("userinfo").select("email");
+    if (error) {
+    } else {
+      setUsingEmail(data);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   // 회원가입 함수
   const signUpHandler = async () => {
-    const { data, error } = await supabase.auth.signUp({
+    const { data } = await supabase.auth.signUp({
       email: signUpId,
       password,
     });
-    if (error) {
-      console.log("error", error);
-    } else {
-      console.log("success", data.user);
-      // 회원가입 시 자동으로 로그인 됨
-      console.log("로그인 =>", data.user.id);
-      signUpPlusHandler(data.user.id);
-    }
-  };
-  // 사용자 정보 업데이트 함수
-  const signUpPlusHandler = async (id) => {
+    // 사용자 정보 업데이트 함수
     const { error } = await supabase
       .from("userinfo")
       .update({
@@ -37,21 +38,20 @@ const CreateAccount = () => {
         username: userName,
         profileImage: profileImage,
       })
-      .eq("id", id);
-    if (error) {
-      console.log("사용자정보업데이트에러", error);
-    }
+      .eq("id", data.user.id);
+    // 회원가입 시 자동으로 로그인 됨
   };
+  const correctEmail = usingEmail.some((using) => {
+    return using.email === signUpId;
+  });
   // 회원가입 로직 실행 함수
   const SignUp = () => {
-    const findEmail = users.find((user) => user.email === signUpId);
-    if (!findEmail && password.length > 5) {
+    if (!correctEmail && password.length > 5) {
       signUpHandler();
-      // signUpPlusHandler();
       alert("회원가입되었습니다");
       navigate("/");
     } else {
-      alert("이미 가입한 이메일이거나 패스워드의 길이가 부족합니다");
+      alert("이메일이 이미 사용되고 있거나 패스워드의 길이가 부족합니다");
     }
   };
 
