@@ -1,85 +1,59 @@
 import React from "react";
 import supabase from "../services/supabaseClient";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import TuiEditor from "../components/TuiEditor";
-import styled from "styled-components";
 import { useState } from "react";
-import { useEffect } from "react";
-import hljs from "highlight.js";
+import { useContext } from "react";
+import { dataContext } from "../contexts/DataContext";
+import styled from "styled-components";
+import TuiEditor from "../components/TuiEditor";
+import { useNavigate } from "react-router-dom";
 
-const PostModify = () => {
-  // useLocation 을 사용해서 detail 페이지에서 useNavigate를 통해 전달한 값을 받아옴
-  const location = useLocation();
+const PostRegister = () => {
+  const { loginUserInfo } = useContext(dataContext); // 로그인한 user정보
+  const [postTitle, setPostTitle] = useState("");
+  const [postDesc, setPostDesc] = useState("");
+  const [postCode, setPostCode] = useState("");
   const navigate = useNavigate();
-  const { id } = useParams();
-  console.log("id => ", id);
 
-  const [postTitle, setPostTitle] = useState('');
-  const [postDesc, setPostDesc] = useState('');
-  const [postCode, setPostCode] = useState('');
-  const { userName, userProfileImg } = location.state || {};
-
-  console.log("postCode= >>", postCode)
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const { data, error } = await supabase
-        .from("Post")
-        .select("*")
-        .eq("id", id)
-        .single();
-      if (error) {
-        console.error("데이터 전달 오류:", error);
-      } else {
-        setPostTitle(data.title);
-        setPostDesc(data.description);
-        setPostCode(data.code);
-      }
-      console.log("aasdfasfsaa =>>>", data.code);
-    };
-    fetchPosts();
-  }, [id])
-
-  
-
-  const handleModifyPost = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { data, error } = await supabase
-      .from("Post")
-      .update({
+    await supabase.from("Post").insert([
+      {
         title: postTitle,
         description: postDesc,
-        code: postCode
-      })
-      .eq("id", id);
+        userId: loginUserInfo.id,
+        solve: false,
+        code: postCode,
+      }
+    ])
 
-    if (error) {
-      console.error("포스트 업데이트 오류", error);
-    } else {
-      console.log("포스트 업데이트 성공:", data);
-      navigate(-1); // 수정 후 상세 페이지로 이동
-    }
-  };
+    alert("글이 등록되었습니다!");
+    navigate("/");
+  }
+  
   const handleEditorChange = (newDescription) => {
     setPostDesc(newDescription);
-  };
+  };  
 
   return (
     <>
       <StContainer>
+        {/* 채택 여부 */}
+        <StState />
+
         {/* 상세정보 */}
         <StInfo>
           {/* 타이틀 */}
           <StTitle>
-            <input type="text" value={postTitle} onChange={(e) => setPostTitle(e.target.value)} />
+            <input type="text" value={postTitle} placeholder="타이틀을 입력해주세요." onChange={(e) => setPostTitle(e.target.value)} />
           </StTitle>
           <StLeftArea>
             <StSubWriteInfo>
               <StUser>
-                <img src={userProfileImg}/>
-                <span>{userName}</span>
+                <img src={loginUserInfo.profileImage}/>
+                <span>{loginUserInfo.username}</span>
               </StUser>
+              {/* <StDate>2024-08-28</StDate> */}
             </StSubWriteInfo>
           </StLeftArea>
         </StInfo>
@@ -89,20 +63,22 @@ const PostModify = () => {
           <StH3>내용 작성</StH3>          
           <TuiEditor description={postDesc} onChange={handleEditorChange} />
           <StH3>참고 코드 작성</StH3>
-          <StCodeArea value={postCode} onChange={(e)=> setPostCode(e.target.value)} />          
-        </StDescArea>
+          <StCodeArea value={postCode} onChange={(e)=> setPostCode(e.target.value)} />
+        </StDescArea>              
       </StContainer>
+
       <StFixedBtnArea>
-        <StModifyBtn onClick={handleModifyPost}>수정</StModifyBtn>
+        <StRegiBtn onClick={handleSubmit}>수정</StRegiBtn>
       </StFixedBtnArea>
     </>
   );
 };
 
 const StContainer = styled.div`
-  padding: 60px 0 80px;
+  padding: 60px 0 30px;
 `;
 
+const StState = styled.div``;
 
 const StTitle = styled.h2`
   width: 100%;
@@ -140,8 +116,8 @@ const StUser = styled.div`
   align-items: center;
   gap: 10px;
   img {
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
     border-radius: 100%;
   }
   span {
@@ -168,41 +144,18 @@ const StDate = styled.div`
   }
 `;
 
+const StRightArea = styled.div``;
 
-const StFixedBtnArea = styled.div`
-  position:fixed; 
-  width:100%;
-  left:0;
-  bottom:0;
-  padding:15px;
-  display:flex;
-  gap:10px;
-  box-shadow:.5px .5px 10px rgba(0,0,0,.15);
-  z-index:999;
-  background:#fff;
-  button {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:100%;
-    height:35px;
-    border:1px solid #111;
-    border-radius:5px;
-    cursor:pointer;
-    transition:all .15s ease;
-    &:hover {
-      color:#fff;
-      background:#111;      
-    }
-  }
-`
-
-const StModifyBtn = styled.button`
+const StBtnArea = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+const StBtn = styled.button`
   width: 100px;
   height: 35px;
   font-weight: 500;
   text-align: center;
-  background:#fff;
   border: 1px solid #666;
   border-radius: 5px;
   + button {
@@ -228,5 +181,44 @@ const StH3 = styled.h3`
   margin:40px 0 15px;
   padding:0 0 6px;
 `
+const StFixedBtnArea = styled.div`
+  position:fixed; 
+  left:0;
+  bottom:0;  
+  display:flex;
+  width:100%;
+  gap:10px;
+  box-shadow:.5px .5px 10px rgba(0,0,0,.15);
+  padding:15px;
+  button {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    height:35px;
+    border:1px solid #111;
+    border-radius:5px;
+    cursor:pointer;
+    transition:all .15s ease;
+    &:hover {
+      color:#fff;
+      background:#111;      
+    }
+  }
+`
 
-export default PostModify;
+const StRegiBtn = styled.button`
+  width: 50%;
+  height: 35px;
+  font-weight: 500;
+  text-align: center;
+  background:#fff;
+  border: 1px solid #666;
+  border-radius: 5px;
+  + button {
+    background: #333;
+    color: #fff;
+  }
+`;
+
+export default PostRegister;

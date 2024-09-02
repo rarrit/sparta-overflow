@@ -1,5 +1,5 @@
 import { TeamInfo } from "../assets/js/teamInfo";
-import { Link } from "react-router-dom";
+import { Link, matchPath, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/image/logo.jpeg";
 import { useState, useContext } from "react";
@@ -13,7 +13,9 @@ function Header() {
 
   const FocusSearchPopup = (e) => {
     e.preventDefault();
-    navigate("/Search", { state: { searchData: e.target.value } });
+    navigate("/Search", {
+      state: { searchData: e.target.value },
+    });
     setSearchData(e.target.value);
   };
 
@@ -24,7 +26,7 @@ function Header() {
           <StLogo>
             <Link to="/">
               <img src={logo} />
-              sparta <span>overflow</span>
+              spoon <span>overflow</span>
             </Link>
           </StLogo>
           <StSearchForm>
@@ -41,10 +43,16 @@ function Header() {
           <StBtnArea>
             {isLogin ? (
               <>
-                <button onClick={() => logout()} className="btnLineBlack">
-                  로그아웃
+                <button
+                  onClick={() => {
+                    logout();
+                    navigate("/sign#login");
+                  }}
+                  className="btnLineBlack"
+                >
+                  Logout
                 </button>
-                <Link to="/mypage" className="btnLineBlack">
+                <Link to="/mypage" className="btnBlack">
                   MyPage
                 </Link>
               </>
@@ -99,15 +107,33 @@ function Footer() {
 }
 
 const Layout = ({ children }) => {
+  const { isLogin, logout } = useContext(dataContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const hidePaths = ["/register", "/modify/:id", "/detail/:id"];
+  // 경로 패턴이 일치하는지 확인
+  const shouldHideTag = hidePaths.some((path) =>
+    matchPath(path, location.pathname)
+  );
   return (
     <>
       <Header />
       <StWrap id="wrap">
         <StContainer id="container">
-          <StContents id="contents">{children}</StContents>
+          <StContents id="contents">
+            {children}
+            {isLogin && !shouldHideTag && (
+              <StFixedBtnArea>
+                <button type="button" onClick={() => navigate(`register`)}>
+                  글쓰기
+                </button>
+              </StFixedBtnArea>
+            )}
+          </StContents>
         </StContainer>
       </StWrap>
-      <Footer />
+      {!shouldHideTag && <Footer />}
     </>
   );
 };
@@ -169,7 +195,8 @@ const StBtnArea = styled.div`
   align-items: center;
   width: 150px;
   gap: 10px;
-  a {
+  a,
+  button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -276,6 +303,28 @@ const StFooter = styled.footer`
           }
         }
       }
+    }
+  }
+`;
+
+const StFixedBtnArea = styled.div`
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 50px;
+    border: 1px solid #111;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: #fff;
+    &:hover {
+      color: #fff;
+      background: #111;
     }
   }
 `;

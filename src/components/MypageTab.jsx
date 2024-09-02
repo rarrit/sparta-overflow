@@ -1,17 +1,45 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import supabase from "../services/supabaseClient";
 import { mypageDataContext } from "../pages/Mypage";
 import { CircleCheck, CircleX } from "lucide-react";
 
 const MypageTab = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("작성한글");
-  const { profile, posts } = useContext(mypageDataContext);
-  console.log("posts", posts);
+  const { profile, posts, comment, myComment, loginUserInfoId } =
+    useContext(mypageDataContext);
+  // console.log("posts", posts);
+  const [myCommentGetPost, setMyCommentGetPost] = useState([]);
+  console.log("내코멘트가 달린 포스팅정보", myComment);
+
+  const handleDetailMove = (post) => {
+    navigate(`/detail/${post.id}`);
+  };
 
   const OnClickTabHandler = (tabTitle) => {
     // e.preventDefault();
     setActiveTab(tabTitle);
   };
+
+  useEffect(() => {
+    const fetchMyComment = async () => {
+      const postIds = myComment.map((comment) => comment.postId);
+      console.log("postIds", postIds);
+      const { data, error } = await supabase
+        .from("Post")
+        .select("*")
+        .in("id", postIds);
+      if (error) {
+        console.error("ErrorError :", error);
+      } else {
+        console.log("내답변가진 포스트data:", data);
+        setMyCommentGetPost(data);
+      }
+    };
+    fetchMyComment();
+  }, [myComment]);
 
   return (
     <StMypageTabContainer>
@@ -41,7 +69,7 @@ const MypageTab = () => {
         >
           {posts.map((mypost) => {
             return (
-              <div key={mypost.id}>
+              <div key={mypost.id} onClick={() => handleDetailMove(mypost)}>
                 <div>
                   {mypost.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
                 </div>
@@ -60,14 +88,30 @@ const MypageTab = () => {
           className={`StPostingContent ${
             activeTab === "댓글단글" ? "active" : ""
           }`}
-          style={{ backgroundColor: "blue" }}
+          style={{ backgroundColor: "#ebebeb" }}
         >
-          내용2
+          {myCommentGetPost.map((post) => {
+            return (
+              <div key={post.id} onClick={() => handleDetailMove(post)}>
+                <div>
+                  {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
+                </div>
+                <div>{post.title}</div>
+                <div>{post.description}</div>
+                <div>
+                  {new Date(post.created_at)
+                    .toLocaleDateString()
+                    .replace(/\.$/, "")}
+                </div>
+              </div>
+            );
+          })}
         </StPostingContent>
       </StPostingContentBox>
     </StMypageTabContainer>
   );
 };
+//.in : 특정 컬럼의 값이 주어진 배열에 포함된 레코드를 선택
 
 export default MypageTab;
 

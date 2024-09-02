@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Outlet,
+  Navigate,
+} from "react-router-dom";
 import Layout from "./Layout";
 import Main from "../pages/Main";
 import Login from "../pages/Login";
@@ -12,9 +18,24 @@ import { useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
 import Search from "../pages/Search";
 
-const Router = () => {
+const AuthRoute = () => {
   const { isLogin } = useContext(dataContext);
+  if (isLogin) {
+    alert("이미 로그인된 상태입니다");
+    return <Navigate to="/" />;
+  }
+  return <Outlet />;
+};
 
+const PrivateRoute = () => {
+  const { isLogin } = useContext(dataContext);
+  if (!isLogin) {
+    alert("로그인을 해주세요");
+    return <Navigate to="/sign#login" />;
+  }
+  return <Outlet />;
+};
+const Router = () => {
   return (
     <BrowserRouter>
       <Layout>
@@ -25,16 +46,16 @@ const Router = () => {
           <Route path="/detail/:id" element={<PostDetail />} />
           <Route path="/example1" element={<CodeBlockExample />} />
           <Route path="/example2" element={<SupaBaseExample />} />
-          {/* 로그인/비로그인 상태에서 접속 가능 */}
-          {isLogin ? (
-            <>
-              <Route path="/mypage" element={<Mypage />} />
-              <Route path="/write/:id" element={<PostWrite />} />
-              <Route path="/modify/:id" element={<PostModify />} />
-            </>
-          ) : (
+          {/* 로그인 상태에서 접속 가능 */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/register" element={<PostRegister />} />
+            <Route path="/modify/:id" element={<PostModify />} />
+          </Route>
+          {/* 비로그인 상태애서 접속 가능 */}
+          <Route element={<AuthRoute />}>
             <Route path="/sign" element={<Login />} />
-          )}
+          </Route>
         </Routes>
       </Layout>
     </BrowserRouter>

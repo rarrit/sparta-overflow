@@ -11,10 +11,32 @@ const Mypage = () => {
   const { loginUserInfo } = useContext(dataContext); //로그인한 user정보
   const [profile, setProfile] = useState([]); //로그인한 유저정보 저장
   const [posts, setPosts] = useState([]); //포스트 정보 저장
+  const [allComment, setAllComment] = useState([]); //답변 전체데이터 저장
+  const [comment, setComment] = useState([]); //답변 정보 저장
 
-  console.log("로그인유저데이터_확인", loginUserInfo);
+  const loginUserInfoId = loginUserInfo.id;
+
+  const findMyComment = (allComment, loginUserInfoId) => {
+    return allComment.filter((data) => data.writerUserId === loginUserInfoId);
+  };
+  const myComment = findMyComment(allComment, loginUserInfoId);
 
   //NOTE - 수퍼베이스 데이터 가져오기
+  //답변테이블 : 답변데이터 전체 가져오기
+  useEffect(() => {
+    const fetchComment = async () => {
+      const { data, error } = await supabase
+        .from("Comment")
+        .select("*, Post (*)");
+      if (error) {
+        console.error("ErrorError :", error);
+      } else {
+        setAllComment(data);
+      }
+    };
+    fetchComment();
+  }, []);
+
   //유저정보테이블 : 로그인한계정의 이메일과 같은 열 찾기
   useEffect(() => {
     const fetchProfile = async () => {
@@ -26,7 +48,7 @@ const Mypage = () => {
       if (error) {
         console.error("ErrorError :", error);
       } else {
-        console.log("로그인 유저 데이터:", data);
+        // console.log("로그인 유저 데이터:", data);
         setProfile(data);
       }
     };
@@ -50,7 +72,7 @@ const Mypage = () => {
       if (error) {
         console.error("ErrorError :", error);
       } else {
-        console.log("로그인한 유저의 포스팅데이터:", data);
+        // console.log("로그인한 유저의 포스팅데이터:", data);
         setPosts(data);
       }
     };
@@ -65,6 +87,10 @@ const Mypage = () => {
         setProfile,
         posts,
         setPosts,
+        comment,
+        setComment,
+        myComment,
+        loginUserInfoId,
       }}
     >
       <StMypageContainer>
