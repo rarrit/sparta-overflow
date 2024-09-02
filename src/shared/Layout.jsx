@@ -12,7 +12,7 @@ function Header() {
   const { isLogin, logout } = useContext(dataContext);
   const [searchData, setSearchData] = useState("");
 
-  const hidePaths = ['/'];
+  const hidePaths = ['/', '/search'];
   // 경로 패턴이 일치하는지 확인
   const shouldHideTag = hidePaths.some((path) =>
     matchPath(path, location.pathname)
