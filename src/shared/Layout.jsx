@@ -11,6 +11,12 @@ function Header() {
   const { isLogin, logout } = useContext(dataContext);
   const [searchData, setSearchData] = useState("");
 
+  const hidePaths = ['/'];
+  // 경로 패턴이 일치하는지 확인
+  const shouldHideTag = hidePaths.some((path) =>
+    matchPath(path, location.pathname)
+  );
+
   const FocusSearchPopup = (e) => {
     e.preventDefault();
     navigate("/Search", {
@@ -29,17 +35,20 @@ function Header() {
               spoon <span>overflow</span>
             </Link>
           </StLogo>
-          <StSearchForm>
-            <div className="search">
-              <input
-                type="text"
-                value={searchData}
-                placeholder="검색어를 입력해주세요."
-                onChange={FocusSearchPopup}
-              />
-              <button type="button">검색</button>
-            </div>
-          </StSearchForm>
+          { shouldHideTag && (
+            <StSearchForm>
+              <div className="search">
+                <input
+                  type="text"
+                  value={searchData}
+                  placeholder="검색어를 입력해주세요."
+                  onChange={FocusSearchPopup}
+                />
+                <button type="button">검색</button>
+              </div>
+            </StSearchForm>
+          )}   
+          
           <StBtnArea>
             {isLogin ? (
               <>
@@ -144,6 +153,7 @@ const StHeader = styled.header`
   .inner {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
     max-width: 1660px;
     margin: 0 auto;
