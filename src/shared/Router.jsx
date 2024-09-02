@@ -10,7 +10,6 @@ import Main from "../pages/Main";
 import Login from "../pages/Login";
 import Mypage from "../pages/Mypage";
 import PostDetail from "../pages/PostDetail";
-import PostWrite from "../pages/PostWrite";
 import CodeBlockExample from "../pages/CodeBlockExample";
 import SupaBaseExample from "../pages/SupaBaseExample";
 import PostModify from "../pages/PostModify";
@@ -19,6 +18,26 @@ import { dataContext } from "../contexts/DataContext";
 import Search from "../pages/Search";
 import PostRegister from "../pages/PostRegister";
 
+const getLogin = () => {
+  const { isLogin } = useContext(dataContext);
+  return isLogin;
+};
+
+const AuthRoute = () => {
+  if (getLogin()) {
+    alert("이미 로그인된 상태입니다");
+    return <Navigate to="/" />;
+  }
+  return <Outlet />;
+};
+
+const PrivateRoute = () => {
+  if (!getLogin()) {
+    alert("로그인을 해주세요");
+    return <Navigate to="/sign#login" />;
+  }
+  return <Outlet />;
+};
 const Router = () => {
   return (
     <BrowserRouter>
@@ -33,8 +52,7 @@ const Router = () => {
           {/* 로그인 상태에서 접속 가능 */}
           <Route element={<PrivateRoute />}>
             <Route path="/mypage" element={<Mypage />} />
-            <Route path="/register" element={<PostRegister/>} />
-            {/* <Route path="/write/:id" element={<PostWrite />} /> */}
+            <Route path="/register" element={<PostRegister />} />
             <Route path="/modify/:id" element={<PostModify />} />
           </Route>
           {/* 비로그인 상태애서 접속 가능 */}
@@ -48,21 +66,3 @@ const Router = () => {
 };
 
 export default Router;
-
-const AuthRoute = () => {
-  const { isLogin } = useContext(dataContext);
-  if (isLogin) {
-    alert("이미 로그인된 상태입니다");
-    return <Navigate to="/" />;
-  }
-  return <Outlet />;
-};
-
-const PrivateRoute = () => {
-  const { isLogin } = useContext(dataContext);
-  if (!isLogin) {
-    alert("로그인을 해주세요");
-    return <Navigate to="/sign#login" />;
-  }
-  return <Outlet />;
-};

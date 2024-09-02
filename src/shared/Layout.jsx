@@ -19,6 +19,8 @@ function Header() {
     setSearchData(e.target.value);
   };
 
+  const searchDisplay = useLocation().pathname;
+
   return (
     <>
       <StHeader>
@@ -29,17 +31,21 @@ function Header() {
               spoon <span>overflow</span>
             </Link>
           </StLogo>
-          <StSearchForm>
-            <div className="search">
-              <input
-                type="text"
-                value={searchData}
-                placeholder="검색어를 입력해주세요."
-                onChange={FocusSearchPopup}
-              />
-              <button type="button">검색</button>
-            </div>
-          </StSearchForm>
+          {searchDisplay === "/" ? (
+            <StSearchForm>
+              <div className="search">
+                <input
+                  type="text"
+                  value={searchData}
+                  placeholder="검색어를 입력해주세요."
+                  onChange={FocusSearchPopup}
+                />
+                <button type="button">검색</button>
+              </div>
+            </StSearchForm>
+          ) : (
+            <></>
+          )}
           <StBtnArea>
             {isLogin ? (
               <>
@@ -105,7 +111,7 @@ const Layout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const hidePaths = ['/register', '/modify/:id', '/detail/:id'];
+  const hidePaths = ["/register", "/modify/:id", "/detail/:id"];
   // 경로 패턴이 일치하는지 확인
   const shouldHideTag = hidePaths.some((path) =>
     matchPath(path, location.pathname)
@@ -117,17 +123,17 @@ const Layout = ({ children }) => {
         <StContainer id="container">
           <StContents id="contents">
             {children}
-            { isLogin && !shouldHideTag && (
+            {isLogin && !shouldHideTag && (
               <StFixedBtnArea>
-                <button type="button" onClick={() => navigate(`register`)}>글쓰기</button>
+                <button type="button" onClick={() => navigate(`register`)}>
+                  글쓰기
+                </button>
               </StFixedBtnArea>
-            )}            
-          </StContents>        
+            )}
+          </StContents>
         </StContainer>
       </StWrap>
-      { !shouldHideTag && (
-        <Footer />
-      )}      
+      {!shouldHideTag && <Footer />}
     </>
   );
 };
@@ -189,7 +195,8 @@ const StBtnArea = styled.div`
   align-items: center;
   width: 150px;
   gap: 10px;
-  a, button {
+  a,
+  button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -301,26 +308,26 @@ const StFooter = styled.footer`
 `;
 
 const StFixedBtnArea = styled.div`
-  position:fixed;
-  right:30px;
-  bottom:30px;
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
   button {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:80px;
-    height:50px;
-    border:1px solid #111;
-    border-radius:5px;
-    cursor:pointer;
-    transition:all .15s ease;
-    background:#fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 50px;
+    border: 1px solid #111;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: #fff;
     &:hover {
-      color:#fff;
-      background:#111;      
+      color: #fff;
+      background: #111;
     }
   }
-`
+`;
 
 export default Layout;
 

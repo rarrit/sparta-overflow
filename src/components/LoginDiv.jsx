@@ -16,8 +16,13 @@ const LoginDiv = () => {
     if (error) {
       alert("입력정보가 올바르지 않습니다");
     } else {
-      console.log("로그인 =>", data.user);
       navigate("/");
+    }
+  };
+
+  const EnterLogin = (key) => {
+    if (key === "Enter") {
+      signInWithEmail();
     }
   };
 
@@ -27,12 +32,14 @@ const LoginDiv = () => {
       <StUserInfoInput
         value={String(loginId)}
         onChange={(e) => setLoginId(e.target.value)}
+        onKeyDown={(e) => EnterLogin(e.key)}
         placeholder="아이디나 이메일을 입력해주세요"
       />
       <StUserInfoName>PW</StUserInfoName>
       <StUserInfoInput
         value={String(password)}
         onChange={(e) => setPassword(e.target.value)}
+        onKeyDown={(e) => EnterLogin(e.key)}
         placeholder="비밀번호를 입력해주세요"
       />
       <StUserInfoButton
