@@ -1,5 +1,5 @@
 import { TeamInfo } from "../assets/js/teamInfo";
-import { Link } from "react-router-dom";
+import { Link, matchPath, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/image/logo.jpeg";
 import { useState, useContext } from "react";
@@ -26,7 +26,7 @@ function Header() {
           <StLogo>
             <Link to="/">
               <img src={logo} />
-              sparta <span>overflow</span>
+              spoon <span>overflow</span>
             </Link>
           </StLogo>
           <StSearchForm>
@@ -103,6 +103,13 @@ function Footer() {
 const Layout = ({ children }) => {
   const { isLogin, logout } = useContext(dataContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const hidePaths = ['/register', '/modify/:id', '/detail/:id'];
+  // 경로 패턴이 일치하는지 확인
+  const shouldHideTag = hidePaths.some((path) =>
+    matchPath(path, location.pathname)
+  );
   return (
     <>
       <Header />
@@ -110,20 +117,17 @@ const Layout = ({ children }) => {
         <StContainer id="container">
           <StContents id="contents">
             {children}
-            { isLogin 
-              ? (
-                <StFixedBtnArea>
-                  <button type="button" onClick={() => navigate(`register`)}>글쓰기</button>
-                </StFixedBtnArea>
-              ) 
-              : (
-                ""
-              )
-            }            
+            { isLogin && !shouldHideTag && (
+              <StFixedBtnArea>
+                <button type="button" onClick={() => navigate(`register`)}>글쓰기</button>
+              </StFixedBtnArea>
+            )}            
           </StContents>        
         </StContainer>
       </StWrap>
-      <Footer />
+      { !shouldHideTag && (
+        <Footer />
+      )}      
     </>
   );
 };
@@ -310,6 +314,7 @@ const StFixedBtnArea = styled.div`
     border-radius:5px;
     cursor:pointer;
     transition:all .15s ease;
+    background:#fff;
     &:hover {
       color:#fff;
       background:#111;      
