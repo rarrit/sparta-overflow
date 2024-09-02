@@ -11,6 +11,8 @@ import hljs from "highlight.js";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { railscasts } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import PostWrite from "./PostWrite";
+import { Viewer } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 
 const PostDetail = () => {
   const navigate = useNavigate();
@@ -94,6 +96,8 @@ const PostDetail = () => {
     fetchPosts();
   }, [id]);
 
+  console.log("post.description =>>>>>>>>", post)
+
   // 임시 버튼
   const writeCommentHandel = () => {
     navigate(`/write/${id}`);
@@ -129,7 +133,14 @@ const PostDetail = () => {
 
         {/* 글 영역 */}
         <StDescArea>
-          <StDescription>{post.description}</StDescription>
+          
+          <StDescription>
+          {post.description ? (
+            <Viewer initialValue={post.description} />
+          ) : (
+            <p>Loading...</p>
+          )}
+          </StDescription>
 
           <StCodeBox>
             <StCodeBoxTopAreaWithCopyBtn>
