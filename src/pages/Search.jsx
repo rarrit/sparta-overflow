@@ -22,12 +22,14 @@ const Search = () => {
     fetchData();
   }, []);
 
+  //검색어 포함된거 필터링
   const filteredPosts = searchPost.filter((post) => {
     return post.title.includes(searchData);
   });
 
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
+    setSearchData("");
   };
 
   return (
@@ -56,11 +58,3 @@ const Search = () => {
 };
 
 export default Search;
-
-/*
-- 검색어 없을시 : 검색어가 없습니다. (조건부 랜더링)
-- 검색어 입력시
-  - 입력값 저장 (useState)
-  - 모든 포스트 데이터 값 가져오기 
-  - 입력값이 포함되는 타이틀의 포스트 필터링
-*/

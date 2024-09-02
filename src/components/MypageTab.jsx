@@ -10,23 +10,20 @@ const MypageTab = () => {
   const [activeTab, setActiveTab] = useState("작성한글");
   const { profile, posts, comment, myComment, loginUserInfoId } =
     useContext(mypageDataContext);
-  // console.log("posts", posts);
+
   const [myCommentGetPost, setMyCommentGetPost] = useState([]);
-  console.log("내코멘트가 달린 포스팅정보", myComment);
 
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
   };
 
   const OnClickTabHandler = (tabTitle) => {
-    // e.preventDefault();
     setActiveTab(tabTitle);
   };
 
   useEffect(() => {
     const fetchMyComment = async () => {
       const postIds = myComment.map((comment) => comment.postId);
-      console.log("postIds", postIds);
       const { data, error } = await supabase
         .from("Post")
         .select("*")
@@ -34,7 +31,6 @@ const MypageTab = () => {
       if (error) {
         console.error("ErrorError :", error);
       } else {
-        console.log("내답변가진 포스트data:", data);
         setMyCommentGetPost(data);
       }
     };
@@ -50,7 +46,7 @@ const MypageTab = () => {
             OnClickTabHandler("작성한글");
           }}
         >
-          작성한글
+          POST
         </StTabItem>
         <StTabItem
           className={`StTabItem ${activeTab === "댓글단글" ? "active" : ""}`}
@@ -58,7 +54,7 @@ const MypageTab = () => {
             OnClickTabHandler("댓글단글");
           }}
         >
-          댓글단글
+          COMMENT
         </StTabItem>
       </StTabBox>
       <StPostingContentBox>
@@ -69,18 +65,30 @@ const MypageTab = () => {
         >
           {posts.map((mypost) => {
             return (
-              <div key={mypost.id} onClick={() => handleDetailMove(mypost)}>
-                <div>
-                  {mypost.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
-                </div>
-                <div>{mypost.title}</div>
-                <div>{mypost.description}</div>
-                <div>
-                  {new Date(mypost.created_at)
-                    .toLocaleDateString()
-                    .replace(/\.$/, "")}
-                </div>
-              </div>
+              <StPost key={mypost.id} onClick={() => handleDetailMove(mypost)}>
+                <StPostTop>
+                  <div>
+                    {mypost.solve ? (
+                      <StStyledCircleCheck />
+                    ) : (
+                      <StStyledCircleX />
+                    )}
+                  </div>
+                  <div className="checkPostTitle">
+                    <StPostTitle>
+                      <h2>{mypost.title}</h2>
+                      <div className="createTime">
+                        {new Date(mypost.created_at)
+                          .toLocaleDateString()
+                          .replace(/\.$/, "")}
+                      </div>
+                    </StPostTitle>
+                    <StPostContent>
+                      <p>{mypost.description}</p>
+                    </StPostContent>
+                  </div>
+                </StPostTop>
+              </StPost>
             );
           })}
         </StPostingContent>
@@ -88,22 +96,32 @@ const MypageTab = () => {
           className={`StPostingContent ${
             activeTab === "댓글단글" ? "active" : ""
           }`}
-          style={{ backgroundColor: "#ebebeb" }}
         >
           {myCommentGetPost.map((post) => {
             return (
-              <div key={post.id} onClick={() => handleDetailMove(post)}>
-                <div>
-                  {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
-                </div>
-                <div>{post.title}</div>
-                <div>{post.description}</div>
-                <div>
-                  {new Date(post.created_at)
-                    .toLocaleDateString()
-                    .replace(/\.$/, "")}
-                </div>
-              </div>
+              <StPost key={post.id} onClick={() => handleDetailMove(post)}>
+                <StPostTop>
+                  <div className="checkPostTitle">
+                    <div>
+                      {post.solve ? (
+                        <StStyledCircleCheck />
+                      ) : (
+                        <StStyledCircleX />
+                      )}
+                    </div>
+                    <h2>{post.title}</h2>
+                  </div>
+                  <div className="createTime">
+                    {new Date(post.created_at)
+                      .toLocaleDateString()
+                      .replace(/\.$/, "")}
+                  </div>
+                </StPostTop>
+
+                <StPostContent>
+                  <p>{post.description}</p>
+                </StPostContent>
+              </StPost>
             );
           })}
         </StPostingContent>
@@ -116,15 +134,27 @@ const MypageTab = () => {
 export default MypageTab;
 
 //SECTION - style
-const StMypageTabContainer = styled.div``;
+const StMypageTabContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+`;
 
 const StTabBox = styled.ul`
   display: flex;
+  gap: 20px;
 `;
 const StTabItem = styled.li`
   flex: 1;
   text-align: center;
   cursor: pointer;
+  padding: 20px;
+  border: 2px solid #000;
+  border-radius: 15px;
+  background-color: #000;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 900;
 `;
 const StPostingContentBox = styled.div`
   width: 100%;
@@ -133,15 +163,12 @@ const StPostingContentBox = styled.div`
 `;
 const StPostingContent = styled.div`
   width: 100%;
-  height: 500px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #c9c9c9;
+  flex-direction: column;
+  gap: 20px;
   display: none;
 
   &.active {
-    display: block;
+    display: flex;
   }
 `;
 const StStyledCircleCheck = styled(CircleCheck)`
@@ -150,4 +177,44 @@ const StStyledCircleCheck = styled(CircleCheck)`
 
 const StStyledCircleX = styled(CircleX)`
   color: red; /* 빨간색 */
+`;
+const StPost = styled.div`
+  border: 2px solid #000;
+  border-radius: 15px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  & h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+`;
+const StPostTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  & .checkPostTitle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    flex: 1;
+  }
+
+  & .createTime {
+    font-weight: 600;
+  }
+`;
+const StPostContent = styled.div`
+  max-height: 200px;
+  height: 100%;
+  width: 100%;
+`;
+const StPostTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 `;
