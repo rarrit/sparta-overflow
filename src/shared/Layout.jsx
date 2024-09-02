@@ -322,11 +322,12 @@ const StFixedBtnArea = styled.div`
     justify-content: center;
     width: 80px;
     height: 50px;
+    color:#fff;
     border: 1px solid #111;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.15s ease;
-    background: #fff;
+    background: #111;
     &:hover {
       color: #fff;
       background: #111;
