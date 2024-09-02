@@ -15,6 +15,8 @@ import { Viewer } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 
 const PostDetail = () => {
+  const { id } = useParams();
+  const { loginUserInfo } = useContext(dataContext);
   const navigate = useNavigate();
   const [copy, setCopy] = useState(false);
   const [userInfo, setUserInfo] = useState([]);
@@ -27,10 +29,10 @@ const PostDetail = () => {
         .from("Post")
         .select(
           `*,
-          userInfo:userId(
+          userinfo:userId(
             id, created_at, email, username, profileImage
           ),
-          Comment:postId (id)`
+          Comment (id)`
         )
         .eq("id", id)
         .single();
@@ -41,7 +43,6 @@ const PostDetail = () => {
         console.log("post data =>", data);
         setPosts(data);
         setUserInfo(data.userinfo);
-        setComment(data.Comment);
       }
     };
     fetchPostAndAuthorAndComment();
@@ -81,9 +82,6 @@ const PostDetail = () => {
       return;
     }
   };
-
-  const { id } = useParams();
-  const { loginUserInfo } = useContext(dataContext);
 
   return (
     <>
@@ -282,7 +280,7 @@ const StBtn = styled.button`
 const StDescArea = styled.div`
   padding: 15px;
 `;
-const StDescription = styled.p``;
+const StDescription = styled.div``;
 
 const StCodeBox = styled.div`
   background-color: #232323;

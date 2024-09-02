@@ -95,6 +95,7 @@ const Main = () => {
     <>
       <StHomePostListTitle>Latest post</StHomePostListTitle>
 
+      {/* 탭 버튼 */}
       <StTabButtonWrap>
         {TabData.map((tab) => (
           <StTabButton
@@ -107,7 +108,10 @@ const Main = () => {
         ))}
       </StTabButtonWrap>
 
+      {/* 탭 내용 */}
       <div>{TabData.find((a) => a.id === activeTab)?.content}</div>
+
+      {/* 더보기 버튼 */}
       {morePosts && (
         <StLoadMoreButton onClick={loadMorePost}>더 보기</StLoadMoreButton>
       )}

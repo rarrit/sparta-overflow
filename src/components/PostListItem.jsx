@@ -28,7 +28,7 @@ const PostListItem = ({ posts }) => {
                   : post.title}
               </StPostTitle>{" "}
               {/* 제목 */}
-              <span>({post.commentCount})</span>
+              <span>({post.commentCount})</span> {/* 댓글 갯수 */}
             </StPostMainInfo>
             <StPostAuthorInfo>
               <span>{post.userinfo.username}</span>│ {/* 작성자 */}
