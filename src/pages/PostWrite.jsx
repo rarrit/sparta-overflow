@@ -9,7 +9,6 @@ const PostWrite = () => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [userId, setUserId] = useState();
-  const [usernames, setUsernames] = useState({});
   const { isLogin, loginUserInfo } = useContext(dataContext);
   const { id: postId } = useParams();
   const [editingId, setEditingId] = useState(null);
