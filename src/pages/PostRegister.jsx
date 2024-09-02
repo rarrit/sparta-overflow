@@ -68,7 +68,7 @@ const PostRegister = () => {
       </StContainer>
 
       <StFixedBtnArea>
-        <StRegiBtn onClick={handleSubmit}>수정</StRegiBtn>
+        <StRegiBtn onClick={handleSubmit}>등록</StRegiBtn>
       </StFixedBtnArea>
     </>
   );
