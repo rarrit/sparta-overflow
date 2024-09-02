@@ -6,7 +6,7 @@ import MypageTab from "../components/MypageTab";
 import supabase from "../services/supabaseClient";
 import { dataContext } from "../contexts/DataContext";
 
-export const mypageDataContext = createContext();
+export const MypageDataContext = createContext();
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -75,7 +75,7 @@ const Mypage = () => {
   }, [loginUserInfo]);
 
   return (
-    <mypageDataContext.Provider
+    <MypageDataContext.Provider
       value={{
         loginUserInfo,
         profile,
@@ -97,7 +97,7 @@ const Mypage = () => {
           <MypageTab />
         </section>
       </StMypageContainer>
-    </mypageDataContext.Provider>
+    </MypageDataContext.Provider>
   );
 };
 
@@ -106,9 +106,8 @@ export default Mypage;
 const StMypageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 60px;
   padding: 20px;
   width: 100%;
-  border: 1px solid;
   margin: 0 auto;
 `;
