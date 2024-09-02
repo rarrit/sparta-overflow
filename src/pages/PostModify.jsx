@@ -11,15 +11,12 @@ const PostModify = () => {
   // useLocation 을 사용해서 detail 페이지에서 useNavigate를 통해 전달한 값을 받아옴
   const location = useLocation();
   const navigate = useNavigate();
-  const { id } = useParams();
-  console.log("id => ", id);
+  const { id } = useParams();  
 
   const [postTitle, setPostTitle] = useState('');
   const [postDesc, setPostDesc] = useState('');
   const [postCode, setPostCode] = useState('');
   const { userName, userProfileImg } = location.state || {};
-
-  console.log("postCode= >>", postCode)
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -35,7 +32,6 @@ const PostModify = () => {
         setPostDesc(data.description);
         setPostCode(data.code);
       }
-      console.log("aasdfasfsaa =>>>", data.code);
     };
     fetchPosts();
   }, [id])
