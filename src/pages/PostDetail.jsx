@@ -51,7 +51,7 @@ const PostDetail = () => {
   };
 
   const { id } = useParams();
-  const { loginUser } = useContext(dataContext);
+  const { loginUserInfo } = useContext(dataContext);
 
   useEffect(() => {
     //게시글 정보
@@ -99,88 +99,92 @@ const PostDetail = () => {
     navigate(`/write/${id}`);
   };
 
-  console.log("user=>", loginUser);
-  console.log(userInfo);
-
+  console.log("Logged in user:", loginUserInfo);
+  console.log("Post data:", post);
   return (
-    <StContainer>
-      {/* 채택 여부 */}
+    <>
+      <StContainer>
+        {/* 채택 여부 */}
 
-      {/* 타이틀 */}
+        {/* 타이틀 */}
 
-      {/* 상세정보 */}
-      <StInfo>
-        <StLeftArea>
-          <StTitle>{post.title}</StTitle>
-          <StSubWriteInfo>
-            <StUser>
-              <img src={userInfo.profileImage} alt="프로필이미지" />
-              <span>{userInfo.username}</span>
-            </StUser>
-            <StDate>
-              {post.created_at ? filterDateOnlyYMD(post.created_at) : ""}
-            </StDate>
-          </StSubWriteInfo>
-        </StLeftArea>
+        {/* 상세정보 */}
+        <StInfo>
+          <StLeftArea>
+            <StTitle>{post.title}</StTitle>
+            <StSubWriteInfo>
+              <StUser>
+                <img src={userInfo.profileImage} alt="프로필이미지" />
+                <span>{userInfo.username}</span>
+              </StUser>
+              <StDate>
+                {post.created_at ? filterDateOnlyYMD(post.created_at) : ""}
+              </StDate>
+            </StSubWriteInfo>
+          </StLeftArea>
+          <StRightArea>
+            {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
+          </StRightArea>
+        </StInfo>
 
-        <StRightArea>
-          {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
-          {loginUser && loginUser.id === post.writerUserId && (
-            <StBtnArea>
-              <StBtn onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
-              <StBtn onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
-            </StBtnArea>
-          )}
-        </StRightArea>
-      </StInfo>
+        {/* 글 영역 */}
+        <StDescArea>
+          <StDescription>{post.description}</StDescription>
 
-      {/* 글 영역 */}
-      <StDescArea>
-        <StDescription>{post.description}</StDescription>
+          <StCodeBox>
+            <StCodeBoxTopAreaWithCopyBtn>
+              <p>code</p>
+              {copy ? (
+                <StCopyCodeBtn>
+                  <CheckCheck size={16} />
+                  <span>copied !</span>
+                </StCopyCodeBtn>
+              ) : (
+                <StCopyCodeBtn
+                  onClick={() => {
+                    navigator.clipboard.writeText(post.code);
+                    setCopy(true);
+                    setTimeout(() => {
+                      setCopy(false);
+                    }, 2000);
+                  }}
+                >
+                  <Copy size={16} />
+                  <span>copy code</span>
+                </StCopyCodeBtn>
+              )}
+            </StCodeBoxTopAreaWithCopyBtn>
+            <SyntaxHighlighter
+              language="javascript"
+              style={railscasts}
+              customStyle={{
+                padding: "25px",
+              }}
+              wrapLongLines={true}
+            >
+              {post.code}
+            </SyntaxHighlighter>
+          </StCodeBox>
+        </StDescArea>
 
-        <StCodeBox>
-          <StCodeBoxTopAreaWithCopyBtn>
-            <p>code</p>
-            {copy ? (
-              <StCopyCodeBtn>
-                <CheckCheck size={16} />
-                <span>copied !</span>
-              </StCopyCodeBtn>
-            ) : (
-              <StCopyCodeBtn
-                onClick={() => {
-                  navigator.clipboard.writeText(post.code);
-                  setCopy(true);
-                  setTimeout(() => {
-                    setCopy(false);
-                  }, 2000);
-                }}
-              >
-                <Copy size={16} />
-                <span>copy code</span>
-              </StCopyCodeBtn>
-            )}
-          </StCodeBoxTopAreaWithCopyBtn>
-          <SyntaxHighlighter
-            language="javascript"
-            style={railscasts}
-            customStyle={{
-              padding: "25px",
-            }}
-            wrapLongLines={true}
-          >
-            {post.code}
-          </SyntaxHighlighter>
-        </StCodeBox>
-      </StDescArea>
-      
-      {/* 댓글 컴포넌트 */}
-      <PostWrite/>
-    </StContainer>
+        {/* 댓글 컴포넌트 */}
+        <PostWrite />
+      </StContainer>
+
+      {loginUserInfo.id === post.userId ? (
+        <StFixedBtnArea>        
+          <StBtn className="btnLine" onClick={() => handleEditPostMove(post.id)}>수정</StBtn>
+          <StBtn className="btnBlack" onClick={() => handleDeletePost(post.id)}>삭제</StBtn>
+        </StFixedBtnArea>
+      ) : null}
+    </>
   );
 };
 
-const StContainer = styled.div``;
+
+const StContainer = styled.div`
+  padding: 60px 0 120px;
+`;
 
 const StState = styled.div``;
 
@@ -205,27 +209,41 @@ const StLeftArea = styled.div`
 
 const StSubWriteInfo = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 0.8rem;
-  margin: 0;
+  align-items: center;
+  gap: 20px;
 `;
 
 const StUser = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 0.4rem;
-
+  align-items: center;
+  gap: 10px;
   img {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    object-fit: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+  }
+  span {
+    font-size: 18px;
+    font-weight: 400;
+    color: #333;
   }
 `;
 const StDate = styled.div`
-  font-size: 0.8rem;
-  line-height: 25px;
-  color: #333;
+  position: relative;
+  font-size: 18px;
+  font-weight: 400;
+  color: #959595;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    width: 3px;
+    height: 3px;
+    background: #666;
+    border-radius: 100%;
+    transform: translateY(-50%);
+  }
 `;
 
 const StRightArea = styled.div`
@@ -254,19 +272,13 @@ const StBtnArea = styled.div`
 `;
 
 const StBtn = styled.button`
-  font-size: 0.8rem;
-  line-height: 25px;
-  color: #333;
-  padding: 0px 8px;
-  border: 1px solid black;
+  width: 100px;
+  height: 35px;
+  font-weight: 500;
+  text-align: center;
+  background:#fff;
+  border: 1px solid #666;
   border-radius: 5px;
-  transition: 0.3s;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #000;
-    color: #fff;
-  }
 `;
 
 const StDescArea = styled.div`
@@ -298,7 +310,32 @@ const StCopyCodeBtn = styled.button`
   cursor: pointer;
 `;
 
-const StTextArea = styled.textarea``;
-const StCodeArea = styled.textarea``;
+const StFixedBtnArea = styled.div`
+  position:fixed; 
+  width:100%;
+  left:0;
+  bottom:0;
+  padding:15px;
+  display:flex;
+  gap:10px;
+  box-shadow:.5px .5px 10px rgba(0,0,0,.15);
+  z-index:999;
+  background:#fff;
+  button {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:50%;
+    height:35px;
+    border:1px solid #111;
+    border-radius:5px;
+    cursor:pointer;
+    transition:all .15s ease;
+    &:hover {
+      color:#fff;
+      background:#111;      
+    }
+  }
+`
 
 export default PostDetail;

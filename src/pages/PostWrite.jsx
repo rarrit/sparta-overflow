@@ -218,7 +218,6 @@ const StContainer = styled.div`
   background-color: #fff;
   padding: 20px;
   font-family: "Arial", sans-serif;
-  min-height: 100vh;
 `;
 
 const ItemContainer = styled.div``;
