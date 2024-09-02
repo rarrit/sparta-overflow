@@ -68,6 +68,7 @@ export const DataProvider = ({ children }) => {
       alert("로그아웃이 실패했습니다");
     } else {
       setLoginUserInfo([]);
+      alert("로그아웃되었습니다");
     }
   };
 

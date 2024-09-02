@@ -47,7 +47,6 @@ const CreateAccount = () => {
     const findEmail = users.find((user) => user.email === signUpId);
     if (!findEmail && password.length > 5) {
       signUpHandler();
-      // signUpPlusHandler();
       alert("회원가입되었습니다");
       navigate("/");
     } else {
