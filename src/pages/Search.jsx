@@ -8,6 +8,7 @@ const Search = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const searchData = location.state?.searchData || "";
+  // const setSearchData = location.state?.setSearchData || (() => {});
   const [searchPost, setSearchPost] = useState([]);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const Search = () => {
 
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
-    setSearchData("");
+    // setSearchData("");
   };
 
   return (

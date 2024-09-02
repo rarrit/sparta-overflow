@@ -4,6 +4,7 @@ import styled from "styled-components";
 import supabase from "../services/supabaseClient";
 import { mypageDataContext } from "../pages/Mypage";
 import { CircleCheck, CircleX } from "lucide-react";
+import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
 
 const MypageTab = () => {
   const navigate = useNavigate();
@@ -78,9 +79,7 @@ const MypageTab = () => {
                     <StPostTitle>
                       <h2>{mypost.title}</h2>
                       <div className="createTime">
-                        {new Date(mypost.created_at)
-                          .toLocaleDateString()
-                          .replace(/\.$/, "")}
+                        {filterDateOnlyYMD(mypost.created_at)}
                       </div>
                     </StPostTitle>
                     <StPostContent>
@@ -101,26 +100,21 @@ const MypageTab = () => {
             return (
               <StPost key={post.id} onClick={() => handleDetailMove(post)}>
                 <StPostTop>
-                  <div className="checkPostTitle">
-                    <div>
-                      {post.solve ? (
-                        <StStyledCircleCheck />
-                      ) : (
-                        <StStyledCircleX />
-                      )}
-                    </div>
-                    <h2>{post.title}</h2>
+                  <div>
+                    {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
                   </div>
-                  <div className="createTime">
-                    {new Date(post.created_at)
-                      .toLocaleDateString()
-                      .replace(/\.$/, "")}
+                  <div className="checkPostTitle">
+                    <StPostTitle>
+                      <h2>{post.title}</h2>
+                      <div className="createTime">
+                        {filterDateOnlyYMD(post.created_at)}
+                      </div>
+                    </StPostTitle>
+                    <StPostContent>
+                      <p>{post.description}</p>
+                    </StPostContent>
                   </div>
                 </StPostTop>
-
-                <StPostContent>
-                  <p>{post.description}</p>
-                </StPostContent>
               </StPost>
             );
           })}
@@ -158,7 +152,6 @@ const StTabItem = styled.li`
 `;
 const StPostingContentBox = styled.div`
   width: 100%;
-  height: 500px;
   position: relative;
 `;
 const StPostingContent = styled.div`
@@ -185,6 +178,7 @@ const StPost = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  cursor: pointer;
 
   & h2 {
     font-size: 20px;
@@ -206,11 +200,12 @@ const StPostTop = styled.div`
 
   & .createTime {
     font-weight: 600;
+    display: flex;
+    align-items: center;
   }
 `;
 const StPostContent = styled.div`
-  max-height: 200px;
-  height: 100%;
+  height: 80px;
   width: 100%;
 `;
 const StPostTitle = styled.div`
