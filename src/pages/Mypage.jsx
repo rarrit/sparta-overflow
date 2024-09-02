@@ -1,4 +1,5 @@
 import { useState, useEffect, createContext, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ProfileInfo from "../components/ProfileInfo";
 import MypageTab from "../components/MypageTab";
@@ -8,6 +9,7 @@ import { dataContext } from "../contexts/DataContext";
 export const mypageDataContext = createContext();
 
 const Mypage = () => {
+  const navigate = useNavigate();
   const { loginUserInfo } = useContext(dataContext); //로그인한 user정보
   const [profile, setProfile] = useState([]); //로그인한 유저정보 저장
   const [posts, setPosts] = useState([]); //포스트 정보 저장
@@ -16,13 +18,14 @@ const Mypage = () => {
 
   const loginUserInfoId = loginUserInfo.id;
 
+  //전체코멘트중 내 코멘트 필터링
   const findMyComment = (allComment, loginUserInfoId) => {
     return allComment.filter((data) => data.writerUserId === loginUserInfoId);
   };
   const myComment = findMyComment(allComment, loginUserInfoId);
 
   //NOTE - 수퍼베이스 데이터 가져오기
-  //답변테이블 : 답변데이터 전체 가져오기
+  //답변테이블 : 답변데이터 전체 + Post테이블 같이 붙여서 가져오기
   useEffect(() => {
     const fetchComment = async () => {
       const { data, error } = await supabase
@@ -48,18 +51,11 @@ const Mypage = () => {
       if (error) {
         console.error("ErrorError :", error);
       } else {
-        // console.log("로그인 유저 데이터:", data);
         setProfile(data);
       }
     };
     fetchProfile();
   }, [loginUserInfo]);
-  /*
-  지울예정)
-  supabase.from("userinfo") : supabase에서 가져올 테이블명 지정
-  .select("*") : 가져온테이블의 전체내용
-  .eq('해당테이블열값 중 하나', 'text') : 열이 동일한 경우 결과를 필터링
-  */
 
   //유저의 포스팅정보 테이블 : 로그인한계정의 아이디와 같은 열 찾기
   useEffect(() => {
@@ -72,7 +68,6 @@ const Mypage = () => {
       if (error) {
         console.error("ErrorError :", error);
       } else {
-        // console.log("로그인한 유저의 포스팅데이터:", data);
         setPosts(data);
       }
     };
@@ -93,6 +88,7 @@ const Mypage = () => {
         loginUserInfoId,
       }}
     >
+      <button onClick={() => navigate(-1)}>뒤로가기</button>
       <StMypageContainer>
         <section>
           <ProfileInfo />
@@ -112,7 +108,6 @@ const StMypageContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  max-width: 1060px;
   width: 100%;
   border: 1px solid;
   margin: 0 auto;

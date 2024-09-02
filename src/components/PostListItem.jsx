@@ -28,6 +28,7 @@ const PostListItem = ({ posts }) => {
                   : post.title}
               </StPostTitle>{" "}
               {/* 제목 */}
+              <span>({post.commentCount})</span>
             </StPostMainInfo>
             <StPostAuthorInfo>
               <span>{post.userinfo.username}</span>│ {/* 작성자 */}
@@ -73,6 +74,11 @@ const StPostMainInfo = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.3rem;
+
+  span {
+    font-size: 0.8rem;
+    color: #666;
+  }
 `;
 
 const StStyledCircleCheck = styled(CircleCheck)`
