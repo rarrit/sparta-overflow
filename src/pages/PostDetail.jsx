@@ -1,22 +1,54 @@
-import { useContext } from "react";
-import { dataContext } from "../contexts/DataContext";
-import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import supabase from "../services/supabaseClient";
-import { CircleCheck, CircleX, Copy, CheckCheck } from "lucide-react";
-import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
-import hljs from "highlight.js";
 
+import { dataContext } from "../contexts/DataContext";
+import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
+import PostWrite from "./PostWrite";
+import supabase from "../services/supabaseClient";
+
+import styled from "styled-components";
+import { CircleCheck, CircleX, Copy, CheckCheck } from "lucide-react";
+import hljs from "highlight.js";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { railscasts } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import PostWrite from "./PostWrite";
+import { Viewer } from "@toast-ui/react-editor";
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 
 const PostDetail = () => {
   const navigate = useNavigate();
   const [copy, setCopy] = useState(false);
   const [userInfo, setUserInfo] = useState([]);
   const [post, setPosts] = useState([]);
+
+  useEffect(() => {
+    //게시글 정보 & 작성자 정보 & 댓글 갯수
+    const fetchPostAndAuthorAndComment = async () => {
+      const { data, error } = await supabase
+        .from("Post")
+        .select(
+          `*,
+          userInfo:userId(
+            id, created_at, email, username, profileImage
+          ),
+          Comment:postId (id)`
+        )
+        .eq("id", id)
+        .single();
+      console.log(post);
+      if (error) {
+        console.log("error =>", error);
+      } else {
+        console.log("post data =>", data);
+        setPosts(data);
+        setUserInfo(data.userinfo);
+        setComment(data.Comment);
+      }
+    };
+    fetchPostAndAuthorAndComment();
+  }, [id]);
+
+  console.log("Logged in user:", loginUserInfo);
+  console.log("Post data:", post);
 
   //수정버튼
   const handleEditPostMove = (id) => {
@@ -53,68 +85,18 @@ const PostDetail = () => {
   const { id } = useParams();
   const { loginUserInfo } = useContext(dataContext);
 
-  useEffect(() => {
-    //게시글 정보
-    const fetchPosts = async () => {
-      const { data, error } = await supabase
-        .from("Post")
-        .select("*")
-        .eq("id", id)
-        .single();
-      console.log(post);
-      if (error) {
-        console.log("error =>", error);
-      } else {
-        console.log("post data =>", data);
-        setPosts(data);
-
-        // 작성자 정보 로드
-        if (data.userId) {
-          fetchAuthor(data.userId);
-        }
-      }
-    };
-
-    //작성자 정보
-    const fetchAuthor = async (userId) => {
-      const { data, error } = await supabase
-        .from("userinfo")
-        .select("id, created_at, email, username, profileImage")
-        .eq("id", userId)
-        .single();
-      if (error) {
-        console.log("error =>", error);
-      } else {
-        console.log("post data =>", data);
-        setUserInfo(data);
-      }
-    };
-
-    fetchAuthor();
-    fetchPosts();
-  }, [id]);
-
-  // 임시 버튼
-  const writeCommentHandel = () => {
-    navigate(`/write/${id}`);
-  };
-
-  console.log("Logged in user:", loginUserInfo);
-  console.log("Post data:", post);
   return (
     <>
       <StContainer>
-        {/* 채택 여부 */}
-
-        {/* 타이틀 */}
-
-        {/* 상세정보 */}
         <StInfo>
           <StLeftArea>
             <StTitle>{post.title}</StTitle>
             <StSubWriteInfo>
               <StUser>
-                <img src={userInfo.profileImage} alt="프로필이미지" />
+                <img
+                  src={userInfo.profileImage}
+                  alt={`${userInfo.username}님의 이미지`}
+                />
                 <span>{userInfo.username}</span>
               </StUser>
               <StDate>
@@ -129,7 +111,13 @@ const PostDetail = () => {
 
         {/* 글 영역 */}
         <StDescArea>
-          <StDescription>{post.description}</StDescription>
+          <StDescription>
+            {post.description ? (
+              <Viewer initialValue={post.description} />
+            ) : (
+              <p>Loading...</p>
+            )}
+          </StDescription>
 
           <StCodeBox>
             <StCodeBoxTopAreaWithCopyBtn>
@@ -155,7 +143,6 @@ const PostDetail = () => {
               )}
             </StCodeBoxTopAreaWithCopyBtn>
             <SyntaxHighlighter
-              language="javascript"
               style={railscasts}
               customStyle={{
                 padding: "25px",
