@@ -27,7 +27,11 @@ function Header() {
     <>
       <StHeader>
         <div className="inner">
-          <StLogo>
+          <StLogo
+            onClick={() => {
+              setSearchData("");
+            }}
+          >
             <Link to="/">
               <img src={logo} />
               spoon <span>overflow</span>

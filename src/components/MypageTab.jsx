@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import supabase from "../services/supabaseClient";
-import { mypageDataContext } from "../pages/Mypage";
+import { MypageDataContext } from "../pages/Mypage";
 import { CircleCheck, CircleX } from "lucide-react";
 import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
 
@@ -10,7 +10,7 @@ const MypageTab = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("작성한글");
   const { profile, posts, comment, myComment, loginUserInfoId } =
-    useContext(mypageDataContext);
+    useContext(MypageDataContext);
 
   const [myCommentGetPost, setMyCommentGetPost] = useState([]);
 
@@ -131,7 +131,7 @@ export default MypageTab;
 const StMypageTabContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 60px;
 `;
 
 const StTabBox = styled.ul`
@@ -147,7 +147,7 @@ const StTabItem = styled.li`
   border-radius: 15px;
   background-color: #000;
   color: #fff;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 900;
 `;
 const StPostingContentBox = styled.div`
@@ -165,16 +165,20 @@ const StPostingContent = styled.div`
   }
 `;
 const StStyledCircleCheck = styled(CircleCheck)`
-  color: green; /* 초록색 */
+  color: green;
+  width: 30px;
+  height: 30px;
 `;
 
 const StStyledCircleX = styled(CircleX)`
-  color: red; /* 빨간색 */
+  color: red;
+  width: 30px;
+  height: 30px;
 `;
 const StPost = styled.div`
   border: 2px solid #000;
   border-radius: 15px;
-  padding: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -202,14 +206,23 @@ const StPostTop = styled.div`
     font-weight: 600;
     display: flex;
     align-items: center;
+    color: #959595;
   }
 `;
 const StPostContent = styled.div`
   height: 80px;
   width: 100%;
+
+  & p {
+    font-size: 15px;
+    color: #222;
+  }
 `;
 const StPostTitle = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  line-height: 1.5;
+  padding-bottom: 10px;
+  border-bottom: 1px solid;
 `;
