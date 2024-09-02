@@ -14,6 +14,8 @@ const ProfileInfo = () => {
   const defaultProfileImg =
     "https://i.namu.wiki/i/N7V1HbWE3OQETbgT61_lZaUlUywQLkh4ulOYLtJI4EKG1oQucfqexvNzzEbrcJ_8L-rVHQBDhzBcy5IFIvJ0iQ4sXfVnAiuK_GoRwTYG1Qgx_XNMJUWPHYrVbuWxXRoizxnY4fbhcIuNwBtLYomsyg.webp";
 
+  const commentCount = myComment.filter((comment) => comment.isChosen).length;
+
   return (
     <StProfileContainer>
       <div>
@@ -41,7 +43,7 @@ const ProfileInfo = () => {
         <StPostingCountContainer>
           <div>post : {Array.isArray(posts) ? posts.length : 0}</div>
           <div>comment : {Array.isArray(myComment) ? myComment.length : 0}</div>
-          <div>like</div>
+          <div>like : {commentCount}</div>
         </StPostingCountContainer>
       </StUserInfoContainer>
     </StProfileContainer>
