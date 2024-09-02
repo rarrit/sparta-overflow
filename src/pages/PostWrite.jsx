@@ -70,6 +70,7 @@ const PostWrite = () => {
         const newComment = {
           comment,
           writerUserId: userId,
+          username: loginUserInfo.username,
           id: crypto.randomUUID(), // 내장메서드
           // 이것도 id 못 받아오길래 랜덤으로 가져다주는 자바스크림트 내장 메서드라고... 커어어어....
         };
@@ -179,11 +180,11 @@ const PostWrite = () => {
           {comments.map((newComment) => (
             <li
               key={newComment.id}
-              // style={{
-              //   marginBottom: "15px",
-              //   padding: "10px",
-              //   borderBottom: "1px solid #eee",
-              // }}
+              style={{
+                marginBottom: "15px",
+                padding: "10px",
+                borderBottom: "1px solid #eee",
+              }}
             >
               <div style={{ display: "flex", alignItems: "center" }}>
                 {newComment.writerUserId.profileImage && (
@@ -210,11 +211,11 @@ const PostWrite = () => {
                 {handleTimeCalculate(newComment.created_at)}
               </div>
               <div
-                style={{
-                  marginBottom: "5px",
-                  fontSize: "0.9em",
-                  color: "#666",
-                }}
+              // style={{
+              //   marginBottom: "5px",
+              //   fontSize: "0.9em",
+              //   color: "#666",
+              // }}
               >
                 {newComment.username}
               </div>
@@ -225,40 +226,40 @@ const PostWrite = () => {
                     type="text"
                     value={editComment}
                     onChange={(e) => setEditComment(e.target.value)}
-                    // style={{
-                    //   width: "100%",
-                    //   padding: "10px",
-                    //   border: "1px solid #ccc",
-                    //   borderRadius: "4px",
-                    //   fontSize: "1em",
-                    //   marginBottom: "10px",
-                    // }}
+                    style={{
+                      width: "100%",
+                      padding: "10px",
+                      border: "1px solid #ccc",
+                      borderRadius: "4px",
+                      fontSize: "1em",
+                      marginBottom: "10px",
+                    }}
                   />
                   <button
                     onClick={editCommentHandle}
-                    // style={{
-                    //   marginRight: "10px",
-                    //   padding: "5px 10px",
-                    //   fontSize: "0.9em",
-                    //   cursor: "pointer",
-                    //   border: "1px solid #ddd",
-                    //   backgroundColor: "#fff",
-                    //   borderRadius: "4px",
-                    // }}
+                    style={{
+                      marginRight: "10px",
+                      padding: "5px 10px",
+                      fontSize: "0.9em",
+                      cursor: "pointer",
+                      border: "1px solid #ddd",
+                      backgroundColor: "#fff",
+                      borderRadius: "4px",
+                    }}
                   >
                     수정완료
                   </button>
                   <button
                     onClick={() => setEditingId(null)}
-                    // style={{
-                    //   marginRight: "10px",
-                    //   padding: "5px 10px",
-                    //   fontSize: "0.9em",
-                    //   cursor: "pointer",
-                    //   border: "1px solid #ddd",
-                    //   backgroundColor: "#fff",
-                    //   borderRadius: "4px",
-                    // }}
+                    style={{
+                      marginRight: "10px",
+                      padding: "5px 10px",
+                      fontSize: "0.9em",
+                      cursor: "pointer",
+                      border: "1px solid #ddd",
+                      backgroundColor: "#fff",
+                      borderRadius: "4px",
+                    }}
                   >
                     취소
                   </button>
@@ -272,29 +273,29 @@ const PostWrite = () => {
                         onClick={() =>
                           startEditing(newComment.id, newComment.comment)
                         }
-                        // style={{
-                        //   marginRight: "10px",
-                        //   padding: "5px 10px",
-                        //   fontSize: "0.9em",
-                        //   cursor: "pointer",
-                        //   border: "1px solid #ddd",
-                        //   backgroundColor: "#fff",
-                        //   borderRadius: "4px",
-                        // }}
+                        style={{
+                          marginRight: "10px",
+                          padding: "5px 10px",
+                          fontSize: "0.9em",
+                          cursor: "pointer",
+                          border: "1px solid #ddd",
+                          backgroundColor: "#fff",
+                          borderRadius: "4px",
+                        }}
                       >
                         수정
                       </button>
                       <button
                         onClick={() => deleteCommentHandle(newComment.id)}
-                        // style={{
-                        //   marginRight: "10px",
-                        //   padding: "5px 10px",
-                        //   fontSize: "0.9em",
-                        //   cursor: "pointer",
-                        //   border: "1px solid #ddd",
-                        //   backgroundColor: "#fff",
-                        //   borderRadius: "4px",
-                        // }}
+                        style={{
+                          marginRight: "10px",
+                          padding: "5px 10px",
+                          fontSize: "0.9em",
+                          cursor: "pointer",
+                          border: "1px solid #ddd",
+                          backgroundColor: "#fff",
+                          borderRadius: "4px",
+                        }}
                       >
                         삭제
                       </button>
