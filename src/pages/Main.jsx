@@ -122,24 +122,26 @@ const Main = () => {
 export default Main;
 
 const StHomePostListTitle = styled.h1`
-  font-size: 30px;
+  font-size: 50px;
   font-weight: bold;
-  margin: 30px 0;
+  margin: 20px 0;
 `;
 const StTabButtonWrap = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: end;
   gap: 1rem;
+  margin-bottom: 30px;
 `;
 
 const StTabButton = styled.button`
   font-size: 18px;
   font-weight: bold;
-  background-color: ${(props) => (props.active === "true" ? "#444" : "#888")};
+  background-color: ${(props) => (props.active === "true" ? "#000" : "#fff")};
+  border: 2px solid #000;
   color: ${(props) => (props.active === "true" ? "white" : "#333")};
-  padding: 5px 10px;
-  border-radius: 10px;
+  padding: 8px 15px;
+  border-radius: 8px;
   transition: 0.3s;
   cursor: pointer;
 
@@ -154,4 +156,9 @@ const StLoadMoreButton = styled.button`
   background-color: black;
   cursor: pointer;
   color: white;
+  text-align: center;
+  font-size: 20px;
+  padding: 15px 10px;
+  border-radius: 15px;
+  margin-bottom: 20px;
 `;

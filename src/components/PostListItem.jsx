@@ -54,10 +54,10 @@ export default PostListItem;
 const StListWrap = styled.article`
   display: flex;
   flex-direction: column;
-  border: 1px solid #ccc;
+  border: 2px solid #000;
   margin: 10px 0;
-  border-radius: 5px;
-  background-color: #f9f9f9;
+  border-radius: 15px;
+  padding: 20px;
   cursor: pointer;
 `;
 
@@ -65,15 +65,13 @@ const StPostInfoBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 5px 10px;
   gap: 0.5rem;
-  border-bottom: 1px solid #ccc;
 `;
 
 const StPostMainInfo = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 0.3rem;
+  gap: 0.6rem;
 
   span {
     font-size: 0.8rem;
@@ -82,17 +80,17 @@ const StPostMainInfo = styled.div`
 `;
 
 const StStyledCircleCheck = styled(CircleCheck)`
-  color: green; /* 초록색 */
+  color: green;
   flex-shrink: 0;
 `;
 
 const StStyledCircleX = styled(CircleX)`
-  color: red; /* 빨간색 */
+  color: red;
   flex-shrink: 0;
 `;
 
 const StPostTitle = styled.h3`
-  font-size: 1.1rem;
+  font-size: 20px;
   font-weight: bold;
 `;
 
@@ -100,8 +98,9 @@ const StPostAuthorInfo = styled.div`
   display: flex;
   flex-direction: row;
   flex-shrink: 0;
-  font-size: 0.8rem;
-  color: #333;
+  font-size: 16px;
+  color: #959595;
+  font-weight: 600;
 `;
 
 const StPostPreview = styled.div`
