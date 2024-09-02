@@ -5,12 +5,11 @@ import logo from "../assets/image/logo.jpeg";
 import { useState, useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
 import { useNavigate } from "react-router-dom";
-import Search from "../pages/Search";
 
 function Header() {
   const navigate = useNavigate();
-  const { isLogin, logout } = useContext(dataContext);
-  const [searchData, setSearchData] = useState("");
+  const { isLogin, logout, searchData, setSearchData } =
+    useContext(dataContext);
 
   const hidePaths = ["/", "/search"];
   // 경로 패턴이 일치하는지 확인
@@ -20,11 +19,7 @@ function Header() {
 
   const FocusSearchPopup = (e) => {
     e.preventDefault();
-    navigate("/Search", {
-      state: {
-        searchData: e.target.value,
-      },
-    });
+    navigate("/Search");
     setSearchData(e.target.value);
   };
 
@@ -324,7 +319,7 @@ const StFixedBtnArea = styled.div`
     justify-content: center;
     width: 80px;
     height: 50px;
-    color:#fff;
+    color: #fff;
     border: 1px solid #111;
     border-radius: 5px;
     cursor: pointer;

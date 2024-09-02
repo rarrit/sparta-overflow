@@ -1,14 +1,12 @@
 import styled from "styled-components";
 import { useState, useContext, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import supabase from "../services/supabaseClient";
 import { dataContext } from "../contexts/DataContext";
 
 const Search = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const searchData = location.state?.searchData || "";
-  // const setSearchData = location.state?.setSearchData || (() => {});
+  const { searchData, setSearchData } = useContext(dataContext);
   const [searchPost, setSearchPost] = useState([]);
 
   useEffect(() => {
@@ -30,7 +28,7 @@ const Search = () => {
 
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
-    // setSearchData("");
+    setSearchData("");
   };
 
   return (
