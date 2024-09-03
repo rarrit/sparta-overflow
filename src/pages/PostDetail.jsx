@@ -33,7 +33,7 @@ const PostDetail = () => {
           userinfo:userId(
             id, created_at, email, username, profileImage
           ),
-          Comment (id)`
+          Comment (id, isChosen)`
         )
         .eq("id", id)
         .single();
@@ -44,6 +44,21 @@ const PostDetail = () => {
         console.log("post data =>", data);
         setPosts(data);
         setUserInfo(data.userinfo);
+
+        const confirmChosenComment = data.Comment.find(
+          (comment) => comment.isChosen
+        );
+
+        if (confirmChosenComment) {
+          const { error: solvedErr } = await supabase
+            .from("Post")
+            .update({ solve: true })
+            .eq("id", id);
+
+          if (solvedErr) {
+            console.log("채택 과정에서 에러가 발생 =>", solvedErr);
+          }
+        }
       }
     };
     fetchPostAndAuthorAndComment();
@@ -153,7 +168,7 @@ const PostDetail = () => {
         </StDescArea>
 
         {/* 댓글 컴포넌트 */}
-        <PostWrite />
+        <PostWrite setPosts={setPosts} />
       </StContainer>
 
       {loginUserInfo.id === post.userId ? (
