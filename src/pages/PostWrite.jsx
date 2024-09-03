@@ -178,7 +178,9 @@ const PostWrite = ({ setPosts }) => {
           </button>
         </InputWrapper>
       ) : (
-        <p>댓글을 작성하려면 로그인이 필요합니다.</p>
+        <CommentNotification>
+          댓글을 작성하려면 로그인이 필요합니다.
+        </CommentNotification>
       )}
 
       <ItemContainer>
@@ -277,6 +279,16 @@ const InputWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 20px;
   position: relative; /* 버튼을 input 필드 안에 위치시키기 위해 사용 */
+`;
+
+const CommentNotification = styled.div`
+  margin: 10px 0 40px 0;
+  padding: 20px 10px;
+  background-color: #fff;
+  border: 3px solid #000;
+  border-radius: 10px;
+  color: #000;
+  font-size: 16px;
 `;
 
 const TextArea = styled.textarea`
