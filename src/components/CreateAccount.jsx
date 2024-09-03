@@ -1,4 +1,12 @@
-import { StUserInfoButton, StUserInfoInput, StUserInfoName } from "./LoginDiv";
+import {
+  StBlackButton,
+  StBtnDiv,
+  StLoginBoxDiv,
+  StSignDiv,
+  StUserInfoButton,
+  StUserInfoInput,
+  StUserInfoTitle,
+} from "./LoginDiv";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import supabase from "../services/supabaseClient";
@@ -56,54 +64,55 @@ const CreateAccount = () => {
   };
 
   return (
-    <div>
-      <StLowDiv>
-        <StUserInfoName>ID</StUserInfoName>
-        <StUserInfoInput
-          value={signUpId}
-          onChange={(e) => setSignUpId(e.target.value)}
-          style={{ width: "300px" }}
-          placeholder="아이디나 이메일을 입력해주세요"
-        />
-      </StLowDiv>
-      <StLowDiv>
-        <StUserInfoName>PW</StUserInfoName>
-        <StUserInfoInput
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ width: "300px" }}
-          placeholder="패스워드를 입력해주세요"
-        />
-      </StLowDiv>
-      <StLowDiv>
-        <StUserInfoName>이름</StUserInfoName>
-        <StUserInfoInput
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          style={{ width: "300px" }}
-          placeholder="사용자 이름을 입력해주세요"
-        />
-      </StLowDiv>
-      <StLowDiv>
-        <StUserInfoName>이미지</StUserInfoName>
-        <StUserInfoInput
-          value={profileImage}
-          onChange={(e) => setProfileImage(e.target.value)}
-          style={{ width: "300px" }}
-          placeholder="사용자 이미지를 입력해주세요"
-        />
-      </StLowDiv>
-      <StUserInfoButton
-        onClick={() => {
-          SignUp();
-        }}
-      >
-        가입하기
-      </StUserInfoButton>
-      <StUserInfoButton onClick={() => navigate("/sign#login")}>
-        로그인하러 가기
-      </StUserInfoButton>
-    </div>
+    <StSignDiv>
+      <StUserInfoTitle>JOIN</StUserInfoTitle>
+      <StLoginBoxDiv>
+        <StLowDiv>
+          <StUserInfoName>ID</StUserInfoName>
+          <StUserInfoInput
+            value={signUpId}
+            onChange={(e) => setSignUpId(e.target.value)}
+            placeholder="아이디나 이메일을 입력해주세요"
+          />
+        </StLowDiv>
+        <StLowDiv>
+          <StUserInfoName>PW</StUserInfoName>
+          <StUserInfoInput
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="패스워드를 입력해주세요"
+          />
+        </StLowDiv>
+        <StLowDiv>
+          <StUserInfoName>이름</StUserInfoName>
+          <StUserInfoInput
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            placeholder="사용자 이름을 입력해주세요"
+          />
+        </StLowDiv>
+        <StLowDiv>
+          <StUserInfoName>이미지</StUserInfoName>
+          <StUserInfoInput
+            value={profileImage}
+            onChange={(e) => setProfileImage(e.target.value)}
+            placeholder="사용할 대표 이미지의 URL을 입력해주세요"
+          />
+        </StLowDiv>
+        <StBtnDiv>
+          <StBlackButton
+            onClick={() => {
+              SignUp();
+            }}
+          >
+            가입하기
+          </StBlackButton>
+          <StUserInfoButton onClick={() => navigate("/sign#login")}>
+            로그인
+          </StUserInfoButton>
+        </StBtnDiv>
+      </StLoginBoxDiv>
+    </StSignDiv>
   );
 };
 
@@ -111,5 +120,11 @@ export default CreateAccount;
 
 const StLowDiv = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+`;
+
+const StUserInfoName = styled.p`
+  font-size: 25px;
+  font-weight: 700;
+  margin-top: 10px;
 `;

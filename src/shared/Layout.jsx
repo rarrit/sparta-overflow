@@ -12,7 +12,7 @@ function Header() {
   const { isLogin, logout } = useContext(dataContext);
   const [searchData, setSearchData] = useState("");
 
-  const hidePaths = ['/', '/search'];
+  const hidePaths = ["/", "/search"];
   // 경로 패턴이 일치하는지 확인
   const shouldHideTag = hidePaths.some((path) =>
     matchPath(path, location.pathname)
@@ -36,7 +36,7 @@ function Header() {
               spoon <span>overflow</span>
             </Link>
           </StLogo>
-          { shouldHideTag && (
+          {shouldHideTag && (
             <StSearchForm>
               <div className="search">
                 <input
@@ -48,8 +48,8 @@ function Header() {
                 <button type="button">검색</button>
               </div>
             </StSearchForm>
-          )}   
-          
+          )}
+
           <StBtnArea>
             {isLogin ? (
               <>
@@ -66,7 +66,7 @@ function Header() {
                   Log in
                 </Link>
                 <Link to="/sign#signup" className="btnBlack">
-                  Sign up
+                  Join
                 </Link>
               </>
             )}

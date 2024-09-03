@@ -10,7 +10,7 @@ export const DataProvider = ({ children }) => {
   const [isLogin, changeLogin] = useState(false);
   const [loginId, setLoginId] = useState("");
   // 로그인 페이지에서 로그인을 하면 loginUserInfo에 로그인한 유저의 정보가 저장됨
-  const [loginUserInfo, setLoginUserInfo] = useState("");
+  const [loginUserInfo, setLoginUserInfo] = useState([]);
 
   // 로그인한 유저 정보 가져오기
   useEffect(() => {
@@ -31,11 +31,10 @@ export const DataProvider = ({ children }) => {
   }, [isLogin]);
 
   // 로그인과 관련된 동작이 일어나면 이 안에 있는 함수가 실행됨
+  // 이 함수가 외부로 노출되어 있지 않으면 새로고침 시 로그인이 취소됨
   const { loginAuthData } = supabase.auth.onAuthStateChange(
     (event, session) => {
-      if (event === "INITIAL_SESSION") {
-        // handle initial session
-      } else if (event === "SIGNED_IN") {
+      if (event === "SIGNED_IN") {
         // handle sign in event
         // 로그인한 id
         setLoginId(session.user.id);
@@ -43,14 +42,11 @@ export const DataProvider = ({ children }) => {
         changeLogin(true);
       } else if (event === "SIGNED_OUT") {
         // handle sign out event
+        // 로그인 정보 초기화
+        setLoginUserInfo([]);
+        setLoginId();
         // 로그인 상태 변경
         changeLogin(false);
-      } else if (event === "PASSWORD_RECOVERY") {
-        // handle password recovery event
-      } else if (event === "TOKEN_REFRESHED") {
-        // handle token refreshed event
-      } else if (event === "USER_UPDATED") {
-        // handle user updated event
       }
     }
   );
@@ -60,7 +56,6 @@ export const DataProvider = ({ children }) => {
     if (error) {
       alert("로그아웃이 실패했습니다");
     } else {
-      setLoginUserInfo([]);
       alert("로그아웃되었습니다");
     }
   };
@@ -74,10 +69,8 @@ export const DataProvider = ({ children }) => {
         setComments,
         isLogin,
         changeLogin,
-        loginAuthData,
         logout,
         loginUserInfo,
-        setLoginUserInfo,
       }}
     >
       {children}
