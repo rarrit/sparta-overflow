@@ -45,20 +45,20 @@ const PostDetail = () => {
         setPosts(data);
         setUserInfo(data.userinfo);
 
-        const confirmChosenComment = data.Comment.find(
-          (comment) => comment.isChosen
-        );
+        // const confirmChosenComment = data.Comment.find(
+        //   (comment) => comment.isChosen
+        // );
 
-        if (confirmChosenComment) {
-          const { error: solvedErr } = await supabase
-            .from("Post")
-            .update({ solve: true })
-            .eq("id", id);
+        // if (confirmChosenComment) {
+        //   const { error: solvedErr } = await supabase
+        //     .from("Post")
+        //     .update({ solve: true })
+        //     .eq("id", id);
 
-          if (solvedErr) {
-            console.log("채택 과정에서 에러가 발생 =>", solvedErr);
-          }
-        }
+        //   if (solvedErr) {
+        //     console.log("채택 과정에서 에러가 발생 =>", solvedErr);
+        //   }
+        // }
       }
     };
     fetchPostAndAuthorAndComment();
