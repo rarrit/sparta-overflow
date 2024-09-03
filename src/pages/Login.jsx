@@ -27,19 +27,14 @@ const StUserInfoDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
   width: 100%;
-  height: 600px;
-  background-color: #f0fadc;
 `;
 
 const StUserInfoBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 500px;
-  height: 500px;
-  background-color: #eadf44;
+  width: 600px;
   border: none;
-  border-radius: 30px;
+  border-radius: 15px;
 `;

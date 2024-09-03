@@ -25,6 +25,7 @@ const PostDetail = () => {
   useEffect(() => {
     //게시글 정보 & 작성자 정보 & 댓글 갯수
     const fetchPostAndAuthorAndComment = async () => {
+      console.log(id);
       const { data, error } = await supabase
         .from("Post")
         .select(
@@ -46,10 +47,9 @@ const PostDetail = () => {
       }
     };
     fetchPostAndAuthorAndComment();
-  }, [id]);
+  }, []);
 
   console.log("Logged in user:", loginUserInfo);
-  console.log("Post data:", post);
 
   //수정버튼
   const handleEditPostMove = (id) => {

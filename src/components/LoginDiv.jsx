@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import supabase from "../services/supabaseClient";
 
@@ -9,7 +9,7 @@ const LoginDiv = () => {
   const navigate = useNavigate();
   // 로그인 함수
   const signInWithEmail = async () => {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email: loginId,
       password: password,
     });
@@ -27,59 +27,96 @@ const LoginDiv = () => {
   };
 
   return (
-    <div>
-      <StUserInfoName>ID</StUserInfoName>
-      <StUserInfoInput
-        value={String(loginId)}
-        onChange={(e) => setLoginId(e.target.value)}
-        onKeyDown={(e) => EnterLogin(e.key)}
-        placeholder="아이디나 이메일을 입력해주세요"
-      />
-      <StUserInfoName>PW</StUserInfoName>
-      <StUserInfoInput
-        value={String(password)}
-        onChange={(e) => setPassword(e.target.value)}
-        onKeyDown={(e) => EnterLogin(e.key)}
-        placeholder="비밀번호를 입력해주세요"
-      />
-      <StUserInfoButton
-        onClick={() => {
-          signInWithEmail();
-        }}
-      >
-        로그인하기
-      </StUserInfoButton>
-      <StUserInfoButton onClick={() => navigate("/sign#signup")}>
-        회원가입하러 가기
-      </StUserInfoButton>
-    </div>
+    <StSignDiv>
+      <StUserInfoTitle>LOGIN</StUserInfoTitle>
+      <StLoginBoxDiv>
+        <StUserInfoInput
+          value={String(loginId)}
+          onChange={(e) => setLoginId(e.target.value)}
+          onKeyDown={(e) => EnterLogin(e.key)}
+          placeholder="아이디나 이메일을 입력해주세요"
+        />
+        <StUserInfoInput
+          value={String(password)}
+          onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => EnterLogin(e.key)}
+          placeholder="비밀번호를 입력해주세요"
+        />
+        <StBtnDiv>
+          <StBlackButton
+            onClick={() => {
+              signInWithEmail();
+            }}
+          >
+            로그인
+          </StBlackButton>
+          <StUserInfoButton onClick={() => navigate("/sign#signup")}>
+            회원가입
+          </StUserInfoButton>
+        </StBtnDiv>
+      </StLoginBoxDiv>
+    </StSignDiv>
   );
 };
 
 export default LoginDiv;
 
-export const StUserInfoName = styled.p`
-  font-size: 30px;
+export const StSignDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 50px;
+`;
+
+export const StUserInfoTitle = styled.p`
+  font-size: 60px;
   font-weight: 700;
 
-  margin: 10px;
+  margin: 30px auto;
+`;
+
+export const StLoginBoxDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 3px solid black;
+  border-radius: 15px;
+  width: 100%;
+  padding: 40px;
 `;
 
 export const StUserInfoInput = styled.input`
-  width: 400px;
-  margin: 10px;
-  padding: 10px;
-  background-color: wheat;
-  border-radius: 30px;
+  width: 100%;
+  height: 70px;
+  margin: 5px auto;
+  padding: 20px;
+  border: 3px solid black;
+  border-radius: 15px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #9e9c9c;
+  &:focus {
+    color: black;
+  }
+`;
+
+export const StBtnDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
 `;
 
 export const StUserInfoButton = styled.button`
-  width: 100px;
-  margin-top: 50px;
-  padding: 10px;
-  background-color: #e68b3c;
-  border-radius: 30px;
-  &:hover {
-    background-color: #cb7327;
-  }
+  width: 100%;
+  padding: 15px;
+  margin: 5px;
+  border: 3px solid black;
+  border-radius: 15px;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+`;
+
+export const StBlackButton = styled(StUserInfoButton)`
+  background-color: black;
+  color: white;
 `;
