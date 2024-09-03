@@ -9,14 +9,14 @@ const activeColor = 'red';
 const subColor = '#e1e1e1';
 
 const GlobalStyle = createGlobalStyle`
-  /* @font-face {
-    font-family: 'HSGooltokki';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/HSGooltokki.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-  } */  
+  @font-face {
+      font-family: 'BMDOHYEON';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+  }
   * {
-    /* font-family: 'HSGooltokki', sans-serif !important; */
+    font-family: 'BMDOHYEON', sans-serif !important;
     box-sizing: border-box;
   }
   .toastui-editor-contents p {font-size:18px}
