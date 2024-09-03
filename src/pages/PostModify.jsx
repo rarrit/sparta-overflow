@@ -110,8 +110,8 @@ const StTitle = styled.h2`
     width: 100%;
     height: 50px;
     padding: 0 20px;
-    border: 1px solid #dadde6;
-    border-radius: 10px;
+    border: 3px solid #111;
+    border-radius: 15px;
   }
 `;
 
@@ -138,9 +138,9 @@ const StUser = styled.div`
   img {
     width: 70px;
     height: 60px;
-    border-radius: 5px;
+    border-radius: 15px;
     object-fit: cover;
-    border: 2px solid black;
+    border: 3px solid black;
   }
   span {
     font-size: 20px;
@@ -183,8 +183,9 @@ const StFixedBtnArea = styled.div`
     align-items:center;
     justify-content:center;
     width:100%;
-    height:35px;
-    border:1px solid #111;
+    height:40px;
+    font-weight: bold;
+    border:3px solid #111;
     border-radius:5px;
     cursor:pointer;
     transition:all .15s ease;
@@ -222,7 +223,7 @@ const StH3 = styled.h3`
   font-size:16px;
   font-weight:bold;
   color:#111;
-  border-bottom:1px solid #e1e1e1;
+  border-bottom:1px solid #111;
   margin:40px 0 15px;
   padding:0 0 6px;
 `

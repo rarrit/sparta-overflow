@@ -91,7 +91,7 @@ const StTitle = styled.h2`
     height: 50px;
     padding: 0 20px;
     border: 3px solid #111;
-    border-radius: 10px;
+    border-radius: 15px;
   }
 `;
 
@@ -118,7 +118,7 @@ const StUser = styled.div`
   img {
     width: 70px;
     height: 60px;
-    border-radius: 5px;
+    border-radius: 15px;
     object-fit: cover;
     border: 3px solid black;
   }
@@ -159,7 +159,7 @@ const StBtn = styled.button`
   font-weight: 500;
   text-align: center;
   border: 1px solid #666;
-  border-radius: 5px;
+  border-radius: 15px;
   + button {
     background: #333;
     color: #fff;
@@ -171,7 +171,7 @@ const StDescArea = styled.div`
 const StCodeArea = styled.textarea`
   width:100%;
   min-height:200px;
-  border-radius:5px;
+  border-radius:15px;
   border:1px solid #dadde6;
   padding:15px;
 `;
@@ -197,9 +197,10 @@ const StFixedBtnArea = styled.div`
     align-items:center;
     justify-content:center;
     width:100%;
-    height:35px;
-    border:1px solid #111;
-    border-radius:5px;
+    height:40px;
+    font-weight:bold;
+    border:3px solid #111;
+    border-radius:10px;
     cursor:pointer;
     transition:all .15s ease;
     &:hover {
@@ -216,7 +217,7 @@ const StRegiBtn = styled.button`
   text-align: center;
   background:#fff;
   border: 1px solid #666;
-  border-radius: 5px;
+  border-radius: 15px;
   + button {
     background: #333;
     color: #fff;

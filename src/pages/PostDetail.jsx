@@ -229,9 +229,9 @@ const StUser = styled.div`
   img {
     width: 70px;
     height: 60px;
-    border-radius: 5px;
+    border-radius: 15px;
     object-fit: cover;
-    border: 2px solid black;
+    border: 3px solid black;
   }
   span {
     font-size: 20px;
@@ -289,7 +289,7 @@ const StBtn = styled.button`
   text-align: center;
   background: #fff;
   border: 1px solid #666;
-  border-radius: 5px;
+  border-radius: 10px;
 `;
 
 const StDescArea = styled.div`
@@ -339,9 +339,10 @@ const StFixedBtnArea = styled.div`
     align-items: center;
     justify-content: center;
     width: 50%;
-    height: 35px;
-    border: 1px solid #111;
-    border-radius: 5px;
+    height: 40px;
+    font-weight: bold;
+    border: 3px solid #111;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.15s ease;
     &:hover {
