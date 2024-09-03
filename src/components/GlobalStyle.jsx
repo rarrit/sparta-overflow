@@ -1,12 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
-
-/* Layout */
-const maxWidth = '1600px';
-
-/* Color */ 
-const mainColor = '#000';
-const activeColor = 'red';
-const subColor = '#e1e1e1';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -20,8 +12,6 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   .toastui-editor-contents p {font-size:18px}
-`
+`;
 
-
-
-export default GlobalStyle
+export default GlobalStyle;

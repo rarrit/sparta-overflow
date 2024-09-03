@@ -21,7 +21,6 @@ export const DataProvider = ({ children }) => {
       return;
     }
     const fetchData = async () => {
-      console.log("loginId", loginId);
       const { data, error } = await supabase
         .from("userinfo")
         .select()

@@ -9,8 +9,7 @@ import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
 const MypageTab = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("작성한글");
-  const { profile, posts, comment, myComment, loginUserInfoId } =
-    useContext(MypageDataContext);
+  const { posts, myComment } = useContext(MypageDataContext);
 
   const [myCommentGetPost, setMyCommentGetPost] = useState([]);
 
