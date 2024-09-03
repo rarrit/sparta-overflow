@@ -73,7 +73,7 @@ const PostModify = () => {
           <StLeftArea>
             <StSubWriteInfo>
               <StUser>
-                <img src={userProfileImg}/>
+                <img src={userProfileImg} alt={`${userName}님의 프로필 이미지`}/>
                 <span>{userName}</span>
               </StUser>
             </StSubWriteInfo>
@@ -103,7 +103,7 @@ const StContainer = styled.div`
 const StTitle = styled.h2`
   width: 100%;
   font-size: 20px;
-  font-weight: 600p;
+  font-weight: 600;
   color: #000;
   margin: 0 0 30px;
   input {
@@ -125,7 +125,7 @@ const StInfo = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  border-bottom: 1px solid #000;
+  border-bottom: 3px solid #000;
   margin-bottom: 30px;
   padding: 0 0 10px;
 `;
@@ -136,14 +136,16 @@ const StUser = styled.div`
   align-items: center;
   gap: 10px;
   img {
-    width: 40px;
-    height: 40px;
-    border-radius: 100%;
+    width: 70px;
+    height: 60px;
+    border-radius: 5px;
+    object-fit: cover;
+    border: 2px solid black;
   }
   span {
-    font-size: 18px;
-    font-weight: 400;
-    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+    color: black;
   }
 `;
 const StDate = styled.div`
@@ -217,9 +219,9 @@ const StCodeArea = styled.textarea`
   padding:15px;
 `;
 const StH3 = styled.h3`  
-  font-size:18px;
+  font-size:16px;
   font-weight:bold;
-  color:#656565;
+  color:#111;
   border-bottom:1px solid #e1e1e1;
   margin:40px 0 15px;
   padding:0 0 6px;

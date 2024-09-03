@@ -75,7 +75,7 @@ const PostRegister = () => {
 };
 
 const StContainer = styled.div`
-  padding: 60px 0 30px;
+  padding: 60px 0 80px;
 `;
 
 const StState = styled.div``;
@@ -90,7 +90,7 @@ const StTitle = styled.h2`
     width: 100%;
     height: 50px;
     padding: 0 20px;
-    border: 1px solid #dadde6;
+    border: 3px solid #111;
     border-radius: 10px;
   }
 `;
@@ -107,7 +107,7 @@ const StInfo = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #000;
   margin-bottom: 30px;
-  padding: 0 0 10px;
+  padding: 0 0 20px;
 `;
 
 const StLeftArea = styled.div``;
@@ -116,9 +116,11 @@ const StUser = styled.div`
   align-items: center;
   gap: 10px;
   img {
-    width: 25px;
-    height: 25px;
-    border-radius: 100%;
+    width: 70px;
+    height: 60px;
+    border-radius: 5px;
+    object-fit: cover;
+    border: 3px solid black;
   }
   span {
     font-size: 18px;
@@ -164,7 +166,7 @@ const StBtn = styled.button`
   }
 `;
 const StDescArea = styled.div`
-  padding: 0 20px;
+  
 `;
 const StCodeArea = styled.textarea`
   width:100%;
@@ -176,8 +178,8 @@ const StCodeArea = styled.textarea`
 const StH3 = styled.h3`  
   font-size:18px;
   font-weight:bold;
-  color:#656565;
-  border-bottom:1px solid #e1e1e1;
+  color:#111;
+  border-bottom:1px solid #111;
   margin:40px 0 15px;
   padding:0 0 6px;
 `

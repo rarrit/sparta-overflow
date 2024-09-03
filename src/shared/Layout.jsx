@@ -215,7 +215,7 @@ const StBtnArea = styled.div`
     cursor: pointer;
     &.btnLineBlack {
       color: #000;
-      border: 1px solid #000;
+      border: 3px solid #000;
     }
     &.btnBlack {
       color: #fff;
