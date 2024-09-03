@@ -199,11 +199,15 @@ const PostWrite = ({ setPosts }) => {
                     <CommentTime>
                       {handleTimeCalculate(newComment.created_at)}
                     </CommentTime>
-                    {authorId === userId && !newComment.isChosen && (
-                      <ActionButton onClick={() => selectHandle(newComment.id)}>
-                        채택하기
-                      </ActionButton>
-                    )}
+                    {authorId === userId &&
+                      userId !== newComment.writerUserId.id &&
+                      !newComment.isChosen && (
+                        <ActionButton
+                          onClick={() => selectHandle(newComment.id)}
+                        >
+                          채택하기
+                        </ActionButton>
+                      )}
                     {newComment.isChosen && (
                       <SelectedComment>채택된 댓글</SelectedComment>
                     )}
@@ -241,8 +245,8 @@ const PostWrite = ({ setPosts }) => {
                     style={{
                       width: "100%",
                       padding: "10px",
-                      border: "1px solid #000",
-                      borderRadius: "4px",
+                      border: "3px solid #000",
+                      borderRadius: "10px",
                       fontSize: "1em",
                       marginBottom: "10px",
                     }}
