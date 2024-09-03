@@ -329,16 +329,15 @@ const PostWrite = ({ setPosts }) => {
                 </>
               ) : (
                 <>
-                  <CommentText>{newComment.comment}</CommentText>
+                  <CommentText style={{ margin: "5px 0 40px 0" }}>
+                    {newComment.comment}
+                  </CommentText>
                 </>
               )}
               {/* 대댓글 */}
               {replies[newComment.id] &&
                 replies[newComment.id].map((replyItem) => (
-                  <CommentItem
-                    key={replyItem.id}
-                    style={{ marginLeft: "20px" }}
-                  >
+                  <CommentItem key={replyItem.id}>
                     <CommentHeader>
                       {replyItem.userinfo?.profileImage && (
                         <ProfileImage
@@ -352,8 +351,8 @@ const PostWrite = ({ setPosts }) => {
                           {handleTimeCalculate(replyItem.created_at)}
                         </CommentTime>
                       </CommentDetails>
-                      <CommentText>{replyItem.comment}</CommentText>
                     </CommentHeader>
+                    <CommentText>{replyItem.comment}</CommentText>
                   </CommentItem>
                 ))}
               {/* 대댓글 쓰기 */}
@@ -363,28 +362,61 @@ const PostWrite = ({ setPosts }) => {
                     type="text"
                     value={reply}
                     onChange={(e) => setReply(e.target.value)}
-                    placeholder="대댓글을 입력하세요"
+                    placeholder="댓글을 입력하세요!"
+                    rows="5"
+                    cols="30"
                   />
-                  <button
-                    onClick={() => addReplyHandle(newComment.id)}
-                    style={{
-                      width: "50%",
-                      marginTop: "10px",
-                      padding: "10px 20px",
-                      backgroundColor: "#000",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    답변쓰기
-                  </button>
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <button
+                      onClick={() => addReplyHandle(newComment.id)}
+                      style={{
+                        width: "90px",
+                        marginTop: "10px",
+                        padding: "10px",
+                        backgroundColor: "#000",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        textAlign: "center",
+                      }}
+                    >
+                      등록
+                    </button>
+                    <button
+                      onClick={() => setReplyingId(null)}
+                      style={{
+                        width: "90px",
+                        marginTop: "10px",
+                        padding: "10px",
+                        backgroundColor: "#000",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        textAlign: "center",
+                      }}
+                    >
+                      취소
+                    </button>
+                  </div>
                 </InputWrapper>
               ) : (
-                <ActionButton onClick={() => setReplyingId(newComment.id)}>
-                  답글달기
-                </ActionButton>
+                <button
+                  onClick={() => setReplyingId(newComment.id)}
+                  style={{
+                    width: "90px",
+                    padding: "10px",
+                    backgroundColor: "#000",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    textAlign: "center",
+                  }}
+                >
+                  댓글 쓰기
+                </button>
               )}
             </CommentItem>
           ))}
@@ -487,7 +519,7 @@ const ActionButton = styled.button`
   height: 30px;
   cursor: pointer;
   border: 2px solid #000;
-  border-radius: 10px;
+  border-radius: 6px;
   background-color: #000;
   color: #fff;
   &.btnLine {
@@ -504,7 +536,6 @@ const CommentText = styled.p`
   font-weight: 500;
   margin: 5px 0;
 `;
-
 const CommentTime = styled.div`
   font-size: 22px;
   font-weight: bold;
@@ -523,7 +554,7 @@ const SelectedComment = styled.p`
   height: 30px;
   cursor: pointer;
   border: 3px solid green;
-  border-radius: 10px;
+  border-radius: 4px;
   background-color: green;
   color: #fff;
 `;
