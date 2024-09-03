@@ -16,7 +16,7 @@ const CreateAccount = () => {
   const navigate = useNavigate();
   const [signUpId, setSignUpId] = useState("");
   const [password, setPassword] = useState("");
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState("익명");
   const [usingEmail, setUsingEmail] = useState([]);
   const defaultImage =
     "https://cdn.pixabay.com/photo/2018/01/12/16/31/spoon-3078582_640.png";
