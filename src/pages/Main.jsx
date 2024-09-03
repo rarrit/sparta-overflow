@@ -155,5 +155,4 @@ const StLoadMoreButton = styled.button`
   font-size: 20px;
   padding: 15px 10px;
   border-radius: 15px;
-  margin-bottom: 20px;
 `;

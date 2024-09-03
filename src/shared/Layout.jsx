@@ -284,7 +284,7 @@ const StContainer = styled.div`
   width: 100%;
   max-width: 1660px;
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 0 30px 30px 30px;
 `;
 const StContents = styled.div`
   min-height: 600px;
