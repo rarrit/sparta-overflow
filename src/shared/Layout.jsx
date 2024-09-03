@@ -15,8 +15,8 @@ function Header() {
     logout,
     searchData,
     setSearchData,
-    isFocused,
-    setIsFocused,
+    searchFocused,
+    setSearchFocused,
   } = useContext(dataContext);
 
   const hidePaths = ["/", "/search"];
@@ -27,6 +27,12 @@ function Header() {
 
   const isSpecificPage =
     location.pathname === "/" || location.pathname === "/Search";
+
+  const inputStyle = searchFocused ? { width: "100%" } : { width: "100px" };
+  const closeButtonStyle = searchFocused
+    ? { display: "block" }
+    : { display: "none" };
+  const searchFlex = isSpecificPage ? { flex: "1" } : { flex: "none" };
 
   const FocusSearchPopup = (e) => {
     e.preventDefault();
@@ -41,7 +47,7 @@ function Header() {
           <StLogo
             onClick={() => {
               setSearchData("");
-              setIsFocused(false);
+              setSearchFocused(false);
             }}
           >
             <Link to="/">
@@ -50,7 +56,7 @@ function Header() {
             </Link>
           </StLogo>
 
-          <StBtnArea isSpecificPage={isSpecificPage}>
+          <StBtnArea style={searchFlex}>
             {shouldHideTag && (
               <StSearchForm>
                 <div className="search">
@@ -59,13 +65,13 @@ function Header() {
                     value={searchData}
                     placeholder="Search..."
                     onChange={FocusSearchPopup}
-                    onFocus={() => setIsFocused(true)}
-                    isFocused={isFocused}
+                    onFocus={() => setSearchFocused(true)}
+                    style={inputStyle}
                   />
                   <StSearchClose
-                    isFocused={isFocused}
+                    style={closeButtonStyle}
                     onClick={() => {
-                      setIsFocused(false);
+                      setSearchFocused(false);
                       setSearchData("");
                     }}
                   >
@@ -169,6 +175,8 @@ const Layout = ({ children }) => {
   );
 };
 
+export default Layout;
+
 const StHeader = styled.header`
   position: fixed;
   top: 0;
@@ -219,7 +227,7 @@ const StSearchForm = styled.div`
   }
 `;
 const StSearchClose = styled.div`
-  display: ${(props) => (props.isFocused ? "block" : "none")};
+  /* display: ${(props) => (props.searchFocused ? "block" : "none")}; */
   cursor: pointer;
 `;
 
@@ -231,15 +239,15 @@ const StInput = styled.input`
   align-items: center;
   overflow: hidden;
   padding: 0 15px;
-  width: ${(props) => (props.isFocused ? "100%" : "100px")};
+  /* width: ${(props) => (props.searchFocused ? "100%" : "100px")}; */
   transition: all 1s;
 `;
 const StBtnArea = styled.div`
   display: flex;
   align-items: center;
-  width:200px;
+  width: 200px;
   gap: 10px;
-  ${(props) => props.isSpecificPage && `flex: 1;`}
+  /* ${(props) => props.isSpecificPage && `flex: 1;`} */
 
   a,
   button {
@@ -380,7 +388,5 @@ const StFixedBtnArea = styled.div`
     }
   }
 `;
-
-export default Layout;
 
 // 포스트 아이디: 1

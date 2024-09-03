@@ -23,11 +23,13 @@ const ProfileInfo = () => {
       </StUserInfoContainer>
       <StProfileFlex>
         <StProfileImgContainer>
-          <StProfileImgBox>
-            {profile.map((user) => {
-              return <img key={user.id} src={user.profileImage} />;
-            })}
-          </StProfileImgBox>
+          <StProfileImgDiv>
+            <StProfileImgBox>
+              {profile.map((user) => {
+                return <img key={user.id} src={user.profileImage} />;
+              })}
+            </StProfileImgBox>
+          </StProfileImgDiv>
         </StProfileImgContainer>
         <StPostingCountContainer>
           <div>
@@ -70,6 +72,7 @@ const StUserInfoContainer = styled.div`
     font-weight: bold;
   }
 `;
+
 const StPostingCountContainer = styled.div`
   display: flex;
   justify-content: space-around;
@@ -100,12 +103,19 @@ const StProfileImgContainer = styled.div`
   width: 50%;
   height: 100%;
 `;
-const StProfileImgBox = styled.div`
-  width: 90%;
+const StProfileImgDiv = styled.div`
+  width: calc(100% - 20px);
   height: 100%;
   max-height: 500px;
   overflow: hidden;
   border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const StProfileImgBox = styled.div`
+  width: 60%;
+  height: 100%;
 
   & img {
     width: 100%;

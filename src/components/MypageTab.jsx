@@ -13,7 +13,7 @@ const MypageTab = () => {
     useContext(MypageDataContext);
 
   const [myCommentGetPost, setMyCommentGetPost] = useState([]);
-  // console.log("myCommentGetPost", myCommentGetPost);
+  console.log("myCommentGetPost", myCommentGetPost);
 
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
@@ -188,6 +188,7 @@ const StPost = styled.div`
   & h2 {
     font-size: 20px;
     font-weight: 600;
+    width: 80%;
   }
 `;
 const StPostTop = styled.div`
@@ -211,8 +212,12 @@ const StPostTop = styled.div`
   }
 `;
 const StPostContent = styled.div`
-  height: 80px;
   width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 
   & p {
     font-size: 15px;
@@ -225,5 +230,5 @@ const StPostTitle = styled.div`
   width: 100%;
   line-height: 1.5;
   padding-bottom: 10px;
-  /* border-bottom: 1px solid; */
+  align-items: flex-start;
 `;

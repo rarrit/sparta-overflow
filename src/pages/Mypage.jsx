@@ -108,7 +108,7 @@ const StMypageContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 60px;
-  padding: 20px;
+  padding: 20px 0 100px 0;
   width: 100%;
   margin: 0 auto;
 `;
