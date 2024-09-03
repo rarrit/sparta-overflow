@@ -8,16 +8,27 @@ import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
 
 const Search = () => {
   const navigate = useNavigate();
-  const { searchData, setSearchData } = useContext(dataContext);
+  const { searchData, setSearchData, setSearchFocused } =
+    useContext(dataContext);
   const [searchPost, setSearchPost] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.from("Post").select("*");
+      const { data, error } = await supabase
+        .from("Post")
+        .select(
+          `*, userinfo:userId (
+          username,
+          profileImage
+        ),
+        Comment:Comment!postId (id)`
+        )
+        .order("created_at", { ascending: false });
       if (error) {
         console.log("error", error);
       } else {
         setSearchPost(data);
+        console.log("data", data);
       }
     };
     fetchData();
@@ -31,7 +42,7 @@ const Search = () => {
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
     setSearchData("");
-    setIsFocused(false);
+    setSearchFocused(false);
   };
 
   return (
@@ -46,9 +57,12 @@ const Search = () => {
               <StSearchRight>
                 <StSearchTitle>
                   <h2>{data.title}</h2>
-                  <div className="date">
-                    {filterDateOnlyYMD(data.created_at)}
-                  </div>
+                  <StSearchDataRow>
+                    <div>{data.userinfo.username}</div>│
+                    <div className="date">
+                      {filterDateOnlyYMD(data.created_at)}
+                    </div>
+                  </StSearchDataRow>
                 </StSearchTitle>
                 <StSearchDescription>{data.description}</StSearchDescription>
               </StSearchRight>
@@ -74,7 +88,7 @@ const StSearchListContainer = styled.div`
   padding: 20px 0 300px;
 `;
 const StSearchList = styled.div`
-  border: 2px solid #000;
+  border: 3px solid #000;
   border-radius: 15px;
   padding: 20px;
   display: flex;
@@ -102,14 +116,13 @@ const StSearchRight = styled.div`
 const StSearchTitle = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
   line-height: 1.5;
   padding-bottom: 10px;
-  border-bottom: 1px solid;
 
   & h2 {
     font-size: 20px;
     font-weight: 600;
+    width: 80%;
   }
 
   & .date {
@@ -119,13 +132,19 @@ const StSearchTitle = styled.div`
 `;
 
 const StSearchDescription = styled.div`
-  height: 80px;
-  overflow: hidden;
   font-size: 15px;
   color: #222;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;
 
 const StSearchNoneData = styled.div`
   text-align: center;
   padding: 30% 0;
+`;
+const StSearchDataRow = styled.div`
+  display: flex;
 `;
