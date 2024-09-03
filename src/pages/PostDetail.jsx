@@ -100,75 +100,81 @@ const PostDetail = () => {
 
   return (
     <>
-      <StContainer>
-        <StInfo>
-          <StLeftArea>
-            <StTitle>{post.title}</StTitle>
-            <StSubWriteInfo>
-              <StUser>
-                <img
-                  src={userInfo.profileImage}
-                  alt={`${userInfo.username}님의 이미지`}
-                />
-                <span>{userInfo.username}</span>
-              </StUser>
-              <StDate>
-                {post.created_at ? filterDateOnlyYMD(post.created_at) : ""}
-              </StDate>
-            </StSubWriteInfo>
-          </StLeftArea>
-          <StRightArea>
-            {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
-          </StRightArea>
-        </StInfo>
+      <StContainer>        
 
-        {/* 글 영역 */}
-        <StDescArea>
-          <StDescription>
-            {post.description ? (
-              <Viewer initialValue={post.description} />
-            ) : (
-              <p>Loading...</p>
-            )}
-          </StDescription>
+        <StContTop>
+          {/* 타이틀 */}
+          <StTitle>{post.title}</StTitle>
+          {/* 상세정보 */}
+          <StInfo>          
+            <StLeftArea>            
+              <StSubWriteInfo>
+                <StUser>
+                  <img
+                    src={userInfo.profileImage}
+                    alt={`${userInfo.username}님의 이미지`}
+                  />
+                  <span>{userInfo.username}</span>
+                </StUser>
+                <StDate>
+                  {post.created_at ? filterDateOnlyYMD(post.created_at) : ""}
+                </StDate>
+              </StSubWriteInfo>
+            </StLeftArea>
+            <StRightArea>
+              {/* 채택 여부 */}
+              {post.solve ? <StStyledCircleCheck /> : <StStyledCircleX />}
+            </StRightArea>
+          </StInfo>
 
-          <StCodeBox>
-            <StCodeBoxTopAreaWithCopyBtn>
-              <p>code</p>
-              {copy ? (
-                <StCopyCodeBtn>
-                  <CheckCheck size={16} />
-                  <span>copied !</span>
-                </StCopyCodeBtn>
+          {/* 글 영역 */}
+          <StDescArea>
+            <StDescription>
+              {post.description ? (
+                <Viewer initialValue={post.description} />
               ) : (
-                <StCopyCodeBtn
-                  onClick={() => {
-                    navigator.clipboard.writeText(post.code);
-                    setCopy(true);
-                    setTimeout(() => {
-                      setCopy(false);
-                    }, 2000);
-                  }}
-                >
-                  <Copy size={16} />
-                  <span>copy code</span>
-                </StCopyCodeBtn>
+                <p>Loading...</p>
               )}
-            </StCodeBoxTopAreaWithCopyBtn>
-            <SyntaxHighlighter
-              style={railscasts}
-              customStyle={{
-                padding: "25px",
-              }}
-              wrapLongLines={true}
-            >
-              {post.code}
-            </SyntaxHighlighter>
-          </StCodeBox>
-        </StDescArea>
+            </StDescription>
+
+            <StCodeBox>
+              <StCodeBoxTopAreaWithCopyBtn>
+                <p>code</p>
+                {copy ? (
+                  <StCopyCodeBtn>
+                    <CheckCheck size={16} />
+                    <span>copied !</span>
+                  </StCopyCodeBtn>
+                ) : (
+                  <StCopyCodeBtn
+                    onClick={() => {
+                      navigator.clipboard.writeText(post.code);
+                      setCopy(true);
+                      setTimeout(() => {
+                        setCopy(false);
+                      }, 2000);
+                    }}
+                  >
+                    <Copy size={16} />
+                    <span>copy code</span>
+                  </StCopyCodeBtn>
+                )}
+              </StCodeBoxTopAreaWithCopyBtn>
+              <SyntaxHighlighter
+                style={railscasts}
+                customStyle={{
+                  padding: "25px",
+                }}
+                wrapLongLines={true}
+              >
+                {post.code}
+              </SyntaxHighlighter>
+            </StCodeBox>
+          </StDescArea>
+        </StContTop>
 
         {/* 댓글 컴포넌트 */}
-        <PostWrite setPosts={setPosts} />
+        <PostWrite />
       </StContainer>
 
       {loginUserInfo.id === post.userId ? (
@@ -191,20 +197,33 @@ const PostDetail = () => {
 const StContainer = styled.div`
   padding: 60px 0 120px;
 `;
-
+const StContTop = styled.div`
+  position:relative;
+  padding:0 0 60px;
+  &:before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    bottom: 0;
+    width: calc(100% + 60px);
+    height: 30px;
+    background: #f6f6f6;
+  }
+`;
 const StState = styled.div``;
 
 const StInfo = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 15px 0;
+  padding: 15px 0 20px;
+  border-bottom:1px solid #111;
 `;
 
 const StTitle = styled.h2`
   font-size: 28px;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 `;
 
 const StLeftArea = styled.div`
@@ -225,9 +244,9 @@ const StUser = styled.div`
   img {
     width: 70px;
     height: 60px;
-    border-radius: 5px;
+    border-radius: 15px;
     object-fit: cover;
-    border: 2px solid black;
+    border: 3px solid black;
   }
   span {
     font-size: 20px;
@@ -285,7 +304,7 @@ const StBtn = styled.button`
   text-align: center;
   background: #fff;
   border: 1px solid #666;
-  border-radius: 5px;
+  border-radius: 10px;
 `;
 
 const StDescArea = styled.div`
@@ -335,9 +354,10 @@ const StFixedBtnArea = styled.div`
     align-items: center;
     justify-content: center;
     width: 50%;
-    height: 35px;
-    border: 1px solid #111;
-    border-radius: 5px;
+    height: 40px;
+    font-weight: bold;
+    border: 3px solid #111;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.15s ease;
     &:hover {

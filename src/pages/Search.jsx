@@ -10,6 +10,7 @@ const Search = () => {
   const navigate = useNavigate();
   const { searchData, setSearchData } = useContext(dataContext);
   const [searchPost, setSearchPost] = useState([]);
+  // const [userInfo, setUserInfo] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,18 +28,6 @@ const Search = () => {
   const filteredPosts = searchPost.filter((post) => {
     return post.title.includes(searchData);
   });
-  // console.log("filteredPosts", filteredPosts);
-
-  // const filteredUserName = filteredPosts.map((id) => {
-  //   return id.userId ;
-  // });
-  // console.log("filteredUserName", filteredUserName);
-  // // useEffect(()=>{
-  //   const fetchUserName = async () => {
-  //     const {data,error} = await supabase.from('userinfo')
-  //   }
-  //   fetchUserName()
-  // },[])
 
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { CircleCheck, CircleX } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
+import { removeMarkdown } from "../utils/markdownFilter";
 
 const PostListItem = ({ posts }) => {
   const navigate = useNavigate();
@@ -38,8 +39,8 @@ const PostListItem = ({ posts }) => {
           <StPostPreview>
             <p>
               {post.description.length > 200
-                ? `${post.title.substring(0, 200)}...`
-                : post.description.substring(0, 200)}
+                ? `${removeMarkdown(post.title.substring(0, 200))}...`
+                : removeMarkdown(post.description.substring(0, 200))}
             </p>{" "}
             {/* 내용 */}
           </StPostPreview>
