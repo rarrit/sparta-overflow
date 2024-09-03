@@ -5,14 +5,19 @@ import logo from "../assets/image/logo.jpeg";
 import { useState, useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
 import { useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLogin, logout, searchData, setSearchData } =
-    useContext(dataContext);
-  const [isFocused, setIsFocused] = useState(false);
+  const {
+    isLogin,
+    logout,
+    searchData,
+    setSearchData,
+    isFocused,
+    setIsFocused,
+  } = useContext(dataContext);
 
   const hidePaths = ["/", "/search"];
   // 경로 패턴이 일치하는지 확인
@@ -20,8 +25,8 @@ function Header() {
     matchPath(path, location.pathname)
   );
 
-  const isSpecificPage = location.pathname === "/";
-  console.log("isSpecificPage", isSpecificPage);
+  const isSpecificPage =
+    location.pathname === "/" || location.pathname === "/Search";
 
   const FocusSearchPopup = (e) => {
     e.preventDefault();
@@ -36,6 +41,7 @@ function Header() {
           <StLogo
             onClick={() => {
               setSearchData("");
+              setIsFocused(false);
             }}
           >
             <Link to="/">
@@ -56,6 +62,12 @@ function Header() {
                     onFocus={() => setIsFocused(true)}
                     isFocused={isFocused}
                   />
+                  <StSearchClose
+                    isFocused={isFocused}
+                    onClick={() => setIsFocused(false)}
+                  >
+                    <X />
+                  </StSearchClose>
                 </div>
                 <button type="button" className="searchIcon">
                   <Search />
@@ -200,7 +212,12 @@ const StSearchForm = styled.div`
     width: 100%;
     display: flex;
     justify-content: end;
+    align-items: center;
   }
+`;
+const StSearchClose = styled.div`
+  display: ${(props) => (props.isFocused ? "block" : "none")};
+  cursor: pointer;
 `;
 
 const StInput = styled.input`
@@ -218,7 +235,6 @@ const StBtnArea = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-
   ${(props) => props.isSpecificPage && `flex: 1;`}
 
   a,

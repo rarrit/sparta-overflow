@@ -31,6 +31,7 @@ const Search = () => {
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
     setSearchData("");
+    setIsFocused(false);
   };
 
   return (

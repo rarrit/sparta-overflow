@@ -13,6 +13,7 @@ export const DataProvider = ({ children }) => {
   const [loginUserInfo, setLoginUserInfo] = useState("");
   //검색어 정보
   const [searchData, setSearchData] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   // 로그인한 유저 정보 가져오기
   useEffect(() => {
@@ -86,6 +87,8 @@ export const DataProvider = ({ children }) => {
         setLoginUserInfo,
         searchData,
         setSearchData,
+        isFocused,
+        setIsFocused,
       }}
     >
       {children}
