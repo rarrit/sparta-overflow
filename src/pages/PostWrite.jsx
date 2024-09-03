@@ -5,7 +5,7 @@ import { dataContext } from "../contexts/DataContext";
 import { useParams } from "react-router-dom";
 import handleTimeCalculate from "../components/ChangeTime";
 
-const PostWrite = () => {
+const PostWrite = ({ setPosts }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [userId, setUserId] = useState();
@@ -118,15 +118,30 @@ const PostWrite = () => {
 
   // 댓글 채택
   const selectHandle = async (id) => {
-    const { data, error } = await supabase
+    const { data: commentData, error: commentError } = await supabase
       .from("Comment")
-      .upsert({ id: id, isChosen: true })
-      .select();
+      .update({ isChosen: true }) // 댓글을 채택된 상태로 업데이트
+      .eq("id", id)
+      .select()
+      .single();
+
     // 채택 후 댓글 목록 갱신
-    if (error) {
-      console.log("업데이트 에러 =>", error);
+    if (commentError) {
+      console.log("댓글 업데이트 에러 =>", commentError);
     } else {
-      fetchComments();
+      const postId = commentData?.postId; // 댓글의 게시글을 가져옴
+
+      const { error: postError } = await supabase
+        .from("Post")
+        .update({ solve: true })
+        .eq("id", postId);
+
+      if (postError) {
+        console.log("post 업데이트 에러 =>", postError);
+      } else {
+        fetchComments();
+      }
+      setPosts((prev) => ({ ...prev, solve: true }));
     }
   };
 
