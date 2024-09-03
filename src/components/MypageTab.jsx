@@ -12,7 +12,6 @@ const MypageTab = () => {
   const { posts, myComment } = useContext(MypageDataContext);
 
   const [myCommentGetPost, setMyCommentGetPost] = useState([]);
-  console.log("myCommentGetPost", myCommentGetPost);
 
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);

@@ -101,7 +101,6 @@ const PostWrite = ({ setPosts }) => {
   };
 
   const deleteCommentHandle = async (id) => {
-    console.log(id);
     const { error } = await supabase.from("Comment").delete().eq("id", id);
     if (error) {
       console.log("삭제 에러=>", error);
@@ -139,7 +138,7 @@ const PostWrite = ({ setPosts }) => {
         console.log("post 업데이트 에러 =>", postError);
       } else {
         fetchComments();
-        setPosts((prev) => ({ ...prev, solve: true }));
+        //setPosts((prev) => ({ ...prev, solve: true }));
       }
     }
   };
