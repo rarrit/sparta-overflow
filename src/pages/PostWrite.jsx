@@ -101,11 +101,14 @@ const PostWrite = ({ setPosts }) => {
   };
 
   const deleteCommentHandle = async (id) => {
-    const { error } = await supabase.from("Comment").delete().eq("id", id);
-    if (error) {
-      console.log("삭제 에러=>", error);
-    } else {
-      fetchComments();
+    const isConfirmed = window.confirm("정말 삭제하겠습니까?");
+    if (isConfirmed) {
+      const { error } = await supabase.from("Comment").delete().eq("id", id);
+      if (error) {
+        console.log("삭제 에러=>", error);
+      } else {
+        fetchComments();
+      }
     }
   };
 
