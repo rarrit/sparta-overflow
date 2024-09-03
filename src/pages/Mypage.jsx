@@ -37,7 +37,7 @@ const Mypage = () => {
       }
     };
     fetchComment();
-  }, [comment]);
+  }, []);
 
   //유저정보테이블 : 로그인한계정의 이메일과 같은 행 찾기
   useEffect(() => {
