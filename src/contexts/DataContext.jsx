@@ -16,7 +16,11 @@ export const DataProvider = ({ children }) => {
 
   // 로그인한 유저 정보 가져오기
   useEffect(() => {
+    if (!loginId) {
+      return;
+    }
     const fetchData = async () => {
+      console.log("loginId", loginId);
       const { data, error } = await supabase
         .from("userinfo")
         .select()
