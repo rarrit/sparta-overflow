@@ -155,15 +155,20 @@ const PostDetail = () => {
 
       {loginUserInfo.id === post.userId ? (
         <StFixedBtnArea>
-          <StBtn
-            className="btnLine"
-            onClick={() => handleEditPostMove(post.id)}
-          >
-            수정
-          </StBtn>
-          <StBtn className="btnBlack" onClick={() => handleDeletePost(post.id)}>
-            삭제
-          </StBtn>
+          <StBtnBox>
+            <StBtn
+              className="btnLine"
+              onClick={() => handleEditPostMove(post.id)}
+            >
+              수정
+            </StBtn>
+            <StBtn
+              className="btnBlack"
+              onClick={() => handleDeletePost(post.id)}
+            >
+              삭제
+            </StBtn>
+          </StBtnBox>
         </StFixedBtnArea>
       ) : null}
     </>
@@ -319,7 +324,6 @@ const StFixedBtnArea = styled.div`
   left: 0;
   bottom: 0;
   padding: 15px;
-  display: flex;
   gap: 10px;
   box-shadow: 0.5px 0.5px 10px rgba(0, 0, 0, 0.15);
   z-index: 999;
@@ -340,6 +344,12 @@ const StFixedBtnArea = styled.div`
       background: #111;
     }
   }
+`;
+const StBtnBox = styled.div`
+  display: flex;
+  max-width: 1600px;
+  margin: 0 auto;
+  gap: 10px;
 `;
 
 export default PostDetail;

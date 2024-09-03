@@ -179,6 +179,7 @@ const StFixedBtnArea = styled.div`
   gap: 10px;
   box-shadow: 0.5px 0.5px 10px rgba(0, 0, 0, 0.15);
   padding: 15px;
+  justify-content: center;
   button {
     display: flex;
     align-items: center;
@@ -190,6 +191,7 @@ const StFixedBtnArea = styled.div`
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.15s ease;
+    max-width: 1600px;
     &:hover {
       color: #fff;
       background: #111;

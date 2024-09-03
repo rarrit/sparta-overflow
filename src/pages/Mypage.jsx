@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState, useEffect, createContext, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import supabase from "../services/supabaseClient";
 import { dataContext } from "../contexts/DataContext";
 import ProfileInfo from "../components/ProfileInfo";
@@ -10,7 +9,6 @@ import GoBack from "../components/GoBack";
 export const MypageDataContext = createContext();
 
 const Mypage = () => {
-  const navigate = useNavigate();
   const { loginUserInfo } = useContext(dataContext); //로그인한 user정보
   const [profile, setProfile] = useState([]); //로그인한 유저정보 저장
   const [posts, setPosts] = useState([]); //포스트 정보 저장
@@ -41,13 +39,13 @@ const Mypage = () => {
     fetchComment();
   }, []);
 
-  //유저정보테이블 : 로그인한계정의 이메일과 같은 열 찾기
+  //유저정보테이블 : 로그인한계정의 이메일과 같은 행 찾기
   useEffect(() => {
     const fetchProfile = async () => {
       const { data, error } = await supabase
         .from("userinfo")
         .select("*")
-        .eq("email", loginUserInfo.email); //
+        .eq("email", loginUserInfo.email);
 
       if (error) {
         console.error("ErrorError :", error);
@@ -58,13 +56,13 @@ const Mypage = () => {
     fetchProfile();
   }, [loginUserInfo]);
 
-  //유저의 포스팅정보 테이블 : 로그인한계정의 아이디와 같은 열 찾기
+  //유저의 포스팅정보 테이블 : 로그인한계정의 아이디와 같은 행 찾기
   useEffect(() => {
     const fetchPost = async () => {
       const { data, error } = await supabase
         .from("Post")
         .select("*")
-        .eq("userId", loginUserInfo.id); //
+        .eq("userId", loginUserInfo.id);
 
       if (error) {
         console.error("ErrorError :", error);
