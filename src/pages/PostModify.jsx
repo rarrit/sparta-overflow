@@ -144,7 +144,7 @@ const StUser = styled.div`
   gap: 10px;
   img {
     width: 70px;
-    height: 60px;
+    height: 70px;
     border-radius: 15px;
     object-fit: cover;
     border: 3px solid black;
