@@ -2,7 +2,7 @@ import { TeamInfo } from "../assets/js/teamInfo";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/image/logo.jpeg";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
 import { useNavigate } from "react-router-dom";
 import { Search, X } from "lucide-react";

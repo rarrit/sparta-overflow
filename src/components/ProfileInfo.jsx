@@ -2,7 +2,6 @@ import { useContext } from "react";
 import styled from "styled-components";
 import supabase from "../services/supabaseClient";
 import { MypageDataContext } from "../pages/Mypage";
-// import { dataContext } from "../contexts/DataContext";
 import "../style/mypage.css";
 
 const ProfileInfo = () => {

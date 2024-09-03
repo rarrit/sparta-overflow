@@ -11,7 +11,6 @@ const PostListItem = ({ posts }) => {
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
   };
-
   return (
     <>
       {posts.map((post) => (

@@ -32,8 +32,6 @@ const Main = () => {
       console.log("무슨에러? =>", error); // 오류 처리
       return;
     } else {
-      console.log("post data =>", data);
-
       if (data.length < 10) setMorePosts(false); //만약 data가 10개 미만이라면 setMorePosts를 false로 해서 더보기 버튼이 보이지 않게 함.
 
       // 댓글 갯수를 post객체 안에 commentCount 속성으로 넣어줌
@@ -72,15 +70,6 @@ const Main = () => {
   // 1. 답변전/후 상관 없이 10개의 post를 불러오고 채택된 게시글 있으면 바로 상태변경
   useEffect(() => {
     fetchPosts(0, 9);
-
-    // const checkSolve = supabase
-    //   .from("Post")
-    //   .on("UPDATE", (updateInfo) => {
-    //     console.log("채택 업데이트:", updateInfo);
-    //     // 변경된 포스트 업데이트
-    //     setPosts();
-    //   })
-    //   .subscribe();
   }, []);
 
   return (
@@ -99,9 +88,9 @@ const Main = () => {
 
               if (tab.id === 2) {
                 // 3. 해당 탭에 있는 답변을 0부터 9까지 불러옴
-                fetchPosts(0, 9);
+                fetchPosts(0, 9, false);
               } else if (tab.id === 3) {
-                fetchPosts(0, 9);
+                fetchPosts(0, 9, true);
               } else {
                 fetchPosts(0, 9);
               }
@@ -151,7 +140,7 @@ const StTabButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #444;
+    background-color: black;
     color: white;
   }
 `;
