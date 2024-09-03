@@ -141,13 +141,6 @@ const PostWrite = () => {
             placeholder="답변을 입력하세요"
             rows="10"
             cols="50"
-            // style={{
-            //   width: "100%",
-            //   padding: "10px 50px 10px 10px",
-            //   border: "1px solid #ccc",
-            //   borderRadius: "4px",
-            //   fontSize: "1em",
-            // }}
           />
           <button
             onClick={addCommentHandle}
@@ -176,157 +169,79 @@ const PostWrite = () => {
       )}
 
       <ItemContainer>
-        <ul style={{ listStyle: "none", padding: "0" }}>
+        <CommentList>
           {comments.map((newComment) => (
-            <li
-              key={newComment.id}
-              style={{
-                marginBottom: "15px",
-                padding: "10px",
-                borderBottom: "1px solid #eee",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center" }}>
+            <CommentItem key={newComment.id}>
+              <CommentHeader>
                 {newComment.writerUserId.profileImage && (
-                  <img
+                  <ProfileImage
                     src={newComment.writerUserId.profileImage}
                     alt="profile"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "5px",
-                      marginRight: "10px",
-                    }}
                   />
                 )}
-              </div>
-
-              <div
-              // style={{
-              //   marginBottom: "5px",
-              //   fontSize: "0.9em",
-              //   color: "#666",
-              // }}
-              >
-                {handleTimeCalculate(newComment.created_at)}
-              </div>
-              <div
-              // style={{
-              //   marginBottom: "5px",
-              //   fontSize: "0.9em",
-              //   color: "#666",
-              // }}
-              >
-                {newComment.username}
-              </div>
-
+                <CommentDetails>
+                  <CommentUserName>{newComment.username}</CommentUserName>
+                  <CommentTime>
+                    {handleTimeCalculate(newComment.created_at)}
+                  </CommentTime>
+                </CommentDetails>
+                {authorId === userId && !newComment.isChosen && (
+                  <ActionButton onClick={() => selectHandle(newComment.id)}>
+                    채택하기
+                  </ActionButton>
+                )}
+                {newComment.isChosen && (
+                  <SelectedComment>채택된 댓글</SelectedComment>
+                )}
+                {isLogin && userId === newComment.writerUserId.id && (
+                  <>
+                    <ActionButton
+                      onClick={() =>
+                        startEditing(newComment.id, newComment.comment)
+                      }
+                    >
+                      수정
+                    </ActionButton>
+                    <ActionButton
+                      onClick={() => deleteCommentHandle(newComment.id)}
+                    >
+                      삭제
+                    </ActionButton>
+                  </>
+                )}
+              </CommentHeader>
               {editingId === newComment.id ? (
                 <>
-                  <input
+                  <textarea
                     type="text"
                     value={editComment}
                     onChange={(e) => setEditComment(e.target.value)}
+                    rows="10"
+                    cols="50"
                     style={{
                       width: "100%",
                       padding: "10px",
-                      border: "1px solid #ccc",
+                      border: "1px solid #000",
                       borderRadius: "4px",
                       fontSize: "1em",
                       marginBottom: "10px",
                     }}
                   />
-                  <button
-                    onClick={editCommentHandle}
-                    style={{
-                      marginRight: "10px",
-                      padding: "5px 10px",
-                      fontSize: "0.9em",
-                      cursor: "pointer",
-                      border: "1px solid #ddd",
-                      backgroundColor: "#fff",
-                      borderRadius: "4px",
-                    }}
-                  >
+                  <ActionButton onClick={editCommentHandle}>
                     수정완료
-                  </button>
-                  <button
-                    onClick={() => setEditingId(null)}
-                    style={{
-                      marginRight: "10px",
-                      padding: "5px 10px",
-                      fontSize: "0.9em",
-                      cursor: "pointer",
-                      border: "1px solid #ddd",
-                      backgroundColor: "#fff",
-                      borderRadius: "4px",
-                    }}
-                  >
+                  </ActionButton>
+                  <ActionButton onClick={() => setEditingId(null)}>
                     취소
-                  </button>
+                  </ActionButton>
                 </>
               ) : (
                 <>
-                  <p style={{ margin: "5px 0" }}>{newComment.comment}</p>
-                  {isLogin && userId === newComment.writerUserId.id && (
-                    <>
-                      <button
-                        onClick={() =>
-                          startEditing(newComment.id, newComment.comment)
-                        }
-                        style={{
-                          marginRight: "10px",
-                          padding: "5px 10px",
-                          fontSize: "0.9em",
-                          cursor: "pointer",
-                          border: "1px solid #ddd",
-                          backgroundColor: "#fff",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={() => deleteCommentHandle(newComment.id)}
-                        style={{
-                          marginRight: "10px",
-                          padding: "5px 10px",
-                          fontSize: "0.9em",
-                          cursor: "pointer",
-                          border: "1px solid #ddd",
-                          backgroundColor: "#fff",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        삭제
-                      </button>
-                    </>
-                  )}
-                  {authorId === userId && !newComment.isChosen && (
-                    <button
-                      onClick={() => selectHandle(newComment.id)}
-                      style={{
-                        marginRight: "10px",
-                        padding: "5px 10px",
-                        fontSize: "0.9em",
-                        cursor: "pointer",
-                        border: "1px solid #ddd",
-                        backgroundColor: "#fff",
-                        borderRadius: "4px",
-                      }}
-                    >
-                      채택하기
-                    </button>
-                  )}
-                  {newComment.isChosen && (
-                    <p style={{ fontWeight: "bold", color: "green" }}>
-                      채택된 답변
-                    </p>
-                  )}
+                  <CommentText>{newComment.comment}</CommentText>
                 </>
               )}
-            </li>
+            </CommentItem>
           ))}
-        </ul>
+        </CommentList>
       </ItemContainer>
     </StContainer>
   );
@@ -336,10 +251,6 @@ const StContainer = styled.div`
   width: 100%;
   margin: 20px auto;
   padding: 20px;
-`;
-
-const ItemContainer = styled.div`
-  margin-bottom: 20px;
 `;
 
 const InputWrapper = styled.div`
@@ -361,6 +272,71 @@ const TextArea = styled.textarea`
     padding: 5px 0 0 5px;
     color: #aaa;
   }
+`;
+const ItemContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+const CommentList = styled.ul`
+  list-style: none;
+  padding: 0;
+`;
+
+const CommentItem = styled.li`
+  margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+`;
+
+const CommentHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+`;
+const ProfileImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+`;
+
+const CommentDetails = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  margin-right: 10px;
+`;
+
+const ActionButton = styled.button`
+  margin-right: 10px;
+  padding: 5px 10px;
+  font-size: 1em;
+  cursor: pointer;
+  border: 3px solid #000;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #000;
+`;
+
+const CommentText = styled.p`
+  margin: 5px 0;
+`;
+
+const CommentTime = styled.div`
+  margin-bottom: 5px;
+  font-size: 1em;
+  color: #000;
+`;
+
+const CommentUserName = styled.div`
+  margin-bottom: 5px;
+  font-size: 1em;
+  color: #000;
+`;
+const SelectedComment = styled.p`
+  font-weight: bold;
+  color: green;
 `;
 
 export default PostWrite;
