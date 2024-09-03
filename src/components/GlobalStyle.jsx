@@ -19,6 +19,9 @@ const GlobalStyle = createGlobalStyle`
     /* font-family: 'HSGooltokki', sans-serif !important; */
     box-sizing: border-box;
   }
+  .toastui-editor-contents p {font-size:18px}
 `
+
+
 
 export default GlobalStyle

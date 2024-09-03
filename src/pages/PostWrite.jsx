@@ -180,36 +180,42 @@ const PostWrite = ({ setPosts }) => {
                     alt="profile"
                   />
                 )}
-                <CommentDetails>
-                  <CommentUserName>{newComment.username}</CommentUserName>
-                  <CommentTime>
-                    {handleTimeCalculate(newComment.created_at)}
-                  </CommentTime>
-                </CommentDetails>
-                {authorId === userId && !newComment.isChosen && (
-                  <ActionButton onClick={() => selectHandle(newComment.id)}>
-                    채택하기
-                  </ActionButton>
-                )}
-                {newComment.isChosen && (
-                  <SelectedComment>채택된 댓글</SelectedComment>
-                )}
-                {isLogin && userId === newComment.writerUserId.id && (
-                  <>
-                    <ActionButton
-                      onClick={() =>
-                        startEditing(newComment.id, newComment.comment)
-                      }
-                    >
-                      수정
-                    </ActionButton>
-                    <ActionButton
-                      onClick={() => deleteCommentHandle(newComment.id)}
-                    >
-                      삭제
-                    </ActionButton>
-                  </>
-                )}
+                <StLeftArea>
+                  <CommentDetails>
+                    <CommentUserName>{newComment.username}</CommentUserName>
+                    <CommentTime>
+                      {handleTimeCalculate(newComment.created_at)}
+                    </CommentTime>
+                    {authorId === userId && !newComment.isChosen && (
+                      <ActionButton onClick={() => selectHandle(newComment.id)}>
+                        채택하기
+                      </ActionButton>
+                    )}
+                    {newComment.isChosen && (
+                      <SelectedComment>채택된 댓글</SelectedComment>
+                    )}
+                  </CommentDetails>                  
+                </StLeftArea>                
+                <StRightArea>
+                  {isLogin && userId === newComment.writerUserId.id && (
+                    <>
+                      <ActionButton
+                        className="btnLine"
+                        onClick={() =>
+                          startEditing(newComment.id, newComment.comment)
+                        }
+                      >
+                        수정
+                      </ActionButton>
+                      <ActionButton
+                        className="btnLine"
+                        onClick={() => deleteCommentHandle(newComment.id)}
+                      >
+                        삭제
+                      </ActionButton>
+                    </>
+                  )}
+                </StRightArea>                
               </CommentHeader>
               {editingId === newComment.id ? (
                 <>
@@ -251,7 +257,7 @@ const PostWrite = ({ setPosts }) => {
 const StContainer = styled.div`
   width: 100%;
   margin: 20px auto;
-  padding: 20px;
+  padding: 20px 0;
 `;
 
 const InputWrapper = styled.div`
@@ -284,60 +290,98 @@ const CommentList = styled.ul`
 `;
 
 const CommentItem = styled.li`
-  margin-bottom: 15px;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+  position: relative;     
+  padding: 10px 0 60px 120px;    
+  &:before {
+    content: '';
+    position: absolute; 
+    left: 45px;
+    bottom: 0;
+    width: 1px;
+    height: 100%;
+    background: #111;
+  }
 `;
 
 const CommentHeader = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  border-bottom: 1px dashed #111;
+  padding-bottom: 10px;
 `;
 const ProfileImage = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  margin-right: 10px;
-  margin-bottom: 5px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 90px;
+  height: 90px;
+  background:#fff;
+  border: 3px solid #111;
+  border-radius: 15px;  
 `;
 
 const CommentDetails = styled.div`
   display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  margin-right: 10px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 `;
 
 const ActionButton = styled.button`
   margin-right: 10px;
   padding: 5px 10px;
-  font-size: 1em;
+  font-size: 16px;
+  height: 30px;
   cursor: pointer;
-  border: 3px solid #000;
+  border: 2px solid #000;
   border-radius: 10px;
-  background-color: #fff;
-  color: #000;
+  background-color: #000;
+  color: #fff;
+  &.btnLine {
+    width:80px;
+    font-weight:500;
+    text-align: center;
+    background:#fff;
+    color:#000;
+  }
 `;
 
 const CommentText = styled.p`
+  font-size: 16px;
+  font-weight: 500;
   margin: 5px 0;
 `;
 
-const CommentTime = styled.div`
-  margin-bottom: 5px;
-  font-size: 1em;
+const CommentTime = styled.div`  
+  font-size:22px;
+  font-weight:bold;
   color: #000;
 `;
 
-const CommentUserName = styled.div`
-  margin-bottom: 5px;
-  font-size: 1em;
+const CommentUserName = styled.div`  
+  font-size: 22px;
+  font-weight: bold;
   color: #000;
 `;
 const SelectedComment = styled.p`
-  font-weight: bold;
-  color: green;
+    margin-right: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    height:30px;
+    cursor: pointer;
+    border: 3px solid green;
+    border-radius: 10px;
+    background-color: green;
+    color: #fff;
+`;
+const StLeftArea = styled.div`
+  
+`;
+const StRightArea = styled.div`
+  
 `;
 
 export default PostWrite;

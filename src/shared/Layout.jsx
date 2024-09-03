@@ -234,6 +234,7 @@ const StInput = styled.input`
 const StBtnArea = styled.div`
   display: flex;
   align-items: center;
+  width:200px;
   gap: 10px;
   ${(props) => props.isSpecificPage && `flex: 1;`}
 
@@ -252,7 +253,7 @@ const StBtnArea = styled.div`
     cursor: pointer;
     &.btnLineBlack {
       color: #000;
-      border: 1px solid #000;
+      border: 3px solid #000;
     }
     &.btnBlack {
       color: #fff;
