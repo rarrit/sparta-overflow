@@ -139,8 +139,8 @@ const PostWrite = ({ setPosts }) => {
         console.log("post 업데이트 에러 =>", postError);
       } else {
         fetchComments();
+        setPosts((prev) => ({ ...prev, solve: true }));
       }
-      setPosts((prev) => ({ ...prev, solve: true }));
     }
   };
 
