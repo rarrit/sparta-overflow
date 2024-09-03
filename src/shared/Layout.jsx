@@ -5,17 +5,23 @@ import logo from "../assets/image/logo.jpeg";
 import { useState, useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
 import { useNavigate } from "react-router-dom";
+import { Search } from "lucide-react";
 
 function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isLogin, logout, searchData, setSearchData } =
     useContext(dataContext);
+  const [isFocused, setIsFocused] = useState(false);
 
   const hidePaths = ["/", "/search"];
   // 경로 패턴이 일치하는지 확인
   const shouldHideTag = hidePaths.some((path) =>
     matchPath(path, location.pathname)
   );
+
+  const isSpecificPage = location.pathname === "/";
+  console.log("isSpecificPage", isSpecificPage);
 
   const FocusSearchPopup = (e) => {
     e.preventDefault();
@@ -37,21 +43,26 @@ function Header() {
               spoon <span>overflow</span>
             </Link>
           </StLogo>
-          {shouldHideTag && (
-            <StSearchForm>
-              <div className="search">
-                <input
-                  type="text"
-                  value={searchData}
-                  placeholder="검색어를 입력해주세요."
-                  onChange={FocusSearchPopup}
-                />
-                <button type="button">검색</button>
-              </div>
-            </StSearchForm>
-          )}
 
-          <StBtnArea>
+          <StBtnArea isSpecificPage={isSpecificPage}>
+            {shouldHideTag && (
+              <StSearchForm>
+                <div className="search">
+                  <StInput
+                    type="text"
+                    value={searchData}
+                    placeholder="Search..."
+                    onChange={FocusSearchPopup}
+                    onFocus={() => setIsFocused(true)}
+                    isFocused={isFocused}
+                  />
+                </div>
+                <button type="button" className="searchIcon">
+                  <Search />
+                </button>
+              </StSearchForm>
+            )}
+
             {isLogin ? (
               <>
                 <button onClick={() => logout()} className="btnLineBlack">
@@ -181,37 +192,47 @@ const StLogo = styled.div`
   }
 `;
 const StSearchForm = styled.div`
-  flex: 1;
+  display: flex;
   padding: 0 10px 0 20px;
-  .search {
-    position: relative;
-    height: 50px;
-    border: 1px solid #959595;
-    border-radius: 10px;
-    overflow: hidden;
-    padding: 0 15px;
-    input {
-      width: 100%;
-      height: 100%;
-    }
+  width: 100%;
+  justify-content: flex-end;
+  & .search {
+    width: 100%;
+    display: flex;
+    justify-content: end;
   }
+`;
+
+const StInput = styled.input`
+  position: relative;
+  height: 50px;
+  border-bottom: 1px solid #959595;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 15px;
+  width: ${(props) => (props.isFocused ? "100%" : "100px")};
+  transition: all 1s;
 `;
 const StBtnArea = styled.div`
   display: flex;
   align-items: center;
-  width: 150px;
   gap: 10px;
+
+  ${(props) => props.isSpecificPage && `flex: 1;`}
+
   a,
   button {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 200px;
+    max-width: 100px;
     height: 50px;
     font-size: 16px;
     font-weight: 500;
     border-radius: 10px;
+    padding: 0 20px;
     cursor: pointer;
     &.btnLineBlack {
       color: #000;
@@ -221,6 +242,10 @@ const StBtnArea = styled.div`
       color: #fff;
       background: #000;
     }
+  }
+  & .searchIcon {
+    padding: 0 10px;
+    width: auto;
   }
 `;
 
