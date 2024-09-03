@@ -107,7 +107,8 @@ const StProfileImgDiv = styled.div`
   height: 100%;
   max-height: 500px;
   overflow: hidden;
-  border: 2px solid #000;
+  border: 3px solid #000;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
