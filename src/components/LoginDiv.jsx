@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import supabase from "../services/supabaseClient";
 
@@ -114,6 +114,7 @@ export const StUserInfoButton = styled.button`
   font-size: 20px;
   font-weight: 700;
   text-align: center;
+  cursor: pointer;
 `;
 
 export const StBlackButton = styled(StUserInfoButton)`

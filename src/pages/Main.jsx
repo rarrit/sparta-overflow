@@ -32,8 +32,6 @@ const Main = () => {
       console.log("무슨에러? =>", error); // 오류 처리
       return;
     } else {
-      console.log("post data =>", data);
-
       if (data.length < 10) setMorePosts(false); //만약 data가 10개 미만이라면 setMorePosts를 false로 해서 더보기 버튼이 보이지 않게 함.
 
       // 댓글 갯수를 post객체 안에 commentCount 속성으로 넣어줌
@@ -118,6 +116,7 @@ const Main = () => {
 export default Main;
 
 const StHomePostListTitle = styled.h1`
+  padding-top: 60px;
   font-size: 50px;
   font-weight: bold;
   margin: 20px 0;
@@ -142,7 +141,7 @@ const StTabButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #444;
+    background-color: black;
     color: white;
   }
 `;

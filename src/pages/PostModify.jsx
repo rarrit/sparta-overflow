@@ -11,11 +11,11 @@ const PostModify = () => {
   // useLocation 을 사용해서 detail 페이지에서 useNavigate를 통해 전달한 값을 받아옴
   const location = useLocation();
   const navigate = useNavigate();
-  const { id } = useParams();  
+  const { id } = useParams();
 
-  const [postTitle, setPostTitle] = useState('');
-  const [postDesc, setPostDesc] = useState('');
-  const [postCode, setPostCode] = useState('');
+  const [postTitle, setPostTitle] = useState("");
+  const [postDesc, setPostDesc] = useState("");
+  const [postCode, setPostCode] = useState("");
   const { userName, userProfileImg } = location.state || {};
 
   useEffect(() => {
@@ -34,9 +34,7 @@ const PostModify = () => {
       }
     };
     fetchPosts();
-  }, [id])
-
-  
+  }, [id]);
 
   const handleModifyPost = async (e) => {
     e.preventDefault();
@@ -46,7 +44,7 @@ const PostModify = () => {
       .update({
         title: postTitle,
         description: postDesc,
-        code: postCode
+        code: postCode,
       })
       .eq("id", id);
 
@@ -68,12 +66,19 @@ const PostModify = () => {
         <StInfo>
           {/* 타이틀 */}
           <StTitle>
-            <input type="text" value={postTitle} onChange={(e) => setPostTitle(e.target.value)} />
+            <input
+              type="text"
+              value={postTitle}
+              onChange={(e) => setPostTitle(e.target.value)}
+            />
           </StTitle>
           <StLeftArea>
             <StSubWriteInfo>
               <StUser>
-                <img src={userProfileImg} alt={`${userName}님의 프로필 이미지`}/>
+                <img
+                  src={userProfileImg}
+                  alt={`${userName}님의 프로필 이미지`}
+                />
                 <span>{userName}</span>
               </StUser>
             </StSubWriteInfo>
@@ -82,10 +87,13 @@ const PostModify = () => {
 
         {/* 글 영역 */}
         <StDescArea>
-          <StH3>내용 작성</StH3>          
+          <StH3>내용 작성</StH3>
           <TuiEditor description={postDesc} onChange={handleEditorChange} />
           <StH3>참고 코드 작성</StH3>
-          <StCodeArea value={postCode} onChange={(e)=> setPostCode(e.target.value)} />          
+          <StCodeArea
+            value={postCode}
+            onChange={(e) => setPostCode(e.target.value)}
+          />
         </StDescArea>
       </StContainer>
       <StFixedBtnArea>
@@ -98,7 +106,6 @@ const PostModify = () => {
 const StContainer = styled.div`
   padding: 60px 0 80px;
 `;
-
 
 const StTitle = styled.h2`
   width: 100%;
@@ -166,42 +173,43 @@ const StDate = styled.div`
   }
 `;
 
-
 const StFixedBtnArea = styled.div`
-  position:fixed; 
-  width:100%;
-  left:0;
-  bottom:0;
-  padding:15px;
-  display:flex;
-  gap:10px;
-  box-shadow:.5px .5px 10px rgba(0,0,0,.15);
-  z-index:999;
-  background:#fff;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  padding: 15px;
+  display: flex;
+  gap: 10px;
+  box-shadow: 0.5px 0.5px 10px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  background: #fff;
+  justify-content: center;
   button {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:100%;
-    height:40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
     font-weight: bold;
-    border:3px solid #111;
-    border-radius:5px;
-    cursor:pointer;
-    transition:all .15s ease;
+    border: 3px solid #111;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    max-width: 1600px;
     &:hover {
-      color:#fff;
-      background:#111;      
+      color: #fff;
+      background: #111;
     }
   }
-`
+`;
 
 const StModifyBtn = styled.button`
   width: 100px;
   height: 35px;
   font-weight: 500;
   text-align: center;
-  background:#fff;
+  background: #fff;
   border: 1px solid #666;
   border-radius: 5px;
   + button {
@@ -213,19 +221,19 @@ const StDescArea = styled.div`
   padding: 0 20px;
 `;
 const StCodeArea = styled.textarea`
-  width:100%;
-  min-height:200px;
-  border-radius:5px;
-  border:1px solid #dadde6;
-  padding:15px;
+  width: 100%;
+  min-height: 200px;
+  border-radius: 5px;
+  border: 1px solid #dadde6;
+  padding: 15px;
 `;
-const StH3 = styled.h3`  
-  font-size:16px;
-  font-weight:bold;
-  color:#111;
-  border-bottom:1px solid #111;
-  margin:40px 0 15px;
-  padding:0 0 6px;
-`
+const StH3 = styled.h3`
+  font-size: 16px;
+  font-weight: bold;
+  color: #111;
+  border-bottom: 1px solid #111;
+  margin: 40px 0 15px;
+  padding: 0 0 6px;
+`;
 
 export default PostModify;

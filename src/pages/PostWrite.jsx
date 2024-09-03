@@ -72,7 +72,7 @@ const PostWrite = ({ setPosts }) => {
           writerUserId: userId,
           username: loginUserInfo.username,
           id: crypto.randomUUID(), // 내장메서드
-          // 이것도 id 못 받아오길래 랜덤으로 가져다주는 자바스크림트 내장 메서드라고... 커어어어....
+          // 이것도 id 못 받아오길래 랜덤으로 가져다주는 자바스크림트 내장 메서드라고...
         };
         setComments((prevComments) => [...prevComments, newComment]); // 상태 업데이트
         setComment(""); // 입력 필드 초기화
@@ -101,7 +101,6 @@ const PostWrite = ({ setPosts }) => {
   };
 
   const deleteCommentHandle = async (id) => {
-    console.log(id);
     const { error } = await supabase.from("Comment").delete().eq("id", id);
     if (error) {
       console.log("삭제 에러=>", error);
@@ -114,7 +113,6 @@ const PostWrite = ({ setPosts }) => {
     setEditingId(commentId);
     setEditComment(currentComment);
   };
-  console.log(comments);
 
   // 댓글 채택
   const selectHandle = async (id) => {
@@ -140,8 +138,8 @@ const PostWrite = ({ setPosts }) => {
         console.log("post 업데이트 에러 =>", postError);
       } else {
         fetchComments();
+        //setPosts((prev) => ({ ...prev, solve: true }));
       }
-      setPosts((prev) => ({ ...prev, solve: true }));
     }
   };
 
@@ -180,7 +178,9 @@ const PostWrite = ({ setPosts }) => {
           </button>
         </InputWrapper>
       ) : (
-        <p>댓글을 작성하려면 로그인이 필요합니다.</p>
+        <CommentNotification>
+          댓글을 작성하려면 로그인이 필요합니다.
+        </CommentNotification>
       )}
 
       <ItemContainer>
@@ -208,8 +208,8 @@ const PostWrite = ({ setPosts }) => {
                     {newComment.isChosen && (
                       <SelectedComment>채택된 댓글</SelectedComment>
                     )}
-                  </CommentDetails>                  
-                </StLeftArea>                
+                  </CommentDetails>
+                </StLeftArea>
                 <StRightArea>
                   {isLogin && userId === newComment.writerUserId.id && (
                     <>
@@ -229,7 +229,7 @@ const PostWrite = ({ setPosts }) => {
                       </ActionButton>
                     </>
                   )}
-                </StRightArea>                
+                </StRightArea>
               </CommentHeader>
               {editingId === newComment.id ? (
                 <>
@@ -281,6 +281,16 @@ const InputWrapper = styled.div`
   position: relative; /* 버튼을 input 필드 안에 위치시키기 위해 사용 */
 `;
 
+const CommentNotification = styled.div`
+  margin: 10px 0 40px 0;
+  padding: 20px 10px;
+  background-color: #fff;
+  border: 3px solid #000;
+  border-radius: 10px;
+  color: #000;
+  font-size: 16px;
+`;
+
 const TextArea = styled.textarea`
   width: auto;
   /* height: 80px; */
@@ -304,11 +314,11 @@ const CommentList = styled.ul`
 `;
 
 const CommentItem = styled.li`
-  position: relative;     
-  padding: 10px 0 60px 120px;    
+  position: relative;
+  padding: 10px 0 60px 120px;
   &:before {
-    content: '';
-    position: absolute; 
+    content: "";
+    position: absolute;
     left: 45px;
     bottom: 0;
     width: 1px;
@@ -332,9 +342,9 @@ const ProfileImage = styled.img`
   z-index: 1;
   width: 90px;
   height: 90px;
-  background:#fff;
+  background: #fff;
   border: 3px solid #111;
-  border-radius: 15px;  
+  border-radius: 15px;
 `;
 
 const CommentDetails = styled.div`
@@ -355,11 +365,11 @@ const ActionButton = styled.button`
   background-color: #000;
   color: #fff;
   &.btnLine {
-    width:80px;
-    font-weight:500;
+    width: 80px;
+    font-weight: 500;
     text-align: center;
-    background:#fff;
-    color:#000;
+    background: #fff;
+    color: #000;
   }
 `;
 
@@ -369,33 +379,29 @@ const CommentText = styled.p`
   margin: 5px 0;
 `;
 
-const CommentTime = styled.div`  
-  font-size:22px;
-  font-weight:bold;
+const CommentTime = styled.div`
+  font-size: 22px;
+  font-weight: bold;
   color: #000;
 `;
 
-const CommentUserName = styled.div`  
+const CommentUserName = styled.div`
   font-size: 22px;
   font-weight: bold;
   color: #000;
 `;
 const SelectedComment = styled.p`
-    margin-right: 10px;
-    padding: 5px 10px;
-    font-size: 16px;
-    height:30px;
-    cursor: pointer;
-    border: 3px solid green;
-    border-radius: 10px;
-    background-color: green;
-    color: #fff;
+  margin-right: 10px;
+  padding: 5px 10px;
+  font-size: 16px;
+  height: 30px;
+  cursor: pointer;
+  border: 3px solid green;
+  border-radius: 10px;
+  background-color: green;
+  color: #fff;
 `;
-const StLeftArea = styled.div`
-  
-`;
-const StRightArea = styled.div`
-  
-`;
+const StLeftArea = styled.div``;
+const StRightArea = styled.div``;
 
 export default PostWrite;

@@ -1,6 +1,5 @@
 import Router from "./shared/Router";
 import GlobalStyle from "./components/GlobalStyle";
-import { PostProvider } from "./contexts/PostContext";
 import { DataProvider } from "./contexts/DataContext";
 
 function App() {
@@ -8,9 +7,7 @@ function App() {
     <>
       <GlobalStyle />
       <DataProvider>
-        <PostProvider>
-          <Router />
-        </PostProvider>
+        <Router />
       </DataProvider>
     </>
   );

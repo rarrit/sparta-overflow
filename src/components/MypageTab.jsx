@@ -1,7 +1,7 @@
 import styled from "styled-components";
+import supabase from "../services/supabaseClient";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import supabase from "../services/supabaseClient";
 import { MypageDataContext } from "../pages/Mypage";
 import { CircleCheck, CircleX } from "lucide-react";
 import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
@@ -9,9 +9,7 @@ import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
 const MypageTab = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("작성한글");
-  const { profile, posts, comment, myComment, loginUserInfoId } =
-    useContext(MypageDataContext);
-
+  const { posts, myComment } = useContext(MypageDataContext);
   const [myCommentGetPost, setMyCommentGetPost] = useState([]);
 
   const handleDetailMove = (post) => {
@@ -143,10 +141,10 @@ const StTabItem = styled.li`
   text-align: center;
   cursor: pointer;
   padding: 20px;
-  border: 2px solid #000;
+  border: 3px solid #000;
   border-radius: 15px;
-  background-color: #000;
-  color: #fff;
+  background-color: #fff;
+  color: #000;
   font-size: 24px;
   font-weight: 900;
 `;
@@ -176,7 +174,7 @@ const StStyledCircleX = styled(CircleX)`
   height: 30px;
 `;
 const StPost = styled.div`
-  border: 2px solid #000;
+  border: 3px solid #000;
   border-radius: 15px;
   padding: 20px;
   display: flex;
@@ -187,6 +185,7 @@ const StPost = styled.div`
   & h2 {
     font-size: 20px;
     font-weight: 600;
+    width: 80%;
   }
 `;
 const StPostTop = styled.div`
@@ -210,8 +209,12 @@ const StPostTop = styled.div`
   }
 `;
 const StPostContent = styled.div`
-  height: 80px;
   width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 
   & p {
     font-size: 15px;
@@ -224,5 +227,5 @@ const StPostTitle = styled.div`
   width: 100%;
   line-height: 1.5;
   padding-bottom: 10px;
-  border-bottom: 1px solid;
+  align-items: flex-start;
 `;

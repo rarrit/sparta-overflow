@@ -1,11 +1,11 @@
 import React from "react";
 import supabase from "../services/supabaseClient";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { dataContext } from "../contexts/DataContext";
 import styled from "styled-components";
 import TuiEditor from "../components/TuiEditor";
-import { useNavigate } from "react-router-dom";
 
 const PostRegister = () => {
   const { loginUserInfo } = useContext(dataContext); // 로그인한 user정보
@@ -24,16 +24,16 @@ const PostRegister = () => {
         userId: loginUserInfo.id,
         solve: false,
         code: postCode,
-      }
-    ])
+      },
+    ]);
 
     alert("글이 등록되었습니다!");
     navigate("/");
-  }
-  
+  };
+
   const handleEditorChange = (newDescription) => {
     setPostDesc(newDescription);
-  };  
+  };
 
   return (
     <>
@@ -45,12 +45,17 @@ const PostRegister = () => {
         <StInfo>
           {/* 타이틀 */}
           <StTitle>
-            <input type="text" value={postTitle} placeholder="타이틀을 입력해주세요." onChange={(e) => setPostTitle(e.target.value)} />
+            <input
+              type="text"
+              value={postTitle}
+              placeholder="타이틀을 입력해주세요."
+              onChange={(e) => setPostTitle(e.target.value)}
+            />
           </StTitle>
           <StLeftArea>
             <StSubWriteInfo>
               <StUser>
-                <img src={loginUserInfo.profileImage}/>
+                <img src={loginUserInfo.profileImage} />
                 <span>{loginUserInfo.username}</span>
               </StUser>
               {/* <StDate>2024-08-28</StDate> */}
@@ -60,11 +65,14 @@ const PostRegister = () => {
 
         {/* 글 영역 */}
         <StDescArea>
-          <StH3>내용 작성</StH3>          
+          <StH3>내용 작성</StH3>
           <TuiEditor description={postDesc} onChange={handleEditorChange} />
           <StH3>참고 코드 작성</StH3>
-          <StCodeArea value={postCode} onChange={(e)=> setPostCode(e.target.value)} />
-        </StDescArea>              
+          <StCodeArea
+            value={postCode}
+            onChange={(e) => setPostCode(e.target.value)}
+          />
+        </StDescArea>
       </StContainer>
 
       <StFixedBtnArea>
@@ -146,76 +154,57 @@ const StDate = styled.div`
   }
 `;
 
-const StRightArea = styled.div``;
-
-const StBtnArea = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-`;
-const StBtn = styled.button`
-  width: 100px;
-  height: 35px;
-  font-weight: 500;
-  text-align: center;
-  border: 1px solid #666;
-  border-radius: 15px;
-  + button {
-    background: #333;
-    color: #fff;
-  }
-`;
-const StDescArea = styled.div`
-  
-`;
+const StDescArea = styled.div``;
 const StCodeArea = styled.textarea`
-  width:100%;
-  min-height:200px;
-  border-radius:15px;
-  border:1px solid #dadde6;
-  padding:15px;
+  width: 100%;
+  min-height: 200px;
+  border-radius: 15px;
+  border: 1px solid #dadde6;
+  padding: 15px;
 `;
-const StH3 = styled.h3`  
-  font-size:18px;
-  font-weight:bold;
-  color:#111;
-  border-bottom:1px solid #111;
-  margin:40px 0 15px;
-  padding:0 0 6px;
-`
+const StH3 = styled.h3`
+  font-size: 18px;
+  font-weight: bold;
+  color: #111;
+  border-bottom: 1px solid #111;
+  margin: 40px 0 15px;
+  padding: 0 0 6px;
+`;
 const StFixedBtnArea = styled.div`
-  position:fixed; 
-  left:0;
-  bottom:0;  
-  display:flex;
-  width:100%;
-  gap:10px;
-  box-shadow:.5px .5px 10px rgba(0,0,0,.15);
-  padding:15px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  box-shadow: 0.5px 0.5px 10px rgba(0, 0, 0, 0.15);
+  padding: 15px;
+  justify-content: center;
   button {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:100%;
-    height:40px;
-    font-weight:bold;
-    border:3px solid #111;
-    border-radius:10px;
-    cursor:pointer;
-    transition:all .15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    font-weight: bold;
+    border: 3px solid #111;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    max-width: 1600px;
     &:hover {
-      color:#fff;
-      background:#111;      
+      color: #fff;
+      background: #111;
     }
   }
-`
+`;
 
 const StRegiBtn = styled.button`
   width: 50%;
   height: 35px;
   font-weight: 500;
   text-align: center;
-  background:#fff;
+  background: #fff;
   border: 1px solid #666;
   border-radius: 15px;
   + button {
