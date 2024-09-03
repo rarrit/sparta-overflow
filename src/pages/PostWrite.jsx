@@ -14,6 +14,9 @@ const PostWrite = ({ setPosts }) => {
   const [editingId, setEditingId] = useState(null);
   const [editComment, setEditComment] = useState("");
   const [authorId, setAuthorId] = useState(null);
+  const [reply, setReply] = useState("");
+  const [replies, setReplies] = useState({});
+  const [replyingId, setReplyingId] = useState(null);
 
   useEffect(() => {
     const getUserId = async () => {
@@ -40,13 +43,18 @@ const PostWrite = ({ setPosts }) => {
   const fetchComments = async () => {
     const { data, error } = await supabase
       .from("Comment")
-      .select("*, writerUserId(id,profileImage)") // 얘 넣으면 수정 삭제 없어짐..
+      .select("*, writerUserId(id,profileImage),userinfo(profileImage)") // 얘 넣으면 수정 삭제 없어짐..
       // .select("*")
-      .eq("postId", postId); // postId를 기준으로 필터링
+      .eq("postId", postId) // postId를 기준으로 필터링
+      .is("parentId", null);
     if (error) {
       console.log("가져오기 에러 =>", error);
     } else {
+      console.log(data);
       setComments(data);
+      data.forEach((comment) => {
+        fetchReplies(comment.id);
+      });
     }
   };
 
@@ -54,6 +62,25 @@ const PostWrite = ({ setPosts }) => {
     fetchComments();
     getPostInfo(); // 컴포넌트가 마운트될 때 댓글을 가져옴
   }, [postId]);
+
+  // 대댓글
+  const fetchReplies = async (commentId) => {
+    const { data, error } = await supabase
+      .from("Comment")
+      .select("*, writerUserId(id,profileImage),userinfo(profileImage)")
+      .eq("parentId", commentId);
+    console.log("dat=>", data);
+    // debugger;
+
+    if (error) {
+      console.log("가져오기 에러 =>", error);
+    } else {
+      setReplies((prevReplies) => ({
+        ...prevReplies,
+        [commentId]: data,
+      }));
+    }
+  };
 
   // 댓글을 추가하는 함수
   const addCommentHandle = async () => {
@@ -63,6 +90,7 @@ const PostWrite = ({ setPosts }) => {
         writerUserId: userId,
         username: loginUserInfo.username,
         postId,
+        parentId: null,
       });
       if (error) {
         console.log("추가 에러 =>", error);
@@ -71,7 +99,8 @@ const PostWrite = ({ setPosts }) => {
           comment,
           writerUserId: userId,
           username: loginUserInfo.username,
-          id: crypto.randomUUID(), // 내장메서드
+          id: crypto.randomUUID(),
+          parentId: null, // 내장메서드
           // 이것도 id 못 받아오길래 랜덤으로 가져다주는 자바스크림트 내장 메서드라고...
         };
         setComments((prevComments) => [...prevComments, newComment]); // 상태 업데이트
@@ -80,6 +109,43 @@ const PostWrite = ({ setPosts }) => {
       }
     } else {
       alert("댓글을 작성하려면 로그인이 필요합니다.");
+    }
+  };
+
+  // 대댓글 추가
+  const addReplyHandle = async (commentId) => {
+    console.log("commentid=>", comment);
+    if (reply.trim() !== "" && isLogin) {
+      const { data, error } = await supabase.from("Comment").insert({
+        comment: reply,
+        writerUserId: userId,
+        username: loginUserInfo.username,
+        postId,
+        parentId: commentId,
+      });
+
+      if (error) {
+        console.log("추가 에러 =>", error);
+      } else {
+        const newReply = {
+          comment: reply,
+          writerUserId: userId,
+          username: loginUserInfo.username,
+          id: crypto.randomUUID(),
+          parentId: commentId,
+        };
+
+        setReplies((prevReplies) => ({
+          ...prevReplies,
+          [commentId]: [...(prevReplies[commentId] || []), newReply],
+        }));
+
+        setReply(""); // 입력 필드 초기화
+        setReplyingId(null); // 대댓글 입력 모드를 종료
+        fetchReplies(commentId); // 대댓글 목록을 갱신
+      }
+    } else {
+      alert("대댓글을 작성하려면 로그인이 필요합니다.");
     }
   };
 
@@ -265,6 +331,60 @@ const PostWrite = ({ setPosts }) => {
                 <>
                   <CommentText>{newComment.comment}</CommentText>
                 </>
+              )}
+              {/* 대댓글 */}
+              {replies[newComment.id] &&
+                replies[newComment.id].map((replyItem) => (
+                  <CommentItem
+                    key={replyItem.id}
+                    style={{ marginLeft: "20px" }}
+                  >
+                    <CommentHeader>
+                      {replyItem.userinfo?.profileImage && (
+                        <ProfileImage
+                          src={replyItem.userinfo.profileImage}
+                          alt="profile"
+                        />
+                      )}
+                      <CommentDetails>
+                        <CommentUserName>{replyItem.username}</CommentUserName>
+                        <CommentTime>
+                          {handleTimeCalculate(replyItem.created_at)}
+                        </CommentTime>
+                      </CommentDetails>
+                      <CommentText>{replyItem.comment}</CommentText>
+                    </CommentHeader>
+                  </CommentItem>
+                ))}
+              {/* 대댓글 쓰기 */}
+              {replyingId === newComment.id ? (
+                <InputWrapper>
+                  <TextArea
+                    type="text"
+                    value={reply}
+                    onChange={(e) => setReply(e.target.value)}
+                    placeholder="대댓글을 입력하세요"
+                  />
+                  <button
+                    onClick={() => addReplyHandle(newComment.id)}
+                    style={{
+                      width: "50%",
+                      marginTop: "10px",
+                      padding: "10px 20px",
+                      backgroundColor: "#000",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    답변쓰기
+                  </button>
+                </InputWrapper>
+              ) : (
+                <ActionButton onClick={() => setReplyingId(newComment.id)}>
+                  답글달기
+                </ActionButton>
               )}
             </CommentItem>
           ))}
