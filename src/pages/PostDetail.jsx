@@ -25,7 +25,6 @@ const PostDetail = () => {
   useEffect(() => {
     //게시글 정보 & 작성자 정보 & 댓글 갯수
     const fetchPostAndAuthorAndComment = async () => {
-      console.log(id);
       const { data, error } = await supabase
         .from("Post")
         .select(
@@ -37,34 +36,15 @@ const PostDetail = () => {
         )
         .eq("id", id)
         .single();
-      console.log(post);
       if (error) {
         console.log("error =>", error);
       } else {
-        console.log("post data =>", data);
         setPosts(data);
         setUserInfo(data.userinfo);
-
-        // const confirmChosenComment = data.Comment.find(
-        //   (comment) => comment.isChosen
-        // );
-
-        // if (confirmChosenComment) {
-        //   const { error: solvedErr } = await supabase
-        //     .from("Post")
-        //     .update({ solve: true })
-        //     .eq("id", id);
-
-        //   if (solvedErr) {
-        //     console.log("채택 과정에서 에러가 발생 =>", solvedErr);
-        //   }
-        // }
       }
     };
     fetchPostAndAuthorAndComment();
   }, []);
-
-  console.log("Logged in user:", loginUserInfo);
 
   //수정버튼
   const handleEditPostMove = (id) => {
@@ -100,14 +80,13 @@ const PostDetail = () => {
 
   return (
     <>
-      <StContainer>        
-
+      <StContainer>
         <StContTop>
           {/* 타이틀 */}
           <StTitle>{post.title}</StTitle>
           {/* 상세정보 */}
-          <StInfo>          
-            <StLeftArea>            
+          <StInfo>
+            <StLeftArea>
               <StSubWriteInfo>
                 <StUser>
                   <img
@@ -198,10 +177,10 @@ const StContainer = styled.div`
   padding: 60px 0 120px;
 `;
 const StContTop = styled.div`
-  position:relative;
-  padding:0 0 60px;
+  position: relative;
+  padding: 0 0 60px;
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     left: -30px;
     bottom: 0;
@@ -210,14 +189,13 @@ const StContTop = styled.div`
     background: #f6f6f6;
   }
 `;
-const StState = styled.div``;
 
 const StInfo = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 15px 0 20px;
-  border-bottom:1px solid #111;
+  border-bottom: 1px solid #111;
 `;
 
 const StTitle = styled.h2`
