@@ -116,6 +116,7 @@ const Main = () => {
 export default Main;
 
 const StHomePostListTitle = styled.h1`
+  padding-top: 60px;
   font-size: 50px;
   font-weight: bold;
   margin: 20px 0;

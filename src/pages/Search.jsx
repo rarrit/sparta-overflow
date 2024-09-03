@@ -85,7 +85,7 @@ const StSearchListContainer = styled.div`
   width: 100%;
   flex-direction: column;
   gap: 20px;
-  padding: 20px 0 300px;
+  padding: 60px 0 30%;
 `;
 const StSearchList = styled.div`
   border: 3px solid #000;

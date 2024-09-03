@@ -1,7 +1,7 @@
 import styled from "styled-components";
+import supabase from "../services/supabaseClient";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import supabase from "../services/supabaseClient";
 import { MypageDataContext } from "../pages/Mypage";
 import { CircleCheck, CircleX } from "lucide-react";
 import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
@@ -10,9 +10,7 @@ const MypageTab = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("작성한글");
   const { posts, myComment } = useContext(MypageDataContext);
-
   const [myCommentGetPost, setMyCommentGetPost] = useState([]);
-  console.log("myCommentGetPost", myCommentGetPost);
 
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);

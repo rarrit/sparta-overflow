@@ -114,6 +114,7 @@ export const StUserInfoButton = styled.button`
   font-size: 20px;
   font-weight: 700;
   text-align: center;
+  cursor: pointer;
 `;
 
 export const StBlackButton = styled(StUserInfoButton)`
