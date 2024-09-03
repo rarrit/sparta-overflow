@@ -5,7 +5,7 @@ import { dataContext } from "../contexts/DataContext";
 import { useParams } from "react-router-dom";
 import handleTimeCalculate from "../components/ChangeTime";
 
-const PostWrite = () => {
+const PostWrite = ({ setPosts }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [userId, setUserId] = useState();
@@ -127,6 +127,7 @@ const PostWrite = () => {
       console.log("업데이트 에러 =>", error);
     } else {
       fetchComments();
+      setPosts((prev) => ({ ...prev, solve: true }));
     }
   };
 
