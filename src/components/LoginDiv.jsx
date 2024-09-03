@@ -79,7 +79,7 @@ export const StLoginBoxDiv = styled.div`
   display: flex;
   flex-direction: column;
   border: 3px solid black;
-  border-radius: 8px;
+  border-radius: 15px;
   width: 100%;
   padding: 40px;
 `;
@@ -90,7 +90,7 @@ export const StUserInfoInput = styled.input`
   margin: 5px auto;
   padding: 20px;
   border: 3px solid black;
-  border-radius: 8px;
+  border-radius: 15px;
   font-size: 15px;
   font-weight: 600;
   color: #9e9c9c;
@@ -109,8 +109,8 @@ export const StUserInfoButton = styled.button`
   width: 100%;
   padding: 15px;
   margin: 5px;
-  border: 2px solid black;
-  border-radius: 10px;
+  border: 3px solid black;
+  border-radius: 15px;
   font-size: 20px;
   font-weight: 700;
   text-align: center;
