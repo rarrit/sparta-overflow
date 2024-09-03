@@ -64,7 +64,10 @@ function Header() {
                   />
                   <StSearchClose
                     isFocused={isFocused}
-                    onClick={() => setIsFocused(false)}
+                    onClick={() => {
+                      setIsFocused(false);
+                      setSearchData("");
+                    }}
                   >
                     <X />
                   </StSearchClose>
@@ -223,7 +226,7 @@ const StSearchClose = styled.div`
 const StInput = styled.input`
   position: relative;
   height: 50px;
-  border-bottom: 1px solid #959595;
+  border-bottom: 3px solid #000;
   display: flex;
   align-items: center;
   overflow: hidden;

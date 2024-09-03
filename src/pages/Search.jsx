@@ -27,6 +27,18 @@ const Search = () => {
   const filteredPosts = searchPost.filter((post) => {
     return post.title.includes(searchData);
   });
+  // console.log("filteredPosts", filteredPosts);
+
+  // const filteredUserName = filteredPosts.map((id) => {
+  //   return id.userId ;
+  // });
+  // console.log("filteredUserName", filteredUserName);
+  // // useEffect(()=>{
+  //   const fetchUserName = async () => {
+  //     const {data,error} = await supabase.from('userinfo')
+  //   }
+  //   fetchUserName()
+  // },[])
 
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
@@ -46,6 +58,7 @@ const Search = () => {
               <StSearchRight>
                 <StSearchTitle>
                   <h2>{data.title}</h2>
+                  {/* <div>{data.userId}</div> */}
                   <div className="date">
                     {filterDateOnlyYMD(data.created_at)}
                   </div>
@@ -74,7 +87,7 @@ const StSearchListContainer = styled.div`
   padding: 20px 0 300px;
 `;
 const StSearchList = styled.div`
-  border: 2px solid #000;
+  border: 3px solid #000;
   border-radius: 15px;
   padding: 20px;
   display: flex;
@@ -105,7 +118,7 @@ const StSearchTitle = styled.div`
   align-items: center;
   line-height: 1.5;
   padding-bottom: 10px;
-  border-bottom: 1px solid;
+  /* border-bottom: 1px solid; */
 
   & h2 {
     font-size: 20px;
