@@ -36,5 +36,5 @@ const StUserInfoBox = styled.div`
   align-items: center;
   width: 600px;
   border: none;
-  border-radius: 30px;
+  border-radius: 15px;
 `;
