@@ -35,7 +35,6 @@ const PostDetail = () => {
         .eq("id", id)
         .single();
       if (error) {
-        console.log("error =>", error);
       } else {
         setPosts(data);
         setUserInfo(data.userinfo);
