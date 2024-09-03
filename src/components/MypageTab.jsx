@@ -12,6 +12,7 @@ const MypageTab = () => {
   const { posts, myComment } = useContext(MypageDataContext);
   const [myCommentGetPost, setMyCommentGetPost] = useState([]);
 
+  console.log("myCommentGetPost", myCommentGetPost);
   const handleDetailMove = (post) => {
     navigate(`/detail/${post.id}`);
   };
@@ -21,19 +22,21 @@ const MypageTab = () => {
   };
 
   useEffect(() => {
-    const fetchMyComment = async () => {
-      const postIds = myComment.map((comment) => comment.postId);
-      const { data, error } = await supabase
-        .from("Post")
-        .select("*")
-        .in("id", postIds);
-      if (error) {
-        console.error("ErrorError :", error);
-      } else {
-        setMyCommentGetPost(data);
-      }
-    };
-    fetchMyComment();
+    if (myComment.length > 0) {
+      const fetchMyComment = async () => {
+        const postIds = myComment.map((comment) => comment.postId);
+        const { data, error } = await supabase
+          .from("Post")
+          .select("*")
+          .in("id", postIds);
+        if (error) {
+          console.error("ErrorError :", error);
+        } else {
+          setMyCommentGetPost(data);
+        }
+      };
+      fetchMyComment();
+    }
   }, [myComment]);
 
   return (
