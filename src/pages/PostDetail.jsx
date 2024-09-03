@@ -1,11 +1,9 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { dataContext } from "../contexts/DataContext";
 import { filterDateOnlyYMD } from "../utils/dateInfoFilter";
 import PostWrite from "./PostWrite";
 import supabase from "../services/supabaseClient";
-
 import styled from "styled-components";
 import { CircleCheck, CircleX, Copy, CheckCheck } from "lucide-react";
 import hljs from "highlight.js";
@@ -37,14 +35,13 @@ const PostDetail = () => {
         .eq("id", id)
         .single();
       if (error) {
-        console.log("error =>", error);
       } else {
         setPosts(data);
         setUserInfo(data.userinfo);
       }
     };
     fetchPostAndAuthorAndComment();
-  }, []);
+  }, [post]);
 
   //수정버튼
   const handleEditPostMove = (id) => {
