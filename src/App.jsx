@@ -1,16 +1,16 @@
-import Router from "./shared/Router"
-import GlobalStyle from "./components/GlobalStyle"
-import { PostProvider } from "./contexts/PostContext"
+import Router from "./shared/Router";
+import GlobalStyle from "./components/GlobalStyle";
+import { DataProvider } from "./contexts/DataContext";
 
 function App() {
   return (
     <>
-    <GlobalStyle/>
-      <PostProvider>        
+      <GlobalStyle />
+      <DataProvider>
         <Router />
-      </PostProvider>
+      </DataProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

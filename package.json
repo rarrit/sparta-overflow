@@ -10,12 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.2",
+    "@toast-ui/editor": "^3.2.2",
+    "@toast-ui/react-editor": "^3.2.3",
+    "highlight.js": "^11.10.0",
+    "lucide-react": "^0.438.0",
     "react": "^18.3.1",
+    "react-code-blocks": "^0.1.6",
     "react-dom": "^18.3.1",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.26.1",
     "react-toastify": "^10.0.5",
     "styled-components": "^6.1.12",
-    "sweetalert2": "^11.12.4"
+    "sweetalert2": "^11.12.4",
+    "the-new-css-reset": "^1.11.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
