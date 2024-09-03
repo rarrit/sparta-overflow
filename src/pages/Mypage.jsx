@@ -1,10 +1,11 @@
+import styled from "styled-components";
 import { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import ProfileInfo from "../components/ProfileInfo";
-import MypageTab from "../components/MypageTab";
 import supabase from "../services/supabaseClient";
 import { dataContext } from "../contexts/DataContext";
+import ProfileInfo from "../components/ProfileInfo";
+import MypageTab from "../components/MypageTab";
+import GoBack from "../components/GoBack";
 
 export const MypageDataContext = createContext();
 
@@ -88,7 +89,7 @@ const Mypage = () => {
         loginUserInfoId,
       }}
     >
-      <button onClick={() => navigate(-1)}>뒤로가기</button>
+      <GoBack />
       <StMypageContainer>
         <section>
           <ProfileInfo />

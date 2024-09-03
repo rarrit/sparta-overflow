@@ -1,6 +1,6 @@
+import styled from "styled-components";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import supabase from "../services/supabaseClient";
 import { MypageDataContext } from "../pages/Mypage";
 import { CircleCheck, CircleX } from "lucide-react";
