@@ -69,9 +69,18 @@ const Main = () => {
     { id: 3, button: "답변 후" },
   ];
 
-  // 1. 답변전/후 상관 없이 10개의 post를 불러옴
+  // 1. 답변전/후 상관 없이 10개의 post를 불러오고 채택된 게시글 있으면 바로 상태변경
   useEffect(() => {
     fetchPosts(0, 9);
+
+    // const checkSolve = supabase
+    //   .from("Post")
+    //   .on("UPDATE", (updateInfo) => {
+    //     console.log("채택 업데이트:", updateInfo);
+    //     // 변경된 포스트 업데이트
+    //     setPosts();
+    //   })
+    //   .subscribe();
   }, []);
 
   return (
@@ -105,7 +114,7 @@ const Main = () => {
       </StTabButtonWrap>
 
       {/* 선택된 탭의 게시글 목록 */}
-      <PostListItem posts={posts} />
+      <PostListItem posts={posts} setPosts={setPosts} />
 
       {/* 10개 이상의 게시글이 있는 경우 버튼 표시 */}
       {morePosts && (
@@ -134,10 +143,10 @@ const StTabButton = styled.button`
   font-size: 18px;
   font-weight: bold;
   background-color: ${(props) => (props.$active ? "#000" : "#fff")};
-  border: 2px solid #000;
+  border: 3px solid #000;
   color: ${(props) => (props.$active ? "white" : "#333")};
   padding: 8px 15px;
-  border-radius: 8px;
+  border-radius: 15px;
   transition: 0.3s;
   cursor: pointer;
 

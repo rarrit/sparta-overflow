@@ -55,7 +55,7 @@ export default PostListItem;
 const StListWrap = styled.article`
   display: flex;
   flex-direction: column;
-  border: 2px solid #000;
+  border: 3px solid #000;
   margin: 10px 0;
   border-radius: 15px;
   padding: 20px;
