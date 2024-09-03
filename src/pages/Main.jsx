@@ -72,15 +72,6 @@ const Main = () => {
   // 1. 답변전/후 상관 없이 10개의 post를 불러오고 채택된 게시글 있으면 바로 상태변경
   useEffect(() => {
     fetchPosts(0, 9);
-
-    // const checkSolve = supabase
-    //   .from("Post")
-    //   .on("UPDATE", (updateInfo) => {
-    //     console.log("채택 업데이트:", updateInfo);
-    //     // 변경된 포스트 업데이트
-    //     setPosts();
-    //   })
-    //   .subscribe();
   }, []);
 
   return (
@@ -99,9 +90,9 @@ const Main = () => {
 
               if (tab.id === 2) {
                 // 3. 해당 탭에 있는 답변을 0부터 9까지 불러옴
-                fetchPosts(0, 9);
+                fetchPosts(0, 9, false);
               } else if (tab.id === 3) {
-                fetchPosts(0, 9);
+                fetchPosts(0, 9, true);
               } else {
                 fetchPosts(0, 9);
               }
