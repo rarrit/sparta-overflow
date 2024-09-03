@@ -15,6 +15,8 @@ import { Viewer } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 
 const PostDetail = () => {
+  const { id } = useParams();
+  const { loginUserInfo } = useContext(dataContext);
   const navigate = useNavigate();
   const [copy, setCopy] = useState(false);
   const [userInfo, setUserInfo] = useState([]);
@@ -23,14 +25,15 @@ const PostDetail = () => {
   useEffect(() => {
     //게시글 정보 & 작성자 정보 & 댓글 갯수
     const fetchPostAndAuthorAndComment = async () => {
+      console.log(id);
       const { data, error } = await supabase
         .from("Post")
         .select(
           `*,
-          userInfo:userId(
+          userinfo:userId(
             id, created_at, email, username, profileImage
           ),
-          Comment:postId (id)`
+          Comment (id)`
         )
         .eq("id", id)
         .single();
@@ -41,14 +44,12 @@ const PostDetail = () => {
         console.log("post data =>", data);
         setPosts(data);
         setUserInfo(data.userinfo);
-        setComment(data.Comment);
       }
     };
     fetchPostAndAuthorAndComment();
-  }, [id]);
+  }, []);
 
   console.log("Logged in user:", loginUserInfo);
-  console.log("Post data:", post);
 
   //수정버튼
   const handleEditPostMove = (id) => {
@@ -81,9 +82,6 @@ const PostDetail = () => {
       return;
     }
   };
-
-  const { id } = useParams();
-  const { loginUserInfo } = useContext(dataContext);
 
   return (
     <>
@@ -186,13 +184,12 @@ const StInfo = styled.div`
   flex-direction: row;
   justify-content: space-between;
   padding: 15px 0;
-  border-bottom: 1px solid #333;
 `;
 
 const StTitle = styled.h2`
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 `;
 
 const StLeftArea = styled.div`
@@ -209,16 +206,18 @@ const StSubWriteInfo = styled.div`
 const StUser = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   img {
-    width: 40px;
-    height: 40px;
-    border-radius: 100%;
+    width: 70px;
+    height: 60px;
+    border-radius: 5px;
+    object-fit: cover;
+    border: 2px solid black;
   }
   span {
-    font-size: 18px;
-    font-weight: 400;
-    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+    color: black;
   }
 `;
 const StDate = styled.div`
@@ -275,9 +274,11 @@ const StBtn = styled.button`
 `;
 
 const StDescArea = styled.div`
-  padding: 15px;
+  padding: 15px 0;
 `;
-const StDescription = styled.p``;
+const StDescription = styled.div`
+  padding: 0 10px;
+`;
 
 const StCodeBox = styled.div`
   background-color: #232323;

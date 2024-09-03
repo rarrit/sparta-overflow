@@ -4,15 +4,13 @@ import PostListItem from "../components/PostListItem";
 import supabase from "../services/supabaseClient";
 
 const Main = () => {
-  const [userInfo, setUserInfo] = useState([]);
-  const [posts, setPosts] = useState([]);
-  const [latestPostDate, setLatestPostDate] = useState(null); // 가장 최신 게시글의 날짜
+  const [posts, setPosts] = useState([]); // 게시글 목록
   const [morePosts, setMorePosts] = useState(true); // 더 많은 게시글이 있는지 확인
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(1); // 활성 탭
 
-  const fetchPosts = async () => {
-    // 게시글 리스트 정보
-    const query = supabase
+  // 공통된 게시글 가져오기 함수
+  const fetchPosts = async (start, end, solved) => {
+    let query = supabase
       .from("Post")
       .select(
         `*, userinfo:userId (
@@ -21,28 +19,22 @@ const Main = () => {
         ),
         Comment:Comment!postId (id)`
       )
-      .order("created_at", { ascending: false })
-      .limit(10);
+      .range(start, end)
+      .order("created_at", { ascending: false });
 
-    // 날짜가 설정되어 있으면, 해당 날짜 이전의 게시글을 가져옴
-    if (latestPostDate) {
-      query.lt("created_at", latestPostDate);
-    }
+    if (solved !== undefined) {
+      query = query.filter("solve", "eq", solved);
+    } // 채택답변여부를 필터링해서 solved값에 담음 (답변 후 : true / 답변 전 : false / 모든 글 : undefined),
 
     const { data, error } = await query;
 
     if (error) {
-      console.log("무슨에러? =>", error);
+      console.log("무슨에러? =>", error); // 오류 처리
+      return;
     } else {
       console.log("post data =>", data);
 
-      // 최신 게시글의 날짜 업데이트
-      if (data.length > 0) {
-        setLatestPostDate(data[data.length - 1].created_at);
-      }
-
-      // 게시글이 더 있는지 확인하고 상태저장 (boolean값)
-      setMorePosts(data.length === 10);
+      if (data.length < 10) setMorePosts(false); //만약 data가 10개 미만이라면 setMorePosts를 false로 해서 더보기 버튼이 보이지 않게 함.
 
       // 댓글 갯수를 post객체 안에 commentCount 속성으로 넣어줌
       const commentCount = data.map((post) => ({
@@ -50,46 +42,37 @@ const Main = () => {
         commentCount: post.Comment.length,
       }));
 
-      // 추가로 가져온 게시글을 기존에 표시되던 것과 합쳐서 저장
-      setPosts((prevPosts) => [...prevPosts, ...commentCount]);
+      // 기존거를 더하냐 더하지 않느냐의 여부를 0에서 시작하냐 안하냐로 구분
+      if (start === 0) setPosts(commentCount);
+      else setPosts([...posts, ...commentCount]);
     }
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
+  // 게시글 더보기 함수
   const loadMorePost = () => {
-    fetchPosts();
+    const start = posts.length; // 4. 현재 화면에 보여지는 포스트의 길이를 시작으로 ~ +9 한 값을 불러옴
+    const end = start + 9;
+
+    // 활성 탭에 따라 적절한 게시글 불러오기
+    if (activeTab === 2) {
+      fetchPosts(start, end, false); // solved값이 false이므로 답변 전 리스트 가져옴
+    } else if (activeTab === 3) {
+      fetchPosts(start, end, true); // solved값이 true이므로 답변 후 리스트 가져옴
+    } else {
+      fetchPosts(start, end); // solved값이 없으므로 모든 리스트 가져옴
+    }
   };
 
   const TabData = [
-    {
-      id: 1,
-      button: "모든 질문",
-      content: <PostListItem posts={posts} userInfo={userInfo} />,
-    },
-    {
-      id: 2,
-      button: "답변 전",
-      content: (
-        <PostListItem
-          posts={posts.filter((post) => !post.solve)}
-          userInfo={userInfo}
-        />
-      ),
-    },
-    {
-      id: 3,
-      button: "답변 후",
-      content: (
-        <PostListItem
-          posts={posts.filter((post) => post.solve)}
-          userInfo={userInfo}
-        />
-      ),
-    },
+    { id: 1, button: "모든 질문" },
+    { id: 2, button: "답변 전" },
+    { id: 3, button: "답변 후" },
   ];
+
+  // 1. 답변전/후 상관 없이 10개의 post를 불러옴
+  useEffect(() => {
+    fetchPosts(0, 9);
+  }, []);
 
   return (
     <>
@@ -99,15 +82,32 @@ const Main = () => {
         {TabData.map((tab) => (
           <StTabButton
             key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            active={activeTab === tab.id ? "true" : "false"}
+            onClick={() => {
+              setActiveTab(tab.id);
+
+              setPosts([]); // 2. 탭 버튼을 클릭하면 지금까지 불러왔던 포스트값을 초기화 함
+              setMorePosts(true); // 그리고 10보다 더 많은 게시글이 있다고 상태를 변경해줌
+
+              if (tab.id === 2) {
+                // 3. 해당 탭에 있는 답변을 0부터 9까지 불러옴
+                fetchPosts(0, 9);
+              } else if (tab.id === 3) {
+                fetchPosts(0, 9);
+              } else {
+                fetchPosts(0, 9);
+              }
+            }}
+            $active={activeTab === tab.id}
           >
             {tab.button}
           </StTabButton>
         ))}
       </StTabButtonWrap>
 
-      <div>{TabData.find((a) => a.id === activeTab)?.content}</div>
+      {/* 선택된 탭의 게시글 목록 */}
+      <PostListItem posts={posts} />
+
+      {/* 10개 이상의 게시글이 있는 경우 버튼 표시 */}
       {morePosts && (
         <StLoadMoreButton onClick={loadMorePost}>더 보기</StLoadMoreButton>
       )}
@@ -118,24 +118,26 @@ const Main = () => {
 export default Main;
 
 const StHomePostListTitle = styled.h1`
-  font-size: 30px;
+  font-size: 50px;
   font-weight: bold;
-  margin: 30px 0;
+  margin: 20px 0;
 `;
 const StTabButtonWrap = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: end;
   gap: 1rem;
+  margin-bottom: 30px;
 `;
 
 const StTabButton = styled.button`
   font-size: 18px;
   font-weight: bold;
-  background-color: ${(props) => (props.active === "true" ? "#444" : "#888")};
-  color: ${(props) => (props.active === "true" ? "white" : "#333")};
-  padding: 5px 10px;
-  border-radius: 10px;
+  background-color: ${(props) => (props.$active ? "#000" : "#fff")};
+  border: 2px solid #000;
+  color: ${(props) => (props.$active ? "white" : "#333")};
+  padding: 8px 15px;
+  border-radius: 8px;
   transition: 0.3s;
   cursor: pointer;
 
@@ -150,4 +152,9 @@ const StLoadMoreButton = styled.button`
   background-color: black;
   cursor: pointer;
   color: white;
+  text-align: center;
+  font-size: 20px;
+  padding: 15px 10px;
+  border-radius: 15px;
+  margin-bottom: 20px;
 `;
