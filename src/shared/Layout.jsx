@@ -90,7 +90,7 @@ function Header() {
                   Log in
                 </Link>
                 <Link to="/sign#signup" className="btnBlack">
-                  Sign up
+                  Join
                 </Link>
               </>
             )}
