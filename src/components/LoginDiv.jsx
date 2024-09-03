@@ -94,6 +94,9 @@ export const StUserInfoInput = styled.input`
   font-size: 15px;
   font-weight: 600;
   color: #9e9c9c;
+  &:focus {
+    color: black;
+  }
 `;
 
 export const StBtnDiv = styled.div`

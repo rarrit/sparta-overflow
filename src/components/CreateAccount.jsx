@@ -18,7 +18,9 @@ const CreateAccount = () => {
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [usingEmail, setUsingEmail] = useState([]);
-  const [profileImage, setProfileImage] = useState("");
+  const defaultImage =
+    "https://cdn.pixabay.com/photo/2018/01/12/16/31/spoon-3078582_640.png";
+  const [profileImage, setProfileImage] = useState(defaultImage);
 
   // 이미 사용되고 있는 이메일
   const fetchData = async () => {
@@ -67,38 +69,39 @@ const CreateAccount = () => {
     <StSignDiv>
       <StUserInfoTitle>JOIN</StUserInfoTitle>
       <StLoginBoxDiv>
-        <StLowDiv>
-          <StUserInfoName>ID</StUserInfoName>
-          <StUserInfoInput
-            value={signUpId}
-            onChange={(e) => setSignUpId(e.target.value)}
-            placeholder="아이디나 이메일을 입력해주세요"
-          />
-        </StLowDiv>
-        <StLowDiv>
-          <StUserInfoName>PW</StUserInfoName>
-          <StUserInfoInput
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="패스워드를 입력해주세요"
-          />
-        </StLowDiv>
-        <StLowDiv>
-          <StUserInfoName>이름</StUserInfoName>
-          <StUserInfoInput
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            placeholder="사용자 이름을 입력해주세요"
-          />
-        </StLowDiv>
-        <StLowDiv>
-          <StUserInfoName>이미지</StUserInfoName>
-          <StUserInfoInput
-            value={profileImage}
-            onChange={(e) => setProfileImage(e.target.value)}
-            placeholder="사용할 대표 이미지의 URL을 입력해주세요"
-          />
-        </StLowDiv>
+        <StUserInfoName>프로필 이미지</StUserInfoName>
+        <img
+          src={profileImage}
+          onClick={() => {
+            let promptInput = prompt(
+              "이미지 URL을 입력해주세요",
+              `${profileImage}`
+            );
+            setProfileImage(promptInput ?? defaultImage);
+          }}
+          alt="프로필이미지"
+        />
+        <StUserInfoName>ID</StUserInfoName>
+        <StUserInfoInput
+          value={signUpId}
+          onChange={(e) => setSignUpId(e.target.value)}
+          placeholder="아이디나 이메일을 입력해주세요"
+        />
+
+        <StUserInfoName>PW</StUserInfoName>
+        <StUserInfoInput
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="패스워드를 입력해주세요"
+        />
+
+        <StUserInfoName>이름</StUserInfoName>
+        <StUserInfoInput
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          placeholder="사용자 이름을 입력해주세요"
+        />
+
         <StBtnDiv>
           <StBlackButton
             onClick={() => {
@@ -117,11 +120,6 @@ const CreateAccount = () => {
 };
 
 export default CreateAccount;
-
-const StLowDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 
 const StUserInfoName = styled.p`
   font-size: 25px;
